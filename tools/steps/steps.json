@@ -8,7 +8,7 @@
       "icon": "list-checks",
       "title": "Check your model",
       "text": "Tested on the AquaClean Sela. Mera, Tuma and Cama are supported but untested.",
-      "details": "Find the article number on the type plate or in the Geberit Home app and look it up in [Models and feature discovery](#models-and-feature-discovery).\n\n- **Tested:** AquaClean Sela.\n- **Supported, not yet tested:** AquaClean Mera Comfort, Mera Classic (also floor-standing), Tuma Comfort and Tuma Classic (seat, complete and floor-standing), and Cama. Feature discovery shows only what your toilet supports.\n- **Not supported:**\n  - AquaClean 4000: it has no app and no remote control.\n  - AquaClean Alba and the new AquaClean Mera Comfort: they run on Geberit's newer platform (Series 250), with a protocol the bridge doesn't speak.\n\nHave a different model? See [Supporting other models](#supporting-other-models)."
+      "details": "Find the article number on the type plate or in the Geberit Home app and look it up in [Models and feature discovery](#models-and-feature-discovery).\n\n- **Tested:** AquaClean Sela.\n- **Supported, not yet tested:** AquaClean Mera Comfort, Mera Classic (also floor-standing), Tuma Comfort and Tuma Classic (seat, complete and floor-standing), and Cama. Feature discovery shows only what your toilet supports.\n- **Not supported:**\n  - AquaClean 4000: it has no app and no remote control.\n  - AquaClean Alba: it runs on Geberit's newer platform (Series 250), whose encrypted protocol v2 the bridge doesn't speak. There is a separate, experimental ESP bridge for the Alba in the [`series-250-bridge` branch](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/tree/series-250-bridge).\n\nHave a different model? See [Supporting other models](#supporting-other-models)."
     },
     {
       "icon": "map-pin",
@@ -26,7 +26,7 @@
       "icon": "split",
       "title": "Choose your route",
       "text": "Native API for Home Assistant, or MQTT for any home automation system.",
-      "details": "Both routes give the same devices and entities. Pick one; never both.\n\n| | Native API | MQTT |\n|---|---|---|\n| For | Home Assistant (ESPHome integration) | Home Assistant, openHAB, Node-RED, Domoticz, … |\n| Install | ESPHome YAML | Web installer, no ESPHome needed (or ESPHome YAML) |\n| Encryption | Noise (API key) | TLS, only when built with ESPHome YAML |\n| Web interface on the ESP | No | Yes |\n| Apple Home (HomeKit) | Optional, ESPHome YAML | Optional, ESPHome YAML only |\n\nSee [Two routes: ESPHome or MQTT](#two-routes-esphome-or-mqtt) for all differences."
+      "details": "Both routes give the same devices and entities. Pick one; never both.\n\n| | Native API | MQTT |\n|---|---|---|\n| For | Home Assistant (ESPHome integration); also Homey, ioBroker | Home Assistant, openHAB, Node-RED, Domoticz, … |\n| Install | ESPHome YAML | Web installer, no ESPHome needed (or ESPHome YAML) |\n| Encryption | Noise (API key) | TLS, only when built with ESPHome YAML |\n| Web interface on the ESP | No | Yes |\n| Apple Home (HomeKit) | Optional, ESPHome YAML | Optional, ESPHome YAML only |\n\nSee [Two routes: ESPHome or MQTT](#two-routes-esphome-or-mqtt) for all differences."
     },
     {
       "icon": "usb",
