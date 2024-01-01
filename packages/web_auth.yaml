@@ -1,0 +1,12 @@
+# Password for the web interface (on top of packages/web.yaml). The browser asks for it (HTTP digest
+# authentication). Set in your own YAML:
+#   substitutions:
+#     web_username: admin
+#     web_password: !secret aquaclean_web_password
+# Note: the page itself stays plain HTTP (the ESP has no HTTPS server); use it on your own network only.
+
+web_server:
+  auth:
+    type: digest       # the password never goes over the network in readable form
+    username: ${web_username}
+    password: ${web_password}

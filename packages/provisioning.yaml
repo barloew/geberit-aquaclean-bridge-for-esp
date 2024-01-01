@@ -1,0 +1,16 @@
+# Setting up without compiling: Wi-Fi through the browser (ESP Web Tools / Improv over USB) or through the
+# hotspot "AquaClean Setup" (captive portal) when no Wi-Fi is known or reachable. Works with both routes.
+
+wifi:
+  ap:
+    ssid: AquaClean Setup
+
+captive_portal:
+
+improv_serial:
+
+esphome:
+  project:
+    name: geberit.aquaclean
+    version: "1.36.0"
+

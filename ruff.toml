@@ -1,0 +1,7 @@
+line-length = 120
+target-version = "py311"
+
+[lint]
+# High-value, low-noise: syntax errors and pyflakes (undefined names, unused imports).
+# Not a style gate — ESPHome component code has its own conventions.
+select = ["E9", "F"]

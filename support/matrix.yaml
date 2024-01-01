@@ -1,0 +1,159 @@
+# Single source of truth for model / feature / route test status (Series 248, main branch).
+# Read SCHEMA.md before editing. Hard rules:
+#   - Everything that claims support elsewhere (README, docs, the overview image, release notes)
+#     is derived from or checked against THIS file. Do not hand-write support claims elsewhere.
+#   - status: validated is INVALID without a `validation` record carrying both bridge_release
+#     and device_firmware. No evidence -> not validated.
+#   - evidence references point to logs/captures by id only, never reverse-engineering
+#     internals (those stay in the private store).
+
+meta:
+  branch: main              # Series 248 — classic AquaClean protocol
+  status_vocab: [validated, supported, unsupported, planned, failed]
+  # validated   = reproduced on real hardware, with a validation record (release + device fw)
+  # supported   = the code supports it (feature discovery / public SAP cross-check); the user and
+  #               their device are supported if they hit an issue. Not (yet) hardware-validated by us.
+  # unsupported = the model/route does not have this surface, or is not supported
+  # planned     = on the roadmap, not implemented
+  # failed      = known broken / regressed (link an issue)
+
+# Canonical test surfaces. The key is the stable ticket id half (e.g. sela/last_error).
+surfaces:
+  shower: "Shower start/stop"
+  lady_shower: "Lady shower"
+  dryer: "Dryer"
+  odor_extraction: "Odor extraction"
+  jet_strength: "Shower jet strength (levels)"
+  arm_position: "Shower-arm position (levels)"
+  water_temperature: "Water temperature (levels)"
+  water_heating: "Water heating on/off"
+  oscillation: "Oscillating spray"
+  orientation_light: "Orientation light"
+  auto_lid: "Automatic lid"
+  flush: "Pre-flush / automatic flush"
+  seat_heating: "Seat heating"
+  descaling: "Descaling + shower-head cleaning"
+  user_detection: "User detected / seated"
+  last_error: "Error-code label (status index 6 -> module-aware text + hex)"
+  profiles: "Bridge user profiles 1-6 (store / activate)"
+  irk_recognition: "Automatic user recognition via IRK"
+  remote_passthrough: "Remote control stays connected / keys pass through"
+
+routes:
+  native_api: "ESPHome native API route"
+  mqtt: "MQTT route"
+  homekit: "Apple HomeKit (optional, can run stand-alone)"
+
+models:
+  sela:
+    name: "AquaClean Sela"
+    series: 248
+    sap_prefix: ["146.22"]
+    status: validated
+    validation: sela-hw     # -> validations[].id
+    surfaces:
+      shower: validated
+      lady_shower: validated
+      jet_strength: validated
+      arm_position: validated
+      water_temperature: validated
+      water_heating: validated
+      oscillation: validated
+      orientation_light: validated
+      descaling: validated
+      user_detection: validated
+      last_error: validated
+      profiles: validated
+      irk_recognition: validated
+      remote_passthrough: validated
+      # absent on the Sela (README: these exist on larger models):
+      dryer: unsupported
+      odor_extraction: unsupported
+      auto_lid: unsupported
+      flush: unsupported
+      seat_heating: unsupported
+
+  mera-comfort:
+    name: "AquaClean Mera Comfort"
+    series: 248
+    sap_prefix: ["146.21"]
+    status: supported
+    note: "Feature set resolved at runtime by feature discovery; not hardware-validated."
+
+  mera-classic:
+    name: "AquaClean Mera Classic"
+    series: 248
+    sap_prefix: ["146.20", "146.24"]   # 146.24 = floor-standing
+    status: supported
+    note: "Feature set resolved at runtime by feature discovery; not hardware-validated."
+
+  tuma-comfort:
+    name: "AquaClean Tuma Comfort"
+    series: 248
+    sap_prefix: ["146.27", "146.29", "146.31"]   # seat / complete system / floor-standing
+    status: supported
+    note: "Feature set resolved at runtime by feature discovery; not hardware-validated."
+
+  tuma-classic:
+    name: "AquaClean Tuma Classic"
+    series: 248
+    sap_prefix: ["146.07", "146.09", "146.32"]
+    status: supported
+    note: "Feature set resolved at runtime by feature discovery; not hardware-validated."
+
+  cama:
+    name: "AquaClean Cama"
+    series: 248
+    sap_prefix: ["146.34", "146.30"]   # 146.30 = test set
+    status: supported
+    note: "Feature set resolved at runtime by feature discovery; not hardware-validated."
+
+  aquaclean-4000:
+    name: "AquaClean 4000"
+    series: 248
+    sap_prefix: ["146.13"]
+    status: unsupported
+    note: "No app and no remote control, so the bridge cannot reach it. Listed for completeness."
+
+# Bridge-level integration routes. Seeded from the README's claims for the Sela setup;
+# demote any route you have not actually exercised on hardware to `supported`.
+routes_status:
+  native_api: { status: validated, validation: sela-hw }   # ESPHome native API — hardware-validated
+  mqtt: { status: supported, note: "implemented; not yet hardware-validated" }
+  homekit: { status: validated, validation: sela-hw }       # hardware-validated
+
+# Hardware boards the firmware targets.
+boards:
+  esp32-s3-generic: { status: validated, note: "reference board (>=8 MB flash)" }
+  m5stack-atoms3r: { status: builds, note: "builds, not yet tested on hardware" }
+  m5stack-atoms3-lite: { status: builds, note: "builds, not yet tested on hardware" }
+  xiao-esp32s3: { status: builds, note: "builds (also Plus), not yet tested on hardware" }
+
+# Evidence records. A `validated` status must reference one of these.
+validations:
+  - id: sela-hw
+    model: sela
+    status: validated
+    bridge_release: "v1.36.0"
+    device_firmware: "RS08 TS57"      # main control node; BT node 10.18; remote 3.60.101.900/0001
+    by: "maintainer"
+    evidence: "AquaClean Sela hardware; capture (log 8fe51613), error 0x071B reproduced"
+
+# Device-independent, CI-verified checks. NOT hardware validations: no device_firmware, not tied to
+# any model, and never shown as "tested on hardware". Kept separate on purpose.
+build_checks:
+  languages:
+    count: 29
+    status: structural            # identical key structure across all language files
+    check: "tools/check_lang_keys.py"
+    note: "Present and structurally consistent (CI). Translation quality is not all native-reviewed; a native pass on long-tail languages is welcome."
+
+# Ledger of AquaClean device firmware versions seen in the field.
+# An unseen device firmware is treated as `untested` (may break our code) until a validation
+# record covers it — this is the Geberit-OTA break-vector early-warning.
+device_firmware_seen:
+  "RS08 TS57":
+    model: sela
+    status: known-good
+    bridge_release: "v1.36.0"
+    note: "BT node 10.18; remote 3.60.101.900/0001"

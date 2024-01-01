@@ -1,0 +1,11 @@
+## IDF Component Manager Manifest File
+# libsodium is not listed here: geberit_aquaclean adds esphome/libsodium (already there with API encryption)
+# or espressif/libsodium, so the build never gets both.
+dependencies:
+  espressif/json_generator:
+    version: "~1.1.1"
+  espressif/json_parser:
+    version: "~1.0.3"
+  espressif/mdns:
+    rules:
+      - if: "idf_version >=5.0"

@@ -1,0 +1,38 @@
+# Route 1: Home Assistant with the ESPHome integration (native API, encrypted). Use this or packages/mqtt.yaml.
+# Encryption: add to your own YAML (the ESPHome dashboard does this for you)
+#   api:
+#     encryption:
+#       key: !secret aquaclean_api_key
+
+api:
+  actions:
+    # Link the user of profile 1-6 to a Home Assistant device tracker (Private BLE Device, iBeacon);
+    # empty entity_id unlinks (the same as the profile's "Home Assistant device" field).
+    - action: aquaclean_link_user
+      variables:
+        user: int
+        entity_id: string
+      then:
+        - lambda: id(aquaclean).set_user_entity(user, entity_id);
+    # Store a known IRK in a profile: 32 hex digits (as Show IRK and Private BLE Device show it) or base64 (as in
+    # the iOS keychain); an empty irk removes it. Same as the profile's "Enter IRK" field.
+    - action: aquaclean_set_irk
+      variables:
+        user: int
+        irk: string
+      then:
+        - lambda: id(aquaclean).set_user_irk_text(user, irk);
+    # Free request for exploring other models; the answer appears in "Last response" and in the log.
+    # Example: context 1, procedure 0x51 (= 81), args "02" reads common setting 02.
+    - action: aquaclean_raw_request
+      variables:
+        context: string    # hex, e.g. "01"
+        procedure: string  # hex, e.g. "53"
+        args: string       # hex, e.g. "0103"
+      then:
+        - lambda: |-
+            id(aquaclean).send_raw(strtol(context.c_str(), nullptr, 16), strtol(procedure.c_str(), nullptr, 16), args);
+
+time:
+  - platform: homeassistant
+    id: aquaclean_time

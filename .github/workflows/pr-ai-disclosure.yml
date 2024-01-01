@@ -1,0 +1,32 @@
+name: PR AI disclosure
+
+# Requires every PR description to declare whether AI wrote or helped write it, via an
+# "AI-Assistance: none|assisted|generated" line (see the PR template). Fails until it's filled in.
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require AI-assistance disclosure
+        env:
+          EVENT_PATH: ${{ github.event_path }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re, sys
+          ev = json.load(open(os.environ["EVENT_PATH"]))
+          body = (ev.get("pull_request", {}).get("body") or "")
+          m = re.search(r"(?im)^\s*AI-Assistance:\s*(none|assisted|generated)\b", body)
+          if m:
+              print(f"OK: AI-Assistance: {m.group(1).lower()}")
+              sys.exit(0)
+          print("::error::PR description must contain a line 'AI-Assistance: none|assisted|generated' "
+                "(see the PR template).")
+          sys.exit(1)
+          PY

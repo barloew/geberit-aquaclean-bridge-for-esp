@@ -1,0 +1,54 @@
+name: Feature request
+description: Request a missing capability or an improvement
+title: "[Feature] "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Please write in English** — the working language of this project.
+
+        Search [existing issues](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/issues?q=is%3Aissue)
+        first. For a model that this bridge does not talk to yet, use the **New model support** form instead.
+  - type: dropdown
+    id: part
+    attributes:
+      label: Which part?
+      options:
+        - ESPHome component — Series 248 (main)
+        - Series 250 bridge (Alba) — experimental (series-250-bridge branch)
+    validations:
+      required: true
+  - type: dropdown
+    id: route
+    attributes:
+      label: Connection route this is about (if any)
+      options:
+        - Native API (ESPHome)
+        - MQTT
+        - Both / route-independent
+        - Not sure
+    validations:
+      required: false
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would you like to do?
+      description: Describe the capability you miss and how you would use it.
+      placeholder: "I want to expose the dryer run-on time as a number..."
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Suggested behavior
+      description: How you would like it to work, if you have a preference.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Model and context
+      description: Which model/article number this is for, and any workaround you use today.
+    validations:
+      required: false

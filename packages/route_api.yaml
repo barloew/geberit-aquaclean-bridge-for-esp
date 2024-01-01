@@ -1,0 +1,10 @@
+# route: api — Home Assistant with the ESPHome integration (native API, encrypted with the API key).
+# Chosen with the substitution "route: api" in examples/atoms3-lite.yaml. Never together with route_mqtt.yaml.
+# secrets.yaml: aquaclean_api_key
+
+packages:
+  api: !include api.yaml
+
+api:
+  encryption:
+    key: !secret aquaclean_api_key

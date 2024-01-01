@@ -1,0 +1,260 @@
+language_name: Nederlands
+
+devices:
+  toilet: "AquaClean Toilet"
+  session: "Actieve sessie"
+  maintenance: "Fysiek onderhoud"
+  profile_1: "Gebruikersprofiel 1"
+  profile_2: "Gebruikersprofiel 2"
+  profile_3: "Gebruikersprofiel 3"
+  profile_4: "Gebruikersprofiel 4"
+  profile_5: "Gebruikersprofiel 5"
+  profile_6: "Gebruikersprofiel 6"
+
+names:
+  last_error_text: "Laatste fout"
+  stat_uptime: "Bedrijfstijd toilet"
+  stat_run_time: "Bedrijfstijd in werking"
+  stat_showers: "Douchebeurten totaal"
+  stat_lady_showers: "Ladydouchebeurten totaal"
+  stat_oscillation: "Douchebeurten met oscillatie"
+  stat_lady_oscillation: "Ladydouchebeurten met oscillatie"
+  stat_dryer: "Föhnbeurten totaal"
+  stat_odor: "Geurafzuiging gebruikt"
+  stat_seat_heating: "Zittingverwarming gebruikt"
+  stat_lid: "Dekselopener gebruikt"
+  stat_cleaning: "Reinigingen"
+  stat_users: "Toiletbezoeken totaal"
+  stat_system_flush: "Systeemspoelingen"
+  stat_profile: "Gebruik profiel {n}"
+  stat_last_shower: "Duur laatste douche"
+  stat_avg_shower: "Gemiddelde duur douche"
+  stat_last_lady: "Duur laatste ladydouche"
+  stat_avg_lady: "Gemiddelde duur ladydouche"
+  stat_last_sitting: "Duur laatste toiletbezoek"
+  stat_avg_sitting: "Gemiddelde duur toiletbezoek"
+  read_statistics: "Statistieken lezen"
+  homekit_qr: "HomeKit-QR-code tonen"
+  maintenance_mode: "Fysiek onderhoud"
+  seated: Gebruiker gedetecteerd
+  shower_active: Douche actief
+  lady_shower_active: Ladydouche actief
+  shower_toggle: Douche starten of stoppen
+  lady_shower_toggle: Ladydouche starten of stoppen
+  spray_intensity: Douchestraalsterkte
+  spray_arm_position: Douchearmpositie
+  lady_spray_intensity: Douchestraalsterkte ladydouche
+  lady_spray_arm_position: Douchearmpositie ladydouche
+  water_temperature: Watertemperatuur
+  oscillating_spray: Oscillerende douche
+  default_spray_intensity: "Standaard douchestraalsterkte"
+  default_spray_arm_position: "Standaard douchearmpositie"
+  default_lady_spray_intensity: "Standaard douchestraalsterkte ladydouche"
+  default_lady_spray_arm_position: "Standaard douchearmpositie ladydouche"
+  default_water_temperature: "Standaard watertemperatuur"
+  default_oscillating_spray: "Standaard oscillerende douche"
+  orientation_light: Oriëntatielicht
+  light_activation: Oriëntatielicht activering
+  light_color: Oriëntatielicht kleur
+  light_brightness: Oriëntatielicht helderheid
+  light_run_on_time: Oriëntatielicht nalooptijd
+  light_window_1_start: Oriëntatielicht tijdvenster 1 begin
+  light_window_1_end: Oriëntatielicht tijdvenster 1 einde
+  light_window_2_start: Oriëntatielicht tijdvenster 2 begin
+  light_window_2_end: Oriëntatielicht tijdvenster 2 einde
+  days_until_descaling: Volgende ontkalking over
+  water_hardness: Waterhardheid
+  remote_connected: "Afstandsbediening verbonden"
+  remote_passthrough: "Afstandsbediening doorgifte aan toilet actief"
+  remote_last_button: "Afstandsbediening laatste toets"
+  remote_button: "Afstandsbediening toets"
+  remote_firmware: "Afstandsbediening firmware"
+  remote_forward: "Afstandsbediening doorgeven aan toilet"
+  remote_pairing: "Afstandsbediening koppelen"
+  remote_unpair: "Afstandsbediening ontkoppelen"
+  connected: Toilet verbonden
+  app_connected: "Geberit Home app verbonden"
+  reconnects: Herverbindingen
+  bridge_health: "Bridgestatus"
+  free_heap: "Vrij geheugen"
+  min_free_heap: "Laagste vrije geheugen"
+  largest_free_block: "Grootste vrije blok"
+  timeouts: Time-outs
+  connection_uptime: Verbonden sinds
+  pair_as_remote: "Toilet koppelen"
+  refresh_settings: Instellingen vernieuwen
+  discovery: Ontdekkingsmodus
+  raw_status: Status ruw
+  last_response: Laatste antwoord
+  toilet_advertisement: "Advertentie"
+  procedures_seen: Geziene procedures
+  scan_settings: Instellingen scannen
+  settings_scan: Instellingenscan
+  device_type: Apparaattype
+  article_number: Artikelnummer
+  serial_number: Serienummer
+  production_date: Productiedatum
+  commissioning_date: "Inbedrijfstelling"
+  model: "Model"
+  functions: "Gevonden functies"
+  rediscover: "Functies opnieuw ontdekken"
+  profile_activate: "Profiel {n} instellingen activeren"
+  profile_store: "Profiel {n} instellingen opslaan"
+  shower_count: "Douchebeurten vandaag"
+  seat_heating: "Zittingverwarming"
+  dryer_temperature: "Föhntemperatuur"
+  dryer_intensity: "Föhnintensiteit"
+  dryer: "Warmeluchtföhn"
+  odor_extraction: "Geurzuivering"
+  demo_mode: "Demonstratiemodus"
+  lid_auto_open: "Wc-deksel automatisch openen"
+  lid_auto_close: "Wc-deksel automatisch sluiten"
+  lid_sensor_range: "Bereik dekselsensor"
+  odor_extraction_run_on: "Nalooptijd geurzuivering"
+  firmware: "Firmware"
+  default_seat_heating: "Standaard zittingverwarming"
+  default_dryer_temperature: "Standaard föhntemperatuur"
+  default_dryer_intensity: "Standaard föhnintensiteit"
+  default_dryer: "Standaard warmeluchtföhn"
+  default_odor_extraction: "Standaard geurzuivering"
+  last_descaling: "Laatste ontkalking"
+  descaling_count: "Aantal ontkalkingen"
+  days_until_filter_change: "Dagen tot filtervervanging"
+  filter_reset: "Filter vervangen"
+  toilet_address: "Adres"
+  search_toilet: "Toilet dichtbij zoeken"
+  remote_address: "Afstandsbediening adres"
+  user_name: "Gebruiker"
+  welcome_light: "Welkomslicht"
+  user_recognized: "Herkend"
+  user_active: "Heeft plaatsgenomen"
+  recognized_user: "Herkende gebruiker"
+  active_user: "Actieve gebruiker"
+  recognition_threshold: "Signaalsterkte gebruikersherkenning"
+  user_ha_device: "HA-apparaat"
+  profile_clear: "Profiel wissen"
+  user_rssi: "Signaal apparaat gebruikersprofiel {n}"
+  irk_capture: "IRK vastleggen"
+  user_irk: "IRK"
+  irk_show: "IRK tonen"
+  user_irk_set: "IRK invoeren"
+  irk_android: "IRK vastleggen als Android-toetsenbord"
+  toilet_signal: "Signaal toilet"
+  shower_restricted_in: "Zonder ontkalking stopt sproeier over"
+  dryer_active: "Föhn actief"
+  dryer_toggle: "Föhn schakelen"
+  stop_all: "Douche en föhn stoppen"
+  seat_heating_on: "Zittingverwarming aan"
+  preflush: "Voorspoelen"
+  wc_water_heating: "Waterverwarming WC"
+  default_seat_heating_on: "Standaard zittingverwarming aan"
+  default_preflush: "Standaard voorspoelen"
+  default_wc_water_heating: "Standaard waterverwarming WC"
+  descaling_state: "Ontkalkingsstatus"
+  descaling_time_left: "Ontkalking resterende tijd"
+  descaling_start: "Ontkalking starten"
+  descaling_continue: "Ontkalking doorgaan"
+  descaling_cancel: "Ontkalking afbreken"
+  shower_unlock: "Douche ontgrendelen"
+  showers_until_unlock: "Douchebeurten tot ontgrendeling"
+  descaling_requested: "Ontkalking gevraagd sinds"
+  odor_toggle: "Geurzuivering schakelen"
+  odor_run_on_toggle: "Nalooptijd geurzuivering schakelen"
+  last_error: "Laatste foutcode"
+  service_state: "Reinigingsstatus armen"
+  arm_cleaning_start: "Armreiniging starten"
+  arm_cleaning_next: "Armreiniging volgende stap"
+  spray_calibration: "Kalibratie sproeier"
+  lid_toggle: "Deksel openen of sluiten"
+  lid_calibration: "Deksel kalibreren"
+  lid_angle_start: "Openingshoek deksel instellen"
+  lid_angle_up: "Openingshoek deksel groter"
+  lid_angle_down: "Openingshoek deksel kleiner"
+  lid_angle_save: "Openingshoek deksel opslaan"
+  auto_flush: "Automatisch spoelen"
+  light_sensor_sensitivity: "Gevoeligheid lichtsensor"
+  accessibility_mode: "Toegankelijkheidsmodus"
+  registration: "Registratie"
+  draining: "Aftappen"
+  drain: "Pomp en leiding aftappen"
+  flush: "Doorspoelen"
+  ssm_modules: "Aangesloten modules"
+  lid_offset: "Offset deksel"
+  shower_arm_offset: "Offset douchearm"
+  dryer_arm_offset: "Offset föhnarm"
+  shower_arm_adjust_start: "Positie douchearm instellen"
+  shower_arm_adjust_up: "Positie douchearm hoger"
+  shower_arm_adjust_down: "Positie douchearm lager"
+  shower_arm_adjust_save: "Positie douchearm opslaan"
+  dryer_arm_adjust_start: "Positie föhnarm instellen"
+  dryer_arm_adjust_up: "Positie föhnarm hoger"
+  dryer_arm_adjust_down: "Positie föhnarm lager"
+  dryer_arm_adjust_save: "Positie föhnarm opslaan"
+  trial_end: "Einde proefperiode"
+  trial_remaining: "Proefperiode resterend"
+  trial_extended_remaining: "Verlengde proefperiode resterend"
+  stop_shower: "Douche stoppen"
+
+options:
+  last_error_text: ["Geen fout", "Foutcode", "", "Hoofdbesturing", "", "Geurafzuiging", "Douche-eenheid", "Deksel", "Droger", "Warmwater", "Zitverwarming", "Zijpaneel", "Gebruikersdetectie", "Nabijheidssensor", "Oriëntatielicht", "Interface", "Drogereenheid", "Doorstroomverwarmer"]
+  bridge_health: ["OK", "Beperkt", "Herstelt", "Uit- en inschakelen nodig"]
+  welcome_light: ["Uit", "Blauw", "Turquoise", "Magenta", "Oranje", "Geel", "Warmwit", "Wit"]
+  light_activation: [Uit, Aan, Automatisch, Tijdsgestuurd]
+  light_color: [Blauw, Turquoise, Magenta, Oranje, Geel, Warmwit, Wit]
+  light_run_on_time: [5 min, 10 min, 20 min, 30 min, 60 min]
+  water_hardness: [Zacht, Medium, Hard]
+  descaling_state: ["Inactief", "Voorbereiden", "Wacht op gebruiker", "Ontkalken", "Spoelen"]
+  service_state: ["In orde", "Douchearm niet gereinigd", "Föhnarm niet gereinigd", "Douche- en föhnarm niet gereinigd"]
+  auto_flush: ["Uit", "Aan", "Voorspoelen"]
+  registration: ["Niet geregistreerd", "Privé", "Openbaar"]
+  light_activation_approach: ["Uit", "Aan", "Bij nadering", "In het donker"]
+  descaling_state_v2: ["Inactief", "Ontkalken 2", "Wacht op gebruiker 1", "Ontkalken 1", "Wacht op gebruiker 2"]
+  descaling_state_v3: ["Inactief", "Ontkalken of spoelen"]
+
+buttons:
+  shower: Douche
+  spray_minus: "Douchestraal −"
+  spray_plus: "Douchestraal +"
+  arm_back: Douchearm terug
+  arm_forward: Douchearm naar voren
+  lady_shower: Ladydouche
+  profile_1: Gebruikersprofiel 1
+  profile_2: Gebruikersprofiel 2
+  profile_3: Gebruikersprofiel 3
+  arrow_right: Pijl rechts
+  arrow_left: Pijl links
+  arrow_down: Pijl omlaag
+  arrow_up: Pijl omhoog
+  oscillation: Oscillerende beweging
+  orientation_light: Oriëntatielicht
+  ok: OK
+  temperature: Temperatuur
+  home: Home
+  maintenance: Onderhoud en verzorging
+  unknown: Onbekend
+
+button_states: [ingedrukt, lang ingedrukt, losgelaten]
+
+features:
+  orientation_light: "Oriëntatielicht"
+  lady_shower: "Ladydouche"
+  oscillation: "Oscillerende douche"
+  water_temperature: "Instelbare watertemperatuur"
+  spray_arm: "Instelbare stand van de douchearm"
+  descaling: "Ontkalkingsfunctie"
+  user_detection: "Gebruikersdetectie"
+  seat_heating: "Verwarmde wc-zitting"
+  dryer: "Warmeluchtföhn"
+  odor_extraction: "Geurzuivering"
+  automatic_lid: "Automatische bediening van de wc-deksel"
+  light_sensor: "Lichtsensor"
+
+variants:
+  seat: "wc-zitting"
+  complete_system: "compleet toiletsysteem"
+  floor_standing: "vloerstaand model"
+
+texts:
+  nobody: "Niemand"
+  not_supported: "nog niet ondersteund"
+  model_unknown: "Onbekend model"

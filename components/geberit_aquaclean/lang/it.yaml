@@ -1,0 +1,260 @@
+language_name: Italiano
+
+devices:
+  toilet: "AquaClean WC"
+  session: "Sessione attiva"
+  maintenance: "Manutenzione fisica"
+  profile_1: "Profilo utente 1"
+  profile_2: "Profilo utente 2"
+  profile_3: "Profilo utente 3"
+  profile_4: "Profilo utente 4"
+  profile_5: "Profilo utente 5"
+  profile_6: "Profilo utente 6"
+
+names:
+  last_error_text: "Ultimo errore"
+  stat_uptime: "Tempo di funzionamento WC"
+  stat_run_time: "Tempo di funzionamento attivo"
+  stat_showers: "Docce totali"
+  stat_lady_showers: "Docce lady totali"
+  stat_oscillation: "Docce con oscillazione"
+  stat_lady_oscillation: "Docce lady con oscillazione"
+  stat_dryer: "Asciugature totali"
+  stat_odor: "Utilizzi aspirazione odori"
+  stat_seat_heating: "Utilizzi riscaldamento sedile"
+  stat_lid: "Utilizzi apertura coperchio"
+  stat_cleaning: "Pulizie"
+  stat_users: "Visite WC totali"
+  stat_system_flush: "Risciacqui di sistema"
+  stat_profile: "Utilizzi profilo {n}"
+  stat_last_shower: "Durata ultima doccia"
+  stat_avg_shower: "Durata media doccia"
+  stat_last_lady: "Durata ultima doccia lady"
+  stat_avg_lady: "Durata media doccia lady"
+  stat_last_sitting: "Durata ultima visita WC"
+  stat_avg_sitting: "Durata media visita WC"
+  read_statistics: "Leggi statistiche"
+  homekit_qr: "Mostra codice QR HomeKit"
+  maintenance_mode: "Manutenzione fisica"
+  seated: Utente rilevato
+  shower_active: Lavaggio anale attivo
+  lady_shower_active: Getto Lady attivo
+  shower_toggle: Avvia o arresta il lavaggio anale
+  lady_shower_toggle: Avvia o arresta il getto Lady
+  spray_intensity: Intensità del getto
+  spray_arm_position: Posizione dell'astina
+  lady_spray_intensity: Intensità del getto Lady
+  lady_spray_arm_position: Posizione dell'astina Lady
+  water_temperature: Temperatura dell'acqua
+  oscillating_spray: Movimento oscillante
+  default_spray_intensity: "Intensità del getto predefinita"
+  default_spray_arm_position: "Posizione dell'astina predefinita"
+  default_lady_spray_intensity: "Intensità del getto Lady predefinita"
+  default_lady_spray_arm_position: "Posizione dell'astina Lady predefinita"
+  default_water_temperature: "Temperatura dell'acqua predefinita"
+  default_oscillating_spray: "Movimento oscillante predefinito"
+  orientation_light: Luce di cortesia
+  light_activation: Luce di cortesia attivazione
+  light_color: Luce di cortesia colore
+  light_brightness: Luce di cortesia luminosità
+  light_run_on_time: Luce di cortesia tempo di spegnimento
+  light_window_1_start: Luce di cortesia fascia 1 inizio
+  light_window_1_end: Luce di cortesia fascia 1 fine
+  light_window_2_start: Luce di cortesia fascia 2 inizio
+  light_window_2_end: Luce di cortesia fascia 2 fine
+  days_until_descaling: Prossima decalcificazione tra
+  water_hardness: Durezza dell'acqua
+  remote_connected: "Telecomando connesso"
+  remote_passthrough: "Inoltro del telecomando al WC attivo"
+  remote_last_button: "Ultimo tasto del telecomando"
+  remote_button: "Tasto del telecomando"
+  remote_firmware: "Firmware del telecomando"
+  remote_forward: "Inoltra il telecomando al WC"
+  remote_pairing: "Abbina telecomando"
+  remote_unpair: "Disaccoppia telecomando"
+  connected: Vaso connesso
+  app_connected: "App Geberit Home connessa"
+  reconnects: Riconnessioni
+  bridge_health: "Stato del bridge"
+  free_heap: "Memoria libera"
+  min_free_heap: "Memoria libera minima"
+  largest_free_block: "Blocco libero più grande"
+  timeouts: Timeout
+  connection_uptime: Connesso da
+  pair_as_remote: "Abbina al WC"
+  refresh_settings: Aggiorna impostazioni
+  discovery: Modalità esplorazione
+  raw_status: Stato grezzo
+  last_response: Ultima risposta
+  toilet_advertisement: "Annuncio"
+  procedures_seen: Procedure osservate
+  scan_settings: Scansiona impostazioni
+  settings_scan: Scansione impostazioni
+  device_type: Tipo di apparecchio
+  article_number: Codice articolo
+  serial_number: Numero di serie
+  production_date: Data di produzione
+  commissioning_date: "Messa in servizio"
+  model: "Modello"
+  functions: "Funzioni trovate"
+  rediscover: "Rileva di nuovo le funzioni"
+  profile_activate: "Attiva le impostazioni del profilo {n}"
+  profile_store: "Salva le impostazioni nel profilo {n}"
+  shower_count: "Docce di oggi"
+  seat_heating: "Riscaldamento del sedile"
+  dryer_temperature: "Temperatura dell'asciugatore"
+  dryer_intensity: "Intensità dell'asciugatore"
+  dryer: "Asciugatore ad aria calda"
+  odor_extraction: "Aspirazione odori"
+  demo_mode: "Modalità demo"
+  lid_auto_open: "Apertura automatica del coperchio"
+  lid_auto_close: "Chiusura automatica del coperchio"
+  lid_sensor_range: "Portata del sensore del coperchio"
+  odor_extraction_run_on: "Funzionamento residuo aspirazione odori"
+  firmware: "Firmware"
+  default_seat_heating: "Riscaldamento del sedile predefinito"
+  default_dryer_temperature: "Temperatura dell'asciugatore predefinita"
+  default_dryer_intensity: "Intensità dell'asciugatore predefinita"
+  default_dryer: "Asciugatore ad aria calda predefinito"
+  default_odor_extraction: "Aspirazione odori predefinita"
+  last_descaling: "Ultima decalcificazione"
+  descaling_count: "Numero di decalcificazioni"
+  days_until_filter_change: "Giorni al cambio del filtro"
+  filter_reset: "Filtro sostituito"
+  toilet_address: "Indirizzo"
+  search_toilet: "Cerca un WC vicino"
+  remote_address: "Indirizzo del telecomando"
+  user_name: "Utente"
+  welcome_light: "Luce di benvenuto"
+  user_recognized: "Riconosciuto"
+  user_active: "Seduto"
+  recognized_user: "Utente riconosciuto"
+  active_user: "Utente attivo"
+  recognition_threshold: "Intensità del segnale riconoscimento utenti"
+  user_ha_device: "Dispositivo HA"
+  profile_clear: "Cancella profilo"
+  user_rssi: "Segnale dispositivo profilo utente {n}"
+  irk_capture: "Acquisisci IRK"
+  user_irk: "IRK"
+  irk_show: "Mostra IRK"
+  user_irk_set: "Inserisci IRK"
+  irk_android: "Acquisisci IRK come tastiera Android"
+  toilet_signal: "Segnale WC"
+  shower_restricted_in: "Senza decalcificazione la doccia si ferma tra"
+  dryer_active: "Asciugatore in funzione"
+  dryer_toggle: "Commuta asciugatore"
+  stop_all: "Ferma doccia e asciugatore"
+  seat_heating_on: "Riscaldamento sedile acceso"
+  preflush: "Prelavaggio"
+  wc_water_heating: "Riscaldamento acqua WC"
+  default_seat_heating_on: "Riscaldamento sedile acceso predefinito"
+  default_preflush: "Prelavaggio predefinito"
+  default_wc_water_heating: "Riscaldamento acqua WC predefinito"
+  descaling_state: "Stato decalcificazione"
+  descaling_time_left: "Tempo residuo decalcificazione"
+  descaling_start: "Avvia decalcificazione"
+  descaling_continue: "Continua decalcificazione"
+  descaling_cancel: "Annulla decalcificazione"
+  shower_unlock: "Sblocca doccia"
+  showers_until_unlock: "Docce fino allo sblocco"
+  descaling_requested: "Decalcificazione richiesta dal"
+  odor_toggle: "Commuta aspirazione odori"
+  odor_run_on_toggle: "Commuta funzionamento residuo aspirazione"
+  last_error: "Ultimo codice di errore"
+  service_state: "Stato pulizia bracci"
+  arm_cleaning_start: "Avvia pulizia bracci"
+  arm_cleaning_next: "Pulizia bracci passo successivo"
+  spray_calibration: "Calibrazione getto"
+  lid_toggle: "Apri o chiudi coperchio"
+  lid_calibration: "Calibra coperchio"
+  lid_angle_start: "Regola angolo di apertura"
+  lid_angle_up: "Angolo di apertura maggiore"
+  lid_angle_down: "Angolo di apertura minore"
+  lid_angle_save: "Salva angolo di apertura"
+  auto_flush: "Scarico automatico"
+  light_sensor_sensitivity: "Sensibilità sensore luce"
+  accessibility_mode: "Modalità accessibilità"
+  registration: "Registrazione"
+  draining: "Svuotamento"
+  drain: "Svuota pompa e tubo"
+  flush: "Scarico"
+  ssm_modules: "Moduli collegati"
+  lid_offset: "Offset coperchio"
+  shower_arm_offset: "Offset braccio doccia"
+  dryer_arm_offset: "Offset braccio asciugatore"
+  shower_arm_adjust_start: "Regola posizione braccio doccia"
+  shower_arm_adjust_up: "Posizione braccio doccia più alta"
+  shower_arm_adjust_down: "Posizione braccio doccia più bassa"
+  shower_arm_adjust_save: "Salva posizione braccio doccia"
+  dryer_arm_adjust_start: "Regola posizione braccio asciugatore"
+  dryer_arm_adjust_up: "Posizione braccio asciugatore più alta"
+  dryer_arm_adjust_down: "Posizione braccio asciugatore più bassa"
+  dryer_arm_adjust_save: "Salva posizione braccio asciugatore"
+  trial_end: "Fine del periodo di prova"
+  trial_remaining: "Periodo di prova residuo"
+  trial_extended_remaining: "Periodo di prova esteso residuo"
+  stop_shower: "Ferma doccia"
+
+options:
+  last_error_text: ["Nessun errore", "Codice errore", "", "Comando principale", "", "Estrazione odori", "Unità doccia", "Coperchio", "Asciugatore", "Acqua calda", "Riscaldamento sedile", "Pannello laterale", "Rilevamento utente", "Sensore di prossimità", "Luce di orientamento", "Interfaccia", "Unità asciugatura", "Scaldacqua"]
+  bridge_health: ["OK", "Degradato", "In ripristino", "Richiede spegnimento e riaccensione"]
+  welcome_light: ["Spento", "Blu", "Turchese", "Magenta", "Arancione", "Giallo", "Bianco caldo", "Bianco"]
+  light_activation: [Spento, Acceso, Automatico, Temporizzato]
+  light_color: [Blu, Turchese, Magenta, Arancione, Giallo, Bianco caldo, Bianco]
+  light_run_on_time: [5 min, 10 min, 20 min, 30 min, 60 min]
+  water_hardness: [Dolce, Media, Dura]
+  descaling_state: ["Inattivo", "Preparazione", "In attesa dell'utente", "Decalcificazione", "Risciacquo"]
+  service_state: ["OK", "Braccio doccia non pulito", "Braccio asciugatore non pulito", "Bracci doccia e asciugatore non puliti"]
+  auto_flush: ["Spento", "Acceso", "Prelavaggio"]
+  registration: ["Non registrato", "Privato", "Pubblico"]
+  light_activation_approach: ["Spento", "Acceso", "All'avvicinamento", "Al buio"]
+  descaling_state_v2: ["Inattivo", "Decalcificazione 2", "In attesa dell'utente 1", "Decalcificazione 1", "In attesa dell'utente 2"]
+  descaling_state_v3: ["Inattivo", "Decalcificazione o risciacquo"]
+
+buttons:
+  shower: Getto
+  spray_minus: "Getto −"
+  spray_plus: "Getto +"
+  arm_back: Astina indietro
+  arm_forward: Astina avanti
+  lady_shower: Getto Lady
+  profile_1: Profilo utente 1
+  profile_2: Profilo utente 2
+  profile_3: Profilo utente 3
+  arrow_right: Freccia destra
+  arrow_left: Freccia sinistra
+  arrow_down: Freccia giù
+  arrow_up: Freccia su
+  oscillation: Movimento oscillante
+  orientation_light: Luce di cortesia
+  ok: OK
+  temperature: Temperatura
+  home: Home
+  maintenance: Manutenzione e cura
+  unknown: Sconosciuto
+
+button_states: [premuto, pressione lunga, rilasciato]
+
+features:
+  orientation_light: "Luce di orientamento"
+  lady_shower: "Getto Lady"
+  oscillation: "Doccia oscillante"
+  water_temperature: "Temperatura dell'acqua regolabile"
+  spray_arm: "Posizione del braccio doccia regolabile"
+  descaling: "Funzione di decalcificazione"
+  user_detection: "Rilevamento utente"
+  seat_heating: "Sedile riscaldato"
+  dryer: "Asciugatore ad aria calda"
+  odor_extraction: "Aspirazione odori"
+  automatic_lid: "Apertura automatica del coperchio"
+  light_sensor: "Sensore di luce"
+
+variants:
+  seat: "sedile"
+  complete_system: "vaso completo"
+  floor_standing: "a pavimento"
+
+texts:
+  nobody: "Nessuno"
+  not_supported: "non ancora supportato"
+  model_unknown: "Modello sconosciuto"

@@ -1,0 +1,37 @@
+# Path-based PR labels (actions/labeler v5 syntax).
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "README.md"
+          - "CHANGELOG.md"
+
+translations:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "components/geberit_aquaclean/lang/**"
+
+component:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "components/geberit_aquaclean/**/*.cpp"
+          - "components/geberit_aquaclean/**/*.h"
+          - "components/geberit_aquaclean/__init__.py"
+
+firmware-build:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "firmware/**"
+          - "packages/**"
+          - "tools/**"
+          - "static/**"
+          - ".github/workflows/build.yml"
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/workflows/validate.yml"
+          - ".github/labeler.yml"
+          - ".clang-format"
+          - ".yamllint"
+          - "ruff.toml"

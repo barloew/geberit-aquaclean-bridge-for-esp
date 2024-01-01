@@ -1,0 +1,7 @@
+# Matches ESPHome's C++ style.
+BasedOnStyle: Google
+ColumnLimit: 120
+DerivePointerAlignment: false
+PointerAlignment: Right
+# Keep the author's include order — reordering can break embedded builds.
+SortIncludes: false

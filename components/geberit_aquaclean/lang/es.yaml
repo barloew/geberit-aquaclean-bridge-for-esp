@@ -1,0 +1,260 @@
+language_name: Español
+
+devices:
+  toilet: "AquaClean Inodoro"
+  session: "Sesión activa"
+  maintenance: "Mantenimiento físico"
+  profile_1: "Perfil de usuario 1"
+  profile_2: "Perfil de usuario 2"
+  profile_3: "Perfil de usuario 3"
+  profile_4: "Perfil de usuario 4"
+  profile_5: "Perfil de usuario 5"
+  profile_6: "Perfil de usuario 6"
+
+names:
+  last_error_text: "Último error"
+  stat_uptime: "Tiempo de funcionamiento del inodoro"
+  stat_run_time: "Tiempo de funcionamiento activo"
+  stat_showers: "Duchas totales"
+  stat_lady_showers: "Duchas lady totales"
+  stat_oscillation: "Duchas con oscilación"
+  stat_lady_oscillation: "Duchas lady con oscilación"
+  stat_dryer: "Secados totales"
+  stat_odor: "Usos de la extracción de olores"
+  stat_seat_heating: "Usos de la calefacción del asiento"
+  stat_lid: "Usos del elevador de tapa"
+  stat_cleaning: "Limpiezas"
+  stat_users: "Visitas al inodoro totales"
+  stat_system_flush: "Enjuagues del sistema"
+  stat_profile: "Usos perfil {n}"
+  stat_last_shower: "Duración de la última ducha"
+  stat_avg_shower: "Duración media de la ducha"
+  stat_last_lady: "Duración de la última ducha lady"
+  stat_avg_lady: "Duración media de la ducha lady"
+  stat_last_sitting: "Duración de la última visita"
+  stat_avg_sitting: "Duración media de la visita"
+  read_statistics: "Leer estadísticas"
+  homekit_qr: "Mostrar código QR de HomeKit"
+  maintenance_mode: "Mantenimiento físico"
+  seated: Usuario detectado
+  shower_active: Ducha activa
+  lady_shower_active: Ducha femenina activa
+  shower_toggle: Iniciar o parar la ducha
+  lady_shower_toggle: Iniciar o parar la ducha femenina
+  spray_intensity: Intensidad del agua
+  spray_arm_position: Posición brazo-ducha
+  lady_spray_intensity: Intensidad del agua femenina
+  lady_spray_arm_position: Posición brazo-ducha femenina
+  water_temperature: Temperatura del agua
+  oscillating_spray: Ducha oscilante
+  default_spray_intensity: "Intensidad del agua predeterminada"
+  default_spray_arm_position: "Posición brazo-ducha predeterminada"
+  default_lady_spray_intensity: "Intensidad del agua femenina predeterminada"
+  default_lady_spray_arm_position: "Posición brazo-ducha femenina predeterminada"
+  default_water_temperature: "Temperatura del agua predeterminada"
+  default_oscillating_spray: "Ducha oscilante predeterminada"
+  orientation_light: Luz de orientación
+  light_activation: Luz de orientación activación
+  light_color: Luz de orientación color
+  light_brightness: Luz de orientación brillo
+  light_run_on_time: Luz de orientación tiempo de apagado
+  light_window_1_start: Luz de orientación franja 1 inicio
+  light_window_1_end: Luz de orientación franja 1 fin
+  light_window_2_start: Luz de orientación franja 2 inicio
+  light_window_2_end: Luz de orientación franja 2 fin
+  days_until_descaling: Próxima descalcificación en
+  water_hardness: Dureza del agua
+  remote_connected: "Mando conectado"
+  remote_passthrough: "Paso del mando al inodoro activo"
+  remote_last_button: "Última tecla del mando"
+  remote_button: "Tecla del mando"
+  remote_firmware: "Firmware del mando"
+  remote_forward: "Pasar el mando al inodoro"
+  remote_pairing: "Emparejar el mando"
+  remote_unpair: "Desemparejar el mando"
+  connected: Inodoro conectado
+  app_connected: "App Geberit Home conectada"
+  reconnects: Reconexiones
+  bridge_health: "Estado del puente"
+  free_heap: "Memoria libre"
+  min_free_heap: "Memoria libre mínima"
+  largest_free_block: "Bloque libre más grande"
+  timeouts: Tiempos de espera
+  connection_uptime: Conectado desde
+  pair_as_remote: "Emparejar con el inodoro"
+  refresh_settings: Actualizar ajustes
+  discovery: Modo exploración
+  raw_status: Estado sin procesar
+  last_response: Última respuesta
+  toilet_advertisement: "Anuncio"
+  procedures_seen: Procedimientos observados
+  scan_settings: Escanear ajustes
+  settings_scan: Escaneo de ajustes
+  device_type: Tipo de dispositivo
+  article_number: Número de artículo
+  serial_number: Número de serie
+  production_date: Fecha de producción
+  commissioning_date: "Puesta en servicio"
+  model: "Modelo"
+  functions: "Funciones encontradas"
+  rediscover: "Volver a detectar funciones"
+  profile_activate: "Activar los ajustes del perfil {n}"
+  profile_store: "Guardar los ajustes en el perfil {n}"
+  shower_count: "Duchas de hoy"
+  seat_heating: "Calefacción del asiento"
+  dryer_temperature: "Temperatura del secador"
+  dryer_intensity: "Intensidad del secador"
+  dryer: "Secador de aire caliente"
+  odor_extraction: "Extracción de olores"
+  demo_mode: "Modo demostración"
+  lid_auto_open: "Abrir la tapa automáticamente"
+  lid_auto_close: "Cerrar la tapa automáticamente"
+  lid_sensor_range: "Alcance del sensor de la tapa"
+  odor_extraction_run_on: "Funcionamiento posterior de la extracción de olores"
+  firmware: "Firmware"
+  default_seat_heating: "Calefacción del asiento predeterminada"
+  default_dryer_temperature: "Temperatura del secador predeterminada"
+  default_dryer_intensity: "Intensidad del secador predeterminada"
+  default_dryer: "Secador de aire caliente predeterminado"
+  default_odor_extraction: "Extracción de olores predeterminada"
+  last_descaling: "Última descalcificación"
+  descaling_count: "Número de descalcificaciones"
+  days_until_filter_change: "Días hasta el cambio de filtro"
+  filter_reset: "Filtro cambiado"
+  toilet_address: "Dirección"
+  search_toilet: "Buscar un inodoro cercano"
+  remote_address: "Dirección del mando"
+  user_name: "Usuario"
+  welcome_light: "Luz de bienvenida"
+  user_recognized: "Reconocido"
+  user_active: "Sentado"
+  recognized_user: "Usuario reconocido"
+  active_user: "Usuario activo"
+  recognition_threshold: "Intensidad de señal del reconocimiento de usuarios"
+  user_ha_device: "Dispositivo HA"
+  profile_clear: "Borrar perfil"
+  user_rssi: "Señal del dispositivo perfil de usuario {n}"
+  irk_capture: "Capturar IRK"
+  user_irk: "IRK"
+  irk_show: "Mostrar IRK"
+  user_irk_set: "Introducir IRK"
+  irk_android: "Capturar IRK como teclado Android"
+  toilet_signal: "Señal del inodoro"
+  shower_restricted_in: "Sin descalcificación la ducha se detiene en"
+  dryer_active: "Secador en marcha"
+  dryer_toggle: "Alternar secador"
+  stop_all: "Detener ducha y secador"
+  seat_heating_on: "Calefacción del asiento activada"
+  preflush: "Prelavado"
+  wc_water_heating: "Calentamiento del agua del inodoro"
+  default_seat_heating_on: "Calefacción del asiento activada predeterminada"
+  default_preflush: "Prelavado predeterminado"
+  default_wc_water_heating: "Calentamiento del agua del inodoro predeterminado"
+  descaling_state: "Estado de la descalcificación"
+  descaling_time_left: "Tiempo restante de descalcificación"
+  descaling_start: "Iniciar descalcificación"
+  descaling_continue: "Continuar descalcificación"
+  descaling_cancel: "Cancelar descalcificación"
+  shower_unlock: "Desbloquear ducha"
+  showers_until_unlock: "Duchas hasta el desbloqueo"
+  descaling_requested: "Descalcificación solicitada desde"
+  odor_toggle: "Alternar extracción de olores"
+  odor_run_on_toggle: "Alternar funcionamiento posterior"
+  last_error: "Último código de error"
+  service_state: "Estado de limpieza de los brazos"
+  arm_cleaning_start: "Iniciar limpieza de los brazos"
+  arm_cleaning_next: "Limpieza de los brazos siguiente paso"
+  spray_calibration: "Calibración del chorro"
+  lid_toggle: "Abrir o cerrar la tapa"
+  lid_calibration: "Calibrar la tapa"
+  lid_angle_start: "Ajustar ángulo de apertura"
+  lid_angle_up: "Ángulo de apertura mayor"
+  lid_angle_down: "Ángulo de apertura menor"
+  lid_angle_save: "Guardar ángulo de apertura"
+  auto_flush: "Descarga automática"
+  light_sensor_sensitivity: "Sensibilidad del sensor de luz"
+  accessibility_mode: "Modo de accesibilidad"
+  registration: "Registro"
+  draining: "Vaciado"
+  drain: "Vaciar bomba y tubería"
+  flush: "Descargar"
+  ssm_modules: "Módulos conectados"
+  lid_offset: "Desfase de la tapa"
+  shower_arm_offset: "Desfase del brazo de ducha"
+  dryer_arm_offset: "Desfase del brazo del secador"
+  shower_arm_adjust_start: "Ajustar posición del brazo de ducha"
+  shower_arm_adjust_up: "Posición del brazo de ducha más alta"
+  shower_arm_adjust_down: "Posición del brazo de ducha más baja"
+  shower_arm_adjust_save: "Guardar posición del brazo de ducha"
+  dryer_arm_adjust_start: "Ajustar posición del brazo del secador"
+  dryer_arm_adjust_up: "Posición del brazo del secador más alta"
+  dryer_arm_adjust_down: "Posición del brazo del secador más baja"
+  dryer_arm_adjust_save: "Guardar posición del brazo del secador"
+  trial_end: "Fin del periodo de prueba"
+  trial_remaining: "Periodo de prueba restante"
+  trial_extended_remaining: "Periodo de prueba ampliado restante"
+  stop_shower: "Detener ducha"
+
+options:
+  last_error_text: ["Sin error", "Código de error", "", "Control principal", "", "Extracción de olores", "Unidad de ducha", "Tapa", "Secador", "Agua caliente", "Calefacción del asiento", "Panel lateral", "Detección de usuario", "Sensor de proximidad", "Luz de orientación", "Interfaz", "Unidad de secado", "Calentador de agua"]
+  bridge_health: ["OK", "Degradado", "Recuperándose", "Requiere reinicio eléctrico"]
+  welcome_light: ["Apagado", "Azul", "Turquesa", "Magenta", "Naranja", "Amarillo", "Blanco cálido", "Blanco"]
+  light_activation: [Desconectado, Conectado, Automática, Programado]
+  light_color: [Azul, Turquesa, Magenta, Naranja, Amarillo, Blanco cálido, Blanco]
+  light_run_on_time: [5 min, 10 min, 20 min, 30 min, 60 min]
+  water_hardness: [Blanda, Media, Dura]
+  descaling_state: ["Inactivo", "Preparando", "Esperando al usuario", "Descalcificando", "Enjuagando"]
+  service_state: ["OK", "Brazo de ducha sin limpiar", "Brazo del secador sin limpiar", "Brazos de ducha y secador sin limpiar"]
+  auto_flush: ["Apagado", "Encendido", "Prelavado"]
+  registration: ["No registrado", "Privado", "Público"]
+  light_activation_approach: ["Apagado", "Encendido", "Al acercarse", "En la oscuridad"]
+  descaling_state_v2: ["Inactivo", "Descalcificando 2", "Esperando al usuario 1", "Descalcificando 1", "Esperando al usuario 2"]
+  descaling_state_v3: ["Inactivo", "Descalcificando o enjuagando"]
+
+buttons:
+  shower: Ducha
+  spray_minus: "Chorro −"
+  spray_plus: "Chorro +"
+  arm_back: Brazo-ducha atrás
+  arm_forward: Brazo-ducha adelante
+  lady_shower: Ducha femenina
+  profile_1: Perfil de usuario 1
+  profile_2: Perfil de usuario 2
+  profile_3: Perfil de usuario 3
+  arrow_right: Flecha derecha
+  arrow_left: Flecha izquierda
+  arrow_down: Flecha abajo
+  arrow_up: Flecha arriba
+  oscillation: Movimiento oscilante
+  orientation_light: Luz de orientación
+  ok: OK
+  temperature: Temperatura
+  home: Inicio
+  maintenance: Mantenimiento y cuidado
+  unknown: Desconocida
+
+button_states: [pulsada, pulsación larga, soltada]
+
+features:
+  orientation_light: "Luz de orientación"
+  lady_shower: "Ducha femenina"
+  oscillation: "Ducha oscilante"
+  water_temperature: "Temperatura del agua regulable"
+  spray_arm: "Posición del brazo de ducha regulable"
+  descaling: "Función de descalcificación"
+  user_detection: "Detección de usuario"
+  seat_heating: "Asiento calefactado"
+  dryer: "Secador de aire caliente"
+  odor_extraction: "Extracción de olores"
+  automatic_lid: "Apertura automática de la tapa"
+  light_sensor: "Sensor de luz"
+
+variants:
+  seat: "asiento"
+  complete_system: "inodoro completo"
+  floor_standing: "de pie"
+
+texts:
+  nobody: "Nadie"
+  not_supported: "aún no compatible"
+  model_unknown: "Modelo desconocido"

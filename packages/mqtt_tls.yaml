@@ -1,0 +1,17 @@
+# Encrypted MQTT (TLS, on top of packages/mqtt.yaml). The broker's certificate is checked against the CA
+# certificate you give. Set in your own YAML:
+#   substitutions:
+#     mqtt_port: "8883"
+#     mqtt_ca: !secret mqtt_ca          # the CA certificate (PEM, "-----BEGIN CERTIFICATE----- ...")
+# and in secrets.yaml:
+#   mqtt_ca: |
+#     -----BEGIN CERTIFICATE-----
+#     ...
+#     -----END CERTIFICATE-----
+# A self-signed broker certificate whose name does not match the broker address: add to your own YAML
+#   mqtt:
+#     skip_cert_cn_check: true
+# TLS costs about 40 KB RAM while connected; the ESP32-S3 has room for it.
+
+mqtt:
+  certificate_authority: ${mqtt_ca}

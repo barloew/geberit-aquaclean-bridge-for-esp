@@ -1,0 +1,85 @@
+title: "[Field test] "
+labels: ["field-test"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Please write in English** — the working language of this project.
+
+        Thanks for field-testing! Follow the standard plan and report per step so results are comparable:
+        - Series 248 (ESPHome component): [docs/TEST_PLAN.md](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/blob/main/docs/TEST_PLAN.md)
+        - Series 250 (Alba): [TEST_PLAN.md on series-250-bridge](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/blob/series-250-bridge/TEST_PLAN.md)
+
+        This is a discussion — feel free to add back-and-forth, questions and observations around the results.
+  - type: dropdown
+    id: family
+    attributes:
+      label: Device family
+      options:
+        - Series 248 (ESPHome component — main)
+        - Series 250 (Alba — experimental, series-250-bridge)
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Your model + article number
+      description: Free text — name your exact model.
+      placeholder: AquaClean Sela, 146.22x.xx.1
+    validations:
+      required: true
+  - type: dropdown
+    id: route
+    attributes:
+      label: Connection route tested
+      options:
+        - Native API (ESPHome)
+        - MQTT
+        - Both
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: Install method
+      options:
+        - ESPHome (own YAML build)
+        - Web installer (prebuilt firmware)
+        - Home Assistant ESPHome add-on
+        - Other (describe below)
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: Version tested
+      description: Release tag or firmware date.
+    validations:
+      required: true
+  - type: input
+    id: board
+    attributes:
+      label: ESP board
+      placeholder: M5Stack AtomS3 Lite / XIAO ESP32S3 / LilyGO T-Dongle-S3 / ...
+    validations:
+      required: true
+  - type: textarea
+    id: results
+    attributes:
+      label: Results per test-plan step
+      description: One line per step — step name → PASS / FAIL / N-A, with a note on anything unexpected.
+      value: |
+        - Pairing / discovery:
+        - Core functions:
+        - Profiles / user recognition:
+        - HomeKit (if used):
+        - Statistics / stability over time:
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log (DEBUG level)
+      render: shell
+    validations:
+      required: false

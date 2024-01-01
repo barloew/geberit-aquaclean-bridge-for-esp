@@ -1,0 +1,13 @@
+__pycache__/
+.esphome/
+secrets.yaml
+
+# Private reverse-engineering material — never commit (see CLAUDE.md)
+*_RE.zip
+Geberit_AquaClean_RE*
+Protocolversies_v1_v2.md
+Foutcodes.md
+errorcodes_*.csv
+/re/
+/private/
+*.pcap
