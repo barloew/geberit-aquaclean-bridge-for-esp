@@ -34,6 +34,13 @@ external_components:
       path: ../components
     components: [geberit_aquaclean]
 
+# Apple Home (HomeKit) is compiled into every web-installer image but stays off until the "Apple Home"
+# switch is turned on (bridge web page or the controller). Turning it on starts HomeKit; off restarts without it.
+geberit_aquaclean:
+  homekit:
+    enabled: true
+    runtime_toggle: true
+
 logger:
   logs:
     ble_device_base: INFO
