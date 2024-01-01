@@ -22,7 +22,7 @@
   <a href="#apple-home-homekit-optional"><img src="images/badges/apple-home.svg" alt="Apple Home, optional, also stand-alone"></a>
 </p>
 
-**[Installation](#installation)** · **[Hardware](#hardware)** · **[Users](#users)** · **[Entities](#entities)** · **[Apple Home](#apple-home-homekit-optional)** · **[Languages](#languages)** · **[Disclaimer](#trademark--legal-disclaimer)**
+**[Installation](#installation)** · **[AquaClean Models](#models-and-feature-discovery)** · **[Hardware](#hardware)** · **[Users](#users)** · **[Entities](#entities)** · **[Apple Home](#apple-home-homekit-optional)** · **[29 Languages](#languages)** · **[Disclaimer](#trademark--legal-disclaimer)**
 
 **Geberit AquaClean Bridge for ESP** makes your **Geberit AquaClean shower toilet** personal and brings it into your smart home. It recognizes who is approaching and loads their personal profile automatically. No need to press a user key on the remote.
 
