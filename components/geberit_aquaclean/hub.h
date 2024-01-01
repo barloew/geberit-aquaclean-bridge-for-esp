@@ -85,7 +85,7 @@ static constexpr uint8_t USER_VALUE_IDS = USER_VALUES + USER_VALUES_X;
 // variant cannot live on the toilet. These two ids exist only on the bridge (separate store) and are applied
 // to the active session just before the Lady shower starts (see apply_lady_split_).
 static constexpr uint8_t USER_VALUES_L = 2;
-static constexpr uint8_t LOCAL_LADY_OSCILLATION = USER_VALUE_IDS;          // 0x0e, bridge-only
+static constexpr uint8_t LOCAL_LADY_OSCILLATION = USER_VALUE_IDS;            // 0x0e, bridge-only
 static constexpr uint8_t LOCAL_LADY_WATER_TEMPERATURE = USER_VALUE_IDS + 1;  // 0x0f, bridge-only
 static constexpr uint8_t SESSION_OSCILLATION = 0x01;
 static constexpr uint8_t SESSION_WATER_TEMPERATURE = 0x06;
