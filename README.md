@@ -80,7 +80,7 @@ Have a different model? See [Supporting other models](#supporting-other-models).
 
 The bridge must be close to the toilet. The spot needs:
 
-- **Bluetooth signal:** around -60 dBm is ideal, -80 dBm is the minimum.
+- **Bluetooth signal:** around -60 dBm is ideal, -80 dBm is the minimum. For reference, the validated AtomS3 Lite install reads about -65 to -75 dBm on the **Toilet signal** diagnostic with **Reconnections** staying at 0; a climbing **Reconnections** count means the spot is marginal.
 - **Power and network:** USB power and Wi-Fi (2.4 GHz).
 
 To test a spot before buying anything, use a Bluetooth scanner app on your phone (such as nRF Connect) and look for the toilet's signal strength. A phone antenna differs from an ESP32, so treat it as an estimate. Once installed, the toilet's **Toilet signal** diagnostic shows the real value.
