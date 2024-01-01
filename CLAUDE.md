@@ -34,9 +34,14 @@ Same rules as `main` (see that branch's `CLAUDE.md`), plus this branch's specifi
 
 1. **Never commit the credential/PSK value or the detailed RE prose spec** — the
    `Geberit_AquaClean_RE.zip` family, `Protocolversies_v1_v2.md`, `Foutcodes.md`, `errorcodes_*.csv`,
-   captures (`*.pcap`) — to this repo or any published artifact (tarball, Pages install image, issue,
+   captures (`*.pcap`) — to this repo or any published artifact (tarball, issue,
    discussion, PR, review). The credential lives **only** in the git-ignored `aquaclean_bridge_id.c`
    (copy it from `aquaclean_bridge_id.example.c`); `.gitignore` blocks the rest — don't defeat it.
+   The one deliberate exception is the credential compiled into the distributed Alba firmware: the web
+   installer publishes a `.bin` (built in CI from the `ALBA_BRIDGE_ID_C` secret) that necessarily
+   contains it, because the firmware needs it to authenticate. The **value** is still never published as
+   text — not in source (beyond the git-ignored `aquaclean_bridge_id.c`), docs, logs, issues, PRs, review
+   or chat.
    The **firmware source is public** on this experimental branch: it *is* the implementation, so
    `arendi_*` (framing/handshake) and the generated `alba_dp_table.h` (DpIds/enums) are part of the
    published code. `alba_dp_table.h` is **generated** from the private material — regenerate it, never

@@ -20,8 +20,11 @@ independently from `main`.
   build (LilyGO T-Dongle-S3, ESP32-S3). Nothing here is "released"; field-test feedback drives change.
 - **What stays private.** The **credential value** and the **detailed RE prose spec** —
   `Protocolversies_v1_v2.md`, `Foutcodes.md`, `errorcodes_*.csv`, captures (`*.pcap`) and the
-  `Geberit_AquaClean_RE.zip` package — are **never** committed or published; `.gitignore` blocks them, and the
-  credential lives only in the git-ignored `aquaclean_bridge_id.c`. The **firmware source itself is public on
+  `Geberit_AquaClean_RE.zip` package — are **never** committed or published as text; `.gitignore` blocks them,
+  and the credential's value lives only in the git-ignored `aquaclean_bridge_id.c`. The one exception: the
+  credential is compiled into the distributed Alba firmware binary (the web installer's `.bin`, built in CI
+  from the `ALBA_BRIDGE_ID_C` secret) — it ships there by necessity, but never as text in source, docs, logs
+  or review. The **firmware source itself is public on
   this experimental branch**: it *is* the implementation, so `arendi_*` (framing/handshake) and the generated
   `alba_dp_table.h` (DpIds/enums) are part of the published code. New captured-protocol findings go into the
   private spec and through `SECURITY.md`, never a public issue/PR.

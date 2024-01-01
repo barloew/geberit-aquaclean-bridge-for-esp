@@ -32,6 +32,12 @@ reviews:
         ESP-IDF HTTP server + WiFi SoftAP (test convenience). Flag unbounded request bodies, buffer overflows in
         the handlers, JSON built by hand without escaping, and anything that could expose secrets or write
         unvalidated input to NVS.
+    - path: ".github/workflows/release-alba.yml"
+      instructions: >-
+        This workflow injects the shared client credential from the ALBA_BRIDGE_ID_C secret into the
+        git-ignored aquaclean_bridge_id.c at build time and ships it compiled into the published firmware
+        binary. That is the intended design (option A), not a secret leak — do not flag the secret-to-file
+        step as credential exposure. Still flag any step that would print the value or write it to a log.
     - path: "**/*.md"
       instructions: >-
         Do NOT reproduce, expand on, or request documentation of the Series 250 / "Arendi" protocol internals
