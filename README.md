@@ -18,7 +18,6 @@
   <a href="#connecting-over-mqtt"><img src="images/badges/openhab-mqtt.svg" alt="openHAB over MQTT"></a>
   <a href="#connecting-over-mqtt"><img src="images/badges/node-red-mqtt.svg" alt="Node-RED over MQTT"></a>
   <a href="#connecting-over-mqtt"><img src="images/badges/domoticz-mqtt.svg" alt="Domoticz over MQTT"></a>
-  <br>
   <a href="#apple-home-homekit-optional"><img src="images/badges/apple-home.svg" alt="Apple Home, optional, also stand-alone"></a>
 </p>
 
