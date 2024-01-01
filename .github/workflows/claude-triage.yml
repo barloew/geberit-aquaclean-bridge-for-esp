@@ -48,6 +48,11 @@ jobs:
             6. If the issue is really field-test feedback (test results against the plan), kindly point the
                author to the "Field testing" Discussions category, which is where test results belong, and
                add the `field-test` label.
+            7. Apply the home-automation platform label from the "Home automation system" field:
+               Home Assistant -> `home-assistant`, Homey -> `homey`, ioBroker -> `iobroker`,
+               openHAB -> `openhab`, Node-RED -> `node-red`, Domoticz -> `domoticz`,
+               Apple Home (HomeKit) -> `homekit`. For "Other", "None / stand-alone" or if absent, add no
+               platform label.
             Keep any comment to a few sentences. Do not close the issue. Do not change the title or body.
           claude_args: "--allowed-tools Bash(gh:*)"
         env:

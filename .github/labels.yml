@@ -26,6 +26,28 @@
 - name: mqtt
   color: c2e0c6
   description: Route — MQTT
+# Consumer platform (set by the triage bot from the issue form)
+- name: home-assistant
+  color: d4c5f9
+  description: Platform — Home Assistant
+- name: homey
+  color: d4c5f9
+  description: Platform — Homey
+- name: iobroker
+  color: d4c5f9
+  description: Platform — ioBroker
+- name: openhab
+  color: d4c5f9
+  description: Platform — openHAB
+- name: node-red
+  color: d4c5f9
+  description: Platform — Node-RED
+- name: domoticz
+  color: d4c5f9
+  description: Platform — Domoticz
+- name: homekit
+  color: d4c5f9
+  description: Platform — Apple Home / HomeKit
 # PR path labels (actions/labeler)
 - name: documentation
   color: 0075ca

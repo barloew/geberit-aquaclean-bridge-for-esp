@@ -24,13 +24,30 @@ body:
   - type: dropdown
     id: route
     attributes:
-      label: Connection route to Home Assistant
+      label: Connection route
       options:
         - Native API (ESPHome)
         - MQTT
         - Not sure
     validations:
       required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Home automation system
+      description: Which system you use the bridge with, if any. Used to label the issue.
+      options:
+        - Home Assistant
+        - Homey
+        - ioBroker
+        - openHAB
+        - Node-RED
+        - Domoticz
+        - Apple Home (HomeKit)
+        - Other
+        - None / stand-alone
+    validations:
+      required: false
   - type: dropdown
     id: install
     attributes:
@@ -66,17 +83,9 @@ body:
         - M5Stack AtomS3 Lite
         - M5Stack AtomS3R
         - Seeed XIAO ESP32S3
+        - LilyGo T-Dongle-S3
         - Other ESP32-S3
         - Other ESP32
-    validations:
-      required: true
-  - type: dropdown
-    id: route
-    attributes:
-      label: How did you install the firmware?
-      options:
-        - ESPHome YAML (own build / Home Assistant add-on)
-        - Web installer (MQTT route)
     validations:
       required: true
   - type: input
