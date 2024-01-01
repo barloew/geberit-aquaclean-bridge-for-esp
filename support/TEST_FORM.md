@@ -55,6 +55,6 @@ _No app and no remote control, so the bridge cannot reach it. Listed for complet
 | Key | Route | Matrix | Result | Device fw | Bridge | Log / notes |
 |---|---|---|---|---|---|---|
 | `route/native_api` | ESPHome native API route | `validated` |  |  |  |  |
-| `route/mqtt` | MQTT route | `supported` |  |  |  |  |
+| `route/mqtt` | MQTT route | `validated` |  |  |  |  |
 | `route/homekit` | Apple HomeKit (optional, can run stand-alone) | `validated` |  |  |  |  |
 

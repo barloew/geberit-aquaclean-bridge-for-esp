@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        board: [atoms3-lite, atoms3r, xiao-esp32s3]
+        board: [atoms3-lite, atoms3r, xiao-esp32s3, lilygo-tdongle-s3]
         language: [en, nl, de, fr, it, es, pl, cs, hu, da, sv, nb, fi, pt, ar, tr, et, hr, lv, lt, ro, ru, sk, sl, sr, uk, zh, ko, he]
     steps:
       - uses: actions/checkout@v4

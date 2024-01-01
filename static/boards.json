@@ -10,5 +10,9 @@
   {
     "id": "xiao-esp32s3",
     "name": "Seeed XIAO ESP32S3"
+  },
+  {
+    "id": "lilygo-tdongle-s3",
+    "name": "LilyGo T-Dongle-S3"
   }
 ]

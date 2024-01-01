@@ -1,5 +1,14 @@
 # Changelog
 
+## Planned
+
+- **MQTT device split.** Over the MQTT route all entities currently appear under one Home Assistant device;
+the native API route already splits them into separate devices (toilet, active session, maintenance, user
+profiles 1–6). ESPHome's opt-in MQTT sub-device support (`sub_device_topics`, PR #20353 — approved, not yet
+merged/released) will let MQTT do the same. When it ships, set `sub_device_topics: true` in
+`packages/mqtt.yaml` and rebuild the web-installer firmware so MQTT installs get the device split too, with
+no ESPHome needed on the user's side.
+
 ## v1.36.0 (not released yet)
 
 - **All images in one top-level folder, `images/`** (see `images/README.md`): the overview image
@@ -24,6 +33,7 @@ broker no longer restarts the ESP. The password is never shown or published agai
 - `tools/gen_firmware.py` generates the firmware files, `mqtt_setup.yaml` (50 time zones from tzdata), the
 board list of the install page and the build matrix (board x language).
 - `provisioning.yaml` no longer contains `dashboard_import` (that needs the native API).
+- **LilyGo T-Dongle-S3 board** (`packages/board-lilygo-tdongle-s3.yaml`): ESP32-S3, 16 MB flash, no PSRAM; APA102 RGB status LED (GPIO40 data / GPIO39 clock) and BOOT button (GPIO0). Hardware-validated on a Sela over the MQTT route (model, firmware RS08 TS57 and settings read out). No PSRAM; the T-Dongle-S3-Plus (8 MB PSRAM) needs a `psram:` block. Offered by the web installer and ESPHome YAML. The web-installer image makes no flash-vendor assumption; self-builders can uncomment `advanced: flash_chip: winbond` in the board file to free IRAM (the tested unit's flash is Winbond).
 - **Enter IRK** per profile (password field, in Home Assistant and on the web page) and the action
 `aquaclean_set_irk` (native API): store a known IRK as 32 hex digits (as Show IRK and Private BLE Device show
 it) or base64 (iOS keychain); empty removes it. The key is never shown or published again.

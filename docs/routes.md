@@ -12,7 +12,13 @@ suits you.
   connect to something other than Home Assistant, or you prefer a broker-based setup. The broker and time
   zone are entered on the device's own web page.
 
-Both routes expose the same functions. Choose one; you can switch later.
+Both routes expose the same functions and entities. Choose one; you can switch later.
+
+They differ only in how Home Assistant groups the entities into devices: the native API route splits them
+into separate devices (toilet, active session, maintenance, user profiles 1–6), while the MQTT route
+currently shows all entities under one device. A per-sub-device split over MQTT is **planned** — it will be
+turned on once ESPHome releases its opt-in MQTT sub-device support (`sub_device_topics`, PR #20353; approved,
+not yet merged). Until then, pick the native API route if the separate-devices layout matters to you.
 
 ## Install method (how the firmware gets onto the ESP)
 

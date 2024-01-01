@@ -14,6 +14,10 @@ esp32:
     # More free RAM (no PSRAM on this board): on the ESP32-S3 code in IRAM comes out of the same RAM as the heap.
     # Wi-Fi code from flash instead of IRAM (-18 KB IRAM, measured) and 6 instead of 10 static receive buffers
     # (-6 KB); slightly lower Wi-Fi throughput, which this device does not need.
+    # Optional IRAM saving for a self-build: this board's flash is GigaDevice (log: "Set flash_chip: gd ...
+    # to save IRAM"). Uncomment to pin it and drop the other vendors' flash drivers from IRAM:
+    # advanced:
+    #   flash_chip: gd
     sdkconfig_options:
       CONFIG_ESP_WIFI_IRAM_OPT: n
       CONFIG_ESP_WIFI_RX_IRAM_OPT: n

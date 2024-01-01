@@ -4,7 +4,7 @@
 
 Branch **main**
 
-> Tested on AquaClean Sela (device firmware RS08 TS57, bridge v1.36.0) · Mera Comfort, Mera Classic, Tuma Comfort, Tuma Classic, Cama supported via feature discovery · 29 languages · routes: native_api, homekit validated; mqtt supported · Independent open-source project, not affiliated with Geberit AG
+> Tested on AquaClean Sela (device firmware RS08 TS57, bridge v1.36.0) · Mera Comfort, Mera Classic, Tuma Comfort, Tuma Classic, Cama supported via feature discovery · 29 languages · routes: native_api, mqtt, homekit validated · Independent open-source project, not affiliated with Geberit AG
 
 ## Models
 
@@ -47,7 +47,7 @@ Branch **main**
 | Route | Status |
 |---|---|
 | ESPHome native API route | `validated` |
-| MQTT route | `supported` |
+| MQTT route | `validated` |
 | Apple HomeKit (optional, can run stand-alone) | `validated` |
 
 ## Boards
@@ -58,6 +58,7 @@ Branch **main**
 | m5stack-atoms3r | `builds` | builds, not yet tested on hardware |
 | xiao-esp32s3 | `builds` | builds (also Plus), not yet tested on hardware |
 | esp32-s3-generic | `builds` | any ESP32-S3 with >=8 MB flash; builds, not yet tested on hardware |
+| lilygo-t-dongle-s3 | `validated` | ESP32-S3, 16 MB flash, no PSRAM. Hardware-validated on a Sela. The T-Dongle-S3-Plus (8 MB PSRAM) needs a psram: block. |
 
 ## AquaClean device firmware seen
 

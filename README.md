@@ -92,17 +92,18 @@ The bridge needs an ESP32-S3 with **at least 8 MB flash**, dedicated to the brid
 
 | Board | Package | Status |
 |---|---|---|
-| M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, validated |
+| M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, validated; longest BLE range of these boards |
 | M5Stack AtomS3R | `board-atoms3r.yaml` | Builds, not yet tested on hardware |
 | Seeed XIAO ESP32S3 (also Plus) | `board-xiao-esp32s3.yaml` | Builds, not yet tested on hardware. Connect the included U.FL antenna. |
+| LilyGo T-Dongle-S3 | `board-lilygo-tdongle-s3.yaml` | Tested on hardware (Sela). No PSRAM; the Plus needs a `psram:` block. |
 
 Other ESP32-S3 boards with at least 8 MB flash build too, but haven't been tested on hardware.
 
-The web installer has firmware for all three. In ESPHome YAML, choose the board with the `board:` line, for example `.../packages/board-atoms3r.yaml@v1.36.0`. See [Hardware](#hardware) for status indicators and buttons per board.
+The web installer has firmware for all four boards. In ESPHome YAML, choose the board with the `board:` line, for example `.../packages/board-atoms3r.yaml@v1.36.0`. See [Hardware](#hardware) for status indicators and buttons per board.
 
 ### Step 4: Choose your route
 
-Both routes give the same devices and entities. Pick one; never both.
+Both routes expose the same entities. Pick one; never both. They differ in how Home Assistant groups those entities: the native API route splits them into separate devices (toilet, active session, maintenance, user profiles), while the MQTT route currently shows them all under one device. Splitting them over MQTT is **planned** — it will be enabled once ESPHome ships its opt-in sub-device support.
 
 | | Native API | MQTT |
 |---|---|---|
@@ -110,6 +111,7 @@ Both routes give the same devices and entities. Pick one; never both.
 | Install | ESPHome YAML | Web installer, no ESPHome needed (or ESPHome YAML) |
 | Encryption | Noise (API key) | TLS, only when built with ESPHome YAML |
 | Web interface on the ESP | No | Yes |
+| Home Assistant device split | Separate devices per sub-device | One device for now (per-sub-device split planned) |
 | Apple Home (HomeKit) | Optional, ESPHome YAML | Optional, ESPHome YAML only |
 
 See [Two routes: ESPHome or MQTT](#two-routes-esphome-or-mqtt) for all differences.
@@ -172,13 +174,14 @@ Then add the accessory in the Home app with the setup code or QR code. The Home 
 
 ## Hardware
 
-The bridge needs a **dedicated ESP32-S3 with at least 8 MB flash**: one bridge per toilet, and no other Bluetooth components on the same board. The web installer has firmware for every board below; in ESPHome YAML, pick your board with the `board:` line, for example `.../packages/board-atoms3r.yaml@v1.36.0`. On every board, holding the button for 3 s pairs the ESP with the toilet as remote control.
+The bridge needs a **dedicated ESP32-S3 with at least 8 MB flash**: one bridge per toilet, and no other Bluetooth components on the same board. The web installer has firmware for every board below. In ESPHome YAML, pick your board with the `board:` line, for example `.../packages/board-atoms3r.yaml@v1.36.0`. On every board, holding the button for 3 s pairs the ESP with the toilet as remote control (then power-cycle the toilet so it accepts the new remote).
 
 | Board | Package | Status |
 |---|---|---|
-| M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, validated |
+| M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, validated; longest BLE range of these boards |
 | M5Stack AtomS3R | `board-atoms3r.yaml` | Builds, not yet tested on hardware |
 | Seeed XIAO ESP32S3 (also Plus) | `board-xiao-esp32s3.yaml` | Builds, not yet tested on hardware |
+| LilyGo T-Dongle-S3 | `board-lilygo-tdongle-s3.yaml` | Tested on hardware (Sela). No PSRAM; the Plus needs a `psram:` block. |
 
 Other ESP32-S3 boards with at least 8 MB flash build too, but haven't been tested on hardware.
 
@@ -217,7 +220,7 @@ A single orange LED shows the status as a pattern. The button is BOOT (GPIO0). T
 
 ## Two routes: ESPHome or MQTT
 
-The MQTT route is installed with the web installer or with ESPHome YAML, the native API route with ESPHome YAML. In YAML, the route is a single key: the substitution `route: api` or `route: mqtt` in [`examples/atoms3-lite.yaml`](examples/atoms3-lite.yaml). Only that route is built; both give the same devices and entities. For controllers (Home Assistant, Homey, …) and install methods, see [docs/routes.md](docs/routes.md).
+The MQTT route is installed with the web installer or with ESPHome YAML, the native API route with ESPHome YAML. In YAML, the route is a single key: the substitution `route: api` or `route: mqtt` in [`examples/atoms3-lite.yaml`](examples/atoms3-lite.yaml). Only that route is built; both expose the same entities. They differ in Home Assistant device grouping: the native API route splits the entities into separate devices, while the MQTT route currently groups them under one device. Per-sub-device MQTT discovery is planned, pending ESPHome's opt-in sub-device support. For controllers (Home Assistant, Homey, …) and install methods, see [docs/routes.md](docs/routes.md).
 
 | | Route 1: ESPHome | Route 2: MQTT |
 |---|---|---|
