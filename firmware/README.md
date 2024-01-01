@@ -28,7 +28,9 @@ remote control  <--BLE-->  [ ESP32 peripheral | relay | ESP32 central ]  <--BLE-
 - `main/arendi_common.[ch]` — framing and crypto.
 - `main/arendi_client.[ch]` — central role.
 - `main/arendi_server.[ch]` — peripheral role (presents the toilet to the remote).
-- `main/alba_cmd.[ch]` + `main/alba_dp_table.h` — command/address codec and the datapoint table.
+- `main/alba_cmd.[ch]` — command/address codec. It uses the datapoint table `main/alba_dp_table.h`,
+  which is generated from the private RE data and is **not** committed: copy `alba_dp_table.example.h`
+  to it for a local compile-only build, or let a release build inject the real table from a secret.
 - `main/web_portal.[ch]` — built-in WiFi SoftAP + web page (device picker, live log, manual address box,
   WiFi-off button) and the scanned-device table.
 - `main/main.c` — NimBLE glue, address clone, MTU chunking, the relay, and the boot self-test.

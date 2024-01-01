@@ -29,6 +29,16 @@ jobs:
           # Write the gitignored source file verbatim; the value is masked in logs and never echoed.
           printf '%s' "$ALBA_BRIDGE_ID_C" > firmware/main/aquaclean_bridge_id.c
 
+      - name: Inject the generated datapoint table
+        env:
+          ALBA_DP_TABLE_H: ${{ secrets.ALBA_DP_TABLE_H }}
+        run: |
+          if [ -z "$ALBA_DP_TABLE_H" ]; then
+            echo "::error::secret ALBA_DP_TABLE_H is not set"; exit 1
+          fi
+          # Write the gitignored generated header verbatim; the value is masked in logs and never echoed.
+          printf '%s' "$ALBA_DP_TABLE_H" > firmware/main/alba_dp_table.h
+
       - name: Build and merge to a single image
         uses: espressif/esp-idf-ci-action@v1
         with:

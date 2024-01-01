@@ -32,6 +32,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - name: Provide stubs for the gitignored generated sources
+        run: |
+          # Compile-only check: the real credential and datapoint table are private
+          # and injected from secrets at release time. Use the safe example stubs here.
+          cp firmware/main/aquaclean_bridge_id.example.c firmware/main/aquaclean_bridge_id.c
+          cp firmware/main/alba_dp_table.example.h firmware/main/alba_dp_table.h
       - uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: v5.5

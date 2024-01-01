@@ -17,3 +17,8 @@ errorcodes_*.csv
 # Local secret: the real shared client credential. Copy aquaclean_bridge_id.example.c to this file
 # and fill in the 16 bytes before building; never commit it.
 firmware/main/aquaclean_bridge_id.c
+
+# Generated datapoint table (from the private RE data — see CLAUDE.md and MAINTAINERS.md §0).
+# Never commit it. Copy alba_dp_table.example.h to this file for a local compile-only build;
+# release builds inject the real table from the ALBA_DP_TABLE_H secret (see release-alba.yml).
+firmware/main/alba_dp_table.h

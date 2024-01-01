@@ -80,8 +80,14 @@ void web_portal_report_device(const uint8_t addr_le[6], uint8_t addr_type, int r
   xSemaphoreTake(s_scan_lock, portMAX_DELAY);
   int slot = -1, weakest = 0;
   for (int i = 0; i < SCAN_MAX; i++) {
-    if (s_scan[i].used && memcmp(s_scan[i].addr, addr_le, 6) == 0) { slot = i; break; }
-    if (!s_scan[i].used) { slot = i; break; }
+    if (s_scan[i].used && memcmp(s_scan[i].addr, addr_le, 6) == 0) {
+      slot = i;
+      break;
+    }
+    if (!s_scan[i].used) {
+      slot = i;
+      break;
+    }
     if (s_scan[i].rssi < s_scan[weakest].rssi) weakest = i;
   }
   if (slot < 0) slot = weakest;  // table full: replace the weakest signal
@@ -262,8 +268,7 @@ static esp_err_t h_scan(httpd_req_t *r) {
       for (const char *s = s_scan[i].name; *s && k < 31; s++)
         nm[k++] = (*s == '"' || *s == '\\' || (unsigned char)*s < 0x20) ? ' ' : *s;
       nm[k] = 0;
-      int w = snprintf(out + p, sizeof(out) - p,
-                       "%s{\"a\":\"%02x:%02x:%02x:%02x:%02x:%02x\",\"r\":%d,\"n\":\"%s\"}",
+      int w = snprintf(out + p, sizeof(out) - p, "%s{\"a\":\"%02x:%02x:%02x:%02x:%02x:%02x\",\"r\":%d,\"n\":\"%s\"}",
                        first ? "" : ",", a[5], a[4], a[3], a[2], a[1], a[0], s_scan[i].rssi, nm);
       if (w < 0 || p + w >= (int)sizeof(out) - 2) break;
       p += w;
@@ -313,7 +318,8 @@ static esp_err_t h_health(httpd_req_t *r) {
   for (const char *s = s_health; *s && k < (int)sizeof(hh) - 1; s++) hh[k++] = (*s == '"' || *s == '\\') ? ' ' : *s;
   hh[k] = 0;
   k = 0;
-  for (const char *s = s_last_reason; *s && k < (int)sizeof(rr) - 1; s++) rr[k++] = (*s == '"' || *s == '\\') ? ' ' : *s;
+  for (const char *s = s_last_reason; *s && k < (int)sizeof(rr) - 1; s++)
+    rr[k++] = (*s == '"' || *s == '\\') ? ' ' : *s;
   rr[k] = 0;
   char out[128];
   int w = snprintf(out, sizeof(out), "{\"h\":\"%s\",\"r\":\"%s\"}", hh, rr);

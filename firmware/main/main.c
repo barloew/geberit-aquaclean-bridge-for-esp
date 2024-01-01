@@ -83,24 +83,24 @@ static void start_scan(void);
  * stuck/absent link: handshake watchdog -> BLE-stack reinit -> gated reboot ->
  * sticky "needs power-cycle". A persisted counter bounds reboots so a wedge can
  * never loop. All timers use esp_timer_get_time() (µs, monotonic). UNVERIFIED. */
-#define HS_TIMEOUT_US (20LL * 1000000)       /* handshake must finish within 20 s of connect  */
-#define UNHEALTHY_US (300LL * 1000000)       /* 5 min unhealthy before escalating              */
-#define FLAP_WINDOW_US (600LL * 1000000)     /* 10 min reconnect-flap window                   */
-#define FLAP_THRESHOLD 5                     /* reconnects in the window that count as flapping */
-#define HEALTHY_CLEAR_US (600LL * 1000000)   /* 10 min healthy clears the episode              */
-#define RES_SAMPLE_US (30LL * 1000000)       /* memory sample interval                         */
-#define MAX_RECOVERY_REBOOTS 2               /* gated reboots per episode before giving up     */
+#define HS_TIMEOUT_US (20LL * 1000000)     /* handshake must finish within 20 s of connect  */
+#define UNHEALTHY_US (300LL * 1000000)     /* 5 min unhealthy before escalating              */
+#define FLAP_WINDOW_US (600LL * 1000000)   /* 10 min reconnect-flap window                   */
+#define FLAP_THRESHOLD 5                   /* reconnects in the window that count as flapping */
+#define HEALTHY_CLEAR_US (600LL * 1000000) /* 10 min healthy clears the episode              */
+#define RES_SAMPLE_US (30LL * 1000000)     /* memory sample interval                         */
+#define MAX_RECOVERY_REBOOTS 2             /* gated reboots per episode before giving up     */
 
 static bool s_ever_connected;
-static int64_t s_toilet_connected_us;  /* when the central link opened (0 = not up)        */
-static int64_t s_unhealthy_since_us;   /* 0 = healthy                                      */
-static int64_t s_healthy_since_us;     /* 0 = not currently healthy                        */
-static int64_t s_res_last_us;          /* last memory sample                               */
-static int64_t s_reconn_us[8];         /* ring of recent toilet-link reconnect times       */
+static int64_t s_toilet_connected_us; /* when the central link opened (0 = not up)        */
+static int64_t s_unhealthy_since_us;  /* 0 = healthy                                      */
+static int64_t s_healthy_since_us;    /* 0 = not currently healthy                        */
+static int64_t s_res_last_us;         /* last memory sample                               */
+static int64_t s_reconn_us[8];        /* ring of recent toilet-link reconnect times       */
 static int s_reconn_i;
-static uint8_t s_recovery_reboots;     /* persisted breadcrumb (web_portal NVS)            */
-static bool s_reinited_episode;        /* BLE-stack reinit already tried this episode      */
-static bool s_needs_power_cycle;       /* sticky: the toilet itself seems wedged           */
+static uint8_t s_recovery_reboots; /* persisted breadcrumb (web_portal NVS)            */
+static bool s_reinited_episode;    /* BLE-stack reinit already tried this episode      */
+static bool s_needs_power_cycle;   /* sticky: the toilet itself seems wedged           */
 static void ble_stack_reinit(void);
 static void health_tick(void *arg);
 
@@ -273,8 +273,8 @@ static int gap_event(struct ble_gap_event *ev, void *arg) {
         ble_gap_conn_find(ev->connect.conn_handle, &d);
         if (d.role == BLE_GAP_ROLE_MASTER) {
           s_toilet_conn = ev->connect.conn_handle;
-          s_ever_connected = true;                        /* recovery evaluation may start now */
-          s_toilet_connected_us = esp_timer_get_time();   /* for the handshake watchdog        */
+          s_ever_connected = true;                      /* recovery evaluation may start now */
+          s_toilet_connected_us = esp_timer_get_time(); /* for the handshake watchdog        */
           ESP_LOGI(TAG, "connected to toilet; discovering service");
           ble_gattc_disc_svc_by_uuid(s_toilet_conn, &UUID_SVC.u, on_svc, NULL);
         } else {
@@ -303,7 +303,7 @@ static int gap_event(struct ble_gap_event *ev, void *arg) {
       if (ev->disconnect.conn.conn_handle == s_toilet_conn) {
         s_toilet_conn = BLE_HS_CONN_HANDLE_NONE;
         s_toilet_connected_us = 0;
-        s_reconn_us[s_reconn_i] = esp_timer_get_time();  /* recovery ladder: track flapping */
+        s_reconn_us[s_reconn_i] = esp_timer_get_time(); /* recovery ladder: track flapping */
         s_reconn_i = (s_reconn_i + 1) % 8;
         s_toilet_write_h = s_toilet_notify_h = s_toilet_cccd_h = 0;
         if (s_cli) {
@@ -420,8 +420,14 @@ static void ble_stack_reinit(void) {
   s_remote_conn = BLE_HS_CONN_HANDLE_NONE;
   s_toilet_write_h = s_toilet_notify_h = s_toilet_cccd_h = 0;
   s_toilet_connected_us = 0;
-  if (s_cli) { acli_free(s_cli); s_cli = NULL; }
-  if (s_srv) { asrv_free(s_srv); s_srv = NULL; }
+  if (s_cli) {
+    acli_free(s_cli);
+    s_cli = NULL;
+  }
+  if (s_srv) {
+    asrv_free(s_srv);
+    s_srv = NULL;
+  }
   nimble_port_stop();
   nimble_port_deinit();
   int rc = nimble_port_init();
@@ -431,7 +437,7 @@ static void ble_stack_reinit(void) {
     vTaskDelay(pdMS_TO_TICKS(300));
     esp_restart();
   }
-  ble_hs_cfg.sync_cb = on_sync;  /* on_sync re-runs start_scan()/start_adv() */
+  ble_hs_cfg.sync_cb = on_sync; /* on_sync re-runs start_scan()/start_adv() */
   ble_svc_gap_init();
   ble_svc_gatt_init();
   ble_gatts_count_cfg(GATT_SVCS);
@@ -453,8 +459,7 @@ static void health_tick(void *arg) {
     s_res_last_us = now;
     ESP_LOGI(TAG, "resources: free heap %u, lowest %u, largest block %u, uptime %llu s",
              (unsigned)esp_get_free_heap_size(), (unsigned)esp_get_minimum_free_heap_size(),
-             (unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_8BIT),
-             (unsigned long long)(now / 1000000));
+             (unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_8BIT), (unsigned long long)(now / 1000000));
   }
 
   const bool connected = s_toilet_conn != BLE_HS_CONN_HANDLE_NONE;
@@ -464,7 +469,7 @@ static void health_tick(void *arg) {
    * rescans and starts a fresh Arendi handshake (crypto-session recovery). */
   if (connected && !hs_done && s_toilet_connected_us && now - s_toilet_connected_us > HS_TIMEOUT_US) {
     ESP_LOGW(TAG, "handshake stuck (%ds); terminating to re-handshake", (int)(HS_TIMEOUT_US / 1000000));
-    s_toilet_connected_us = now;  /* avoid repeat; the disconnect handler rescans */
+    s_toilet_connected_us = now; /* avoid repeat; the disconnect handler rescans */
     ble_gap_terminate(s_toilet_conn, BLE_ERR_REM_USER_CONN_TERM);
     return;
   }
@@ -472,7 +477,7 @@ static void health_tick(void *arg) {
   if (hs_done) {
     s_unhealthy_since_us = 0;
     if (s_healthy_since_us == 0) s_healthy_since_us = now;
-    if (now - s_healthy_since_us >= HEALTHY_CLEAR_US) {  /* sustained healthy ends the episode */
+    if (now - s_healthy_since_us >= HEALTHY_CLEAR_US) { /* sustained healthy ends the episode */
       if (s_recovery_reboots) {
         s_recovery_reboots = 0;
         web_portal_recovery_count_set(0);
@@ -510,9 +515,9 @@ static void health_tick(void *arg) {
   const int flaps = recent_reconnects(now);
   if (bad <= UNHEALTHY_US && flaps < FLAP_THRESHOLD) return;
 
-  if (!s_reinited_episode) {  /* rung 3: one stack reinit before resorting to a reboot */
+  if (!s_reinited_episode) { /* rung 3: one stack reinit before resorting to a reboot */
     s_reinited_episode = true;
-    s_unhealthy_since_us = now;  /* give the reinit time to recover before the next rung */
+    s_unhealthy_since_us = now; /* give the reinit time to recover before the next rung */
     ble_stack_reinit();
     return;
   }
@@ -525,7 +530,7 @@ static void health_tick(void *arg) {
            flaps >= FLAP_THRESHOLD ? "flapping" : "toilet unreachable");
   web_portal_set_last_reason(reason);
   ESP_LOGE(TAG, "%s; rebooting", reason);
-  vTaskDelay(pdMS_TO_TICKS(300));  /* let the final log line flush to serial/portal */
+  vTaskDelay(pdMS_TO_TICKS(300)); /* let the final log line flush to serial/portal */
   esp_restart();
 }
 
@@ -544,7 +549,8 @@ void app_main(void) {
   }
   /* Recovery breadcrumb: how many recovery reboots this bad episode (bounds the ladder). */
   s_recovery_reboots = web_portal_recovery_count_get();
-  if (s_recovery_reboots) ESP_LOGW(TAG, "recovery: resumed after a recovery reboot (%u this episode)", s_recovery_reboots);
+  if (s_recovery_reboots)
+    ESP_LOGW(TAG, "recovery: resumed after a recovery reboot (%u this episode)", s_recovery_reboots);
 #endif
 
   /* Clone the toilet's PUBLIC address onto the BT interface before the stack
