@@ -28,8 +28,11 @@ This experimental BLE bridge runs two roles at once:
 > Experimental — flash at your own risk; see the warranty note in [`VISION.md`](VISION.md).
 
 **Hardware.** An ESP32-S3 board with native USB and **≥ 8 MB flash**; the proving hardware is a **LilyGO
-T-Dongle-S3**. The chip must be an ESP32-S3 — the address-clone step depends on it. A board that needs an
-external antenna must have one fitted.
+T-Dongle-S3**, and an **M5Stack AtomS3 Lite** works just as well (both are ESP32-S3, and the firmware uses no
+board-specific pins). The chip must be an ESP32-S3 — the address-clone step depends on it. A board that needs
+an external antenna must have one fitted.
+
+**Language.** The firmware, its web page and diagnostics are **English-only**.
 
 **Placement.** The Bluetooth link to the toilet is what matters, so put the board **close to the toilet with
 clear line of sight** — ideally within a metre or two, comfortably stronger than about **−80 dBm** on the
