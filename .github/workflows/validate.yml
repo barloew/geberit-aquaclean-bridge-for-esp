@@ -43,6 +43,19 @@ jobs:
       - uses: astral-sh/setup-uv@v7
       - run: uvx ruff@0.15.16 check components/geberit_aquaclean tools
 
+  overview:
+    name: Overview infographic is up to date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml fonttools
+      - run: python3 tools/overview/generate.py --check
+
   clang-format:
     name: clang-format (C++)
     runs-on: ubuntu-latest

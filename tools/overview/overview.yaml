@@ -1,0 +1,198 @@
+# Source of the README overview infographic (images/overview/).
+#
+#   python3 tools/overview/generate.py           # writes the SVG, the 3x PNG and the README snippet
+#   python3 tools/overview/generate.py --check   # writes nothing; fails if the SVG or README is stale
+#
+# Coordinates are hand-placed on a fixed canvas (like tools/steps): blocks are positioned here, the
+# script lays out what is inside them (text widths, pill rows, client rows, connectors).
+#
+# Support claims come from support/matrix.yaml, never from this file. Use the placeholders below
+# instead of writing models, counts or boards by hand; the script fills them in and fails if the
+# matrix doesn't back a route that is drawn here.
+#   {models}             model families the matrix marks validated or supported ("Sela · Mera · …")
+#   {languages}          number of languages (LANGUAGES in the component, cross-checked with the matrix)
+#   {recommended_board}  the validated board whose matrix note starts with "recommended"
+#
+# Icons: "ui:<name>" = images/ui/<name>.svg (our own line icons; use these for Bluetooth, Wi-Fi, USB,
+# Apple Home), "lucide:<name>" = a Lucide icon from tools/steps/node_modules (run npm install there).
+# Logos: "logo:<file>" = images/brands/<file>, embedded unmodified. No Bluetooth, Wi-Fi, USB, Apple or
+# Geberit logos (the script refuses them).
+
+output: images/overview/aquaclean-bridge-overview.svg
+png: { path: images/overview/aquaclean-bridge-overview.png, scale: 3 }
+alt: "Geberit AquaClean Bridge — overview"
+
+canvas: { width: 1660, height: 980 }
+font: "Inter, 'Segoe UI', Helvetica, Arial, sans-serif"
+
+colors:
+  ink: "#0F172A"
+  slate: "#334155"
+  body: "#475569"
+  muted: "#64748B"
+  line: "#E2E8F0"
+  dark: "#1E293B"
+  white: "#FFFFFF"
+  soft: "#F8FAFC"
+  teal: "#0D9488"
+  teal_tint: "#F0FDFA"
+  teal_border: "#99F6E4"
+  purple: "#7C3AED"
+  purple_tint: "#F5F3FF"
+  purple_border: "#C4B5FD"
+  blue: "#2563EB"
+  blue_tint: "#EFF6FF"
+  blue_border: "#BFDBFE"
+  cyan: "#0891B2"
+  cyan_tint: "#ECFEFF"
+  cyan_border: "#A5F3FC"
+  orange: "#EA580C"
+  orange_tint: "#FFF7ED"
+  orange_border: "#FED7AA"
+  rose: "#E11D48"
+  rose_tint: "#FFF1F2"
+  rose_border: "#FECDD3"
+
+# Display names for matrix board ids (support/matrix.yaml -> boards).
+board_names:
+  m5stack-atoms3-lite: "M5Stack AtomS3 Lite"
+  m5stack-atoms3r: "M5Stack AtomS3R"
+  xiao-esp32s3: "Seeed XIAO ESP32S3"
+  lilygo-t-dongle-s3: "LilyGo T-Dongle-S3"
+
+title:
+  y: 92
+  size: 60
+  parts:
+    - { text: "Geberit AquaClean ", color: teal }
+    - { text: "Bridge for ESP", color: ink }
+
+subtitle: { y: 140, size: 26, color: body, text: "Makes your shower toilet personal and brings it into your smart home" }
+
+pills:
+  y: 172
+  gap: 18
+  items:
+    - { icon: "ui:fork", color: cyan, text: "ESPHome native API or MQTT" }
+    - { icon: "ui:cloud-off", color: purple, text: "Fully local, no cloud" }
+    - { icon: "ui:globe", color: teal, text: "Localized in {languages} languages" }
+    - { icon: "ui:layers", color: blue, text: "Concurrent remote, app & smart home client connections" }
+
+# Left column: the toilet.
+toilet:
+  panel: { x: 40, y: 295, w: 280, h: 486, border: teal_border }
+  tag: { text: "SHOWER TOILET", color: teal }
+  illustration: { file: images/illustrations/aquaclean-toilet.svg, x: 92.2, y: 316, w: 192.8 }
+  name: { y: 632, text: "Geberit AquaClean" }
+  models: { y: 657, text: "{models}" }
+  note:
+    box: { y: 680, h: 80, fill: teal_tint }
+    icon: "ui:info"
+    color: teal
+    text: "On its own it accepts only one Bluetooth connection at a time"
+
+# The single permanent Bluetooth link between toilet and bridge.
+link: { x1: 283, x2: 440, y: 480, color: blue, label_x: 380, label: "Bluetooth LE", sublabel: "1 permanent link" }
+
+# Middle column: the bridge.
+bridge:
+  panel: { x: 440, y: 295, w: 380, h: 486, border: purple_border }
+  tag: { text: "THE BRIDGE", color: purple }
+  badge: { icon: "ui:plug", text: "USB powered" }
+  # The chip drawing's pins reach just past its viewBox, so it is not clipped.
+  illustration: { file: images/illustrations/esp32-s3-chip.svg, x: 490, y: 330, w: 260, overflow: visible }
+  radio: { color: blue, cy: 435, left_x: 507, right_x: 765 }
+  name: { y: 560, text: "ESP32-S3" }
+  sub: { y: 585, text: "≥ 8 MB flash · e.g. {recommended_board}" }
+  checklist:
+    y: 628
+    step: 38
+    color: purple
+    items:
+      - "Holds the toilet's only connection"
+      - "Acts as the toilet for remote & app"
+      - "Recognizes users by phone or watch"
+      - "Shares live state with every client"
+
+# Right side: how the bridge reaches its clients. Each route has a transport box and a client panel.
+# `route` names an entry of routes_status in support/matrix.yaml; the script fails if the matrix does
+# not mark it validated or supported. Native API and MQTT are two equal, first-class routes: keep them
+# the same size and never list Home Assistant as a route's only client.
+routes:
+  box: { x: 862, w: 206, h: 66, sub_size: 11.5 }
+  panel: { x: 1086, w: 504, h: 104 }
+  tag: { text: "YOUR SMART HOME & HOUSEHOLD", color: dark }
+  bracket: { x: 1602, color: purple, label: "All at the same time" }
+  transports:
+    - id: bluetooth
+      color: blue
+      header: { icon: "ui:waves", text: "BLUETOOTH", y: 281 }
+      exit_y: 347.0          # where the line leaves the bridge
+    - id: wifi
+      color: slate
+      header: { icon: "ui:wifi", text: "WI-FI", y: 433 }
+      exit_y: 601.6
+      trunk_x: 846
+  items:
+    - transport: bluetooth
+      cy: 347.0
+      color: blue
+      icon: "ui:waves"
+      title: "Bluetooth LE"
+      clients:
+        - { icon: "ui:remote", text: "Geberit remote control" }
+        - { icon: "ui:phone", text: "Geberit Home app (iOS, Android)" }
+      caption: "Remote works as usual · app takes priority while open"
+      items_dy: 27
+      caption_dy: 80
+    - transport: wifi
+      route: native_api
+      cy: 474.3
+      color: cyan
+      logo: { file: "logo:esphome.svg", size: 40 }
+      title: "ESPHome native API"
+      title_size: 14
+      sub: "encrypted · key on bridge"
+      clients:
+        - { logo: "logo:home-assistant.svg", text: "Home Assistant" }
+        - { logo: "logo:homey.svg", text: "Homey" }
+        - { logo: "logo:iobroker.svg", text: "ioBroker" }
+      caption: "Auto-discovery · web installer, no ESPHome build needed"
+    - transport: wifi
+      route: mqtt
+      cy: 601.6
+      color: orange
+      logo: { file: "logo:mqtt.svg", size: 26 }
+      title: "MQTT"
+      sub: "any broker · TLS optional"
+      clients:
+        - { logo: "logo:home-assistant.svg", text: "Home Assistant" }
+        - { logo: "logo:openhab.svg", text: "openHAB" }
+        - { logo: "logo:node-red.svg", text: "Node-RED" }
+        - { logo: "logo:domoticz.png", text: "Domoticz" }
+      caption: "MQTT discovery · web installer, no ESPHome build needed"
+    - transport: wifi
+      route: homekit
+      cy: 728.9
+      color: rose
+      icon: "ui:home"
+      title: "HomeKit"
+      sub: "built in · off until turned on"
+      clients:
+        - { icon: "ui:home", text: "Apple Home" }
+        - { icon: "ui:mic", text: "Siri" }
+      caption: "Optional · alongside the others or stand-alone"
+
+# In the order a user meets them, left to right: install, discover, set up profiles, get recognized, be greeted.
+highlights:
+  band: { x: 40, y: 812, w: 1580, h: 128 }
+  items:
+    - { icon: "ui:install", color: teal, title: "Easy installation", text: ["Toilet and remote are", "found automatically"] }
+    - { icon: "ui:search", color: cyan, title: "Feature discovery", text: ["Shows exactly what", "your model supports"] }
+    - { icon: "ui:users", color: blue, title: "Up to six user profiles", text: ["Twice as many profiles", "as the remote supports"] }
+    - { icon: "ui:user", color: purple, title: "Automatic recognition", text: ["Your profile is loaded", "before you sit down"] }
+    - { icon: "ui:bulb", color: orange, title: "Personal welcome light", text: ["The orientation light greets", "you in your own color"] }
+
+# Optional line under the image with the matrix's own "tested" sentence (support/generate.py).
+# When enabled, the canvas grows to fit it.
+caption: { enabled: false, size: 14, color: muted }

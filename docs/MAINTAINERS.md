@@ -44,6 +44,7 @@ static/index.html, boards.json   the web installer page (GENERATED boards.json)
 static/series-250/                the Series 250 browser flasher hosted on this branch's Pages (see section 2)
 tools/gen_firmware.py             GENERATES firmware/*.yaml, packages/mqtt_setup.yaml, static/boards.json, .github/workflows/build.yml
 tools/check_lang_keys.py          verifies all 29 lang files have identical key structure
+tools/overview/                   README overview infographic (overview.yaml + support/matrix.yaml → images/overview/)
 tools/steps/                      README install-step cards (steps.json → images/steps/*.svg)
 tools/badges/generate.py          README platform badges (logos in images/brands/ → images/badges/*.svg)
 images/                           ALL images: overview, steps, badges, ui icons, illustrations, brands (see images/README.md)
@@ -143,6 +144,7 @@ Reproduce each job locally before pushing. The versions below are pinned in CI; 
 | `yamllint` | lint the translation YAML | `pipx install yamllint && yamllint -c .yamllint components/geberit_aquaclean/lang` |
 | `ruff` | lint the Python component + tools | `uvx ruff@0.15.16 check components/geberit_aquaclean tools` |
 | `clang-format` | C++ format (own sources; skips `qrcodegen.*` and `homekit_sdk/`) | `clang-format --dry-run --Werror $(find components/geberit_aquaclean \( -name '*.cpp' -o -name '*.h' \) ! -name 'qrcodegen.*')` |
+| `overview` | the overview infographic matches its source and the matrix | `pip install pyyaml fonttools && python3 tools/overview/generate.py --check` |
 | `esphome-config` | `esphome config` for boards {atoms3-lite, atoms3r, xiao-esp32s3} × langs {en, nl, de} | `esphome config firmware/aquaclean-<board>-<lang>.yaml` |
 
 Pinned: Python 3.12, ESPHome **2026.10.2**, ruff **0.15.16**. `clang-format` config is `.clang-format`
@@ -191,6 +193,7 @@ touches vendored source.
 |---|---|---|---|---|
 | GitHub Actions | CI actions (`uses:`) | the workflow files | **Dependabot** (weekly, grouped) | auto-PRs |
 | `tools/steps` npm | build-time (README step-card SVGs) | `tools/steps/package.json` | **Dependabot** (monthly) | auto-PRs |
+| Inter fonts (OFL-1.1, Latin subset) | build-time (overview text measurement and PNG) | `tools/overview/fonts/` | manual | re-subset only when the overview needs new characters |
 | ESPHome `2026.10.2` | framework / compiler | `build.yml` (via `gen_firmware.py`) **and** `validate.yml` | manual | keep both in sync |
 | ruff `0.15.16` | Python linter | `validate.yml` (`uvx ruff@`) | manual | |
 | Python `3.12` | CI runtime | `validate.yml` setup-python | manual | |

@@ -1,8 +1,10 @@
 # Geberit AquaClean Bridge for ESP
 
+<!-- overview:begin -->
 <p align="center">
   <img src="images/overview/aquaclean-bridge-overview.png" alt="Geberit AquaClean Bridge — overview" width="100%">
 </p>
+<!-- overview:end -->
 
 <p>
   <a href="https://github.com/barloew/geberit-aquaclean-bridge-for-esp/releases"><img src="https://img.shields.io/github/v/release/barloew/geberit-aquaclean-bridge-for-esp?label=release" alt="Latest release"></a>

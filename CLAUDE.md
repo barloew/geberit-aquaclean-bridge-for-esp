@@ -112,8 +112,10 @@ themselves in the docs just as clearly as a Home Assistant user.
 
 - **All images live in the top-level `images/`** (layout and per-file notes in `images/README.md`):
   `overview/`, `steps/`, `badges/`, `ui/`, `illustrations/`, `user-interface/`, `brands/`. Don't put images anywhere else.
-- `images/steps/` and `images/badges/` are **generated** (`tools/steps/generate.py`,
-  `tools/badges/generate.py`); change the source and regenerate, never hand-edit.
+- `images/overview/`, `images/steps/` and `images/badges/` are **generated** (`tools/overview/generate.py`
+  from `tools/overview/overview.yaml`, `tools/steps/generate.py`, `tools/badges/generate.py`); change the source
+  and regenerate, never hand-edit. The overview takes its support claims from `support/matrix.yaml`; CI runs
+  `python3 tools/overview/generate.py --check`.
 - Third-party logos (`images/brands/`) are used **unmodified**, only to show compatibility, and are not
   under this project's license; their owners and terms are in `THIRD_PARTY_NOTICES.md` → Logos. Never
   add Bluetooth, Wi-Fi, USB, Apple or Geberit logos — use the generic icons in `images/ui/`.

@@ -11,6 +11,16 @@ no ESPHome needed on the user's side.
 
 ## v1.36.0 (not released yet)
 
+- **The overview image is generated.** `tools/overview/generate.py` builds `images/overview/` (SVG and the 3×
+PNG the README shows) from `tools/overview/overview.yaml`, in the same way as the step cards and badges. Models,
+the language count, the recommended board and the drawn routes come from `support/matrix.yaml`, so the image
+can't claim more than the matrix. It also refuses Bluetooth, Wi-Fi, USB, Apple and Geberit logos and a route
+that lists only Home Assistant. Text is measured and the PNG rendered with a bundled Inter subset (OFL 1.1), so
+the output is identical on every machine; CI checks it with `--check`.
+- **Overview image updated.** New pill *Fully local, no cloud* (new generic icon `images/ui/cloud-off.svg`). The
+native API and MQTT rows now read the same way: both install from the web installer with no ESPHome build, and
+the native API key is set on the bridge. HomeKit reads *built in · off until turned on*. The highlights follow
+the order a user meets them: installation, feature discovery, six profiles, recognition, welcome light.
 - **All images in one top-level folder, `images/`** (see `images/README.md`): the overview image
 (`images/overview/`, new version, PNG plus its SVG source), the step cards (`images/steps/`, were
 `docs/steps/`), the platform badges (`images/badges/`), the project's own line icons and drawings

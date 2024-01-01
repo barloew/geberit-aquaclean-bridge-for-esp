@@ -65,6 +65,7 @@ as libsodium 1.0.21 (`crypto_sign/ed25519/ref10`). ISC license, Copyright (c) 20
 | Asset | License | Where / what |
 |---|---|---|
 | **Lucide** icons (`lucide-static`) — © Lucide Contributors | ISC | The icons embedded in the installation step diagrams (`images/steps/*.svg`); <https://lucide.dev> |
+| **Inter** typeface (Latin subset of Regular, Medium, SemiBold, Bold, ExtraBold, ExtraBold Italic) — © 2016-2023 The Inter Project Authors | [SIL OFL 1.1](tools/overview/fonts/OFL.txt) | `tools/overview/fonts/`: used by `tools/overview/generate.py` to measure text and render the overview PNG. Not embedded in any image; <https://github.com/rsms/inter> |
 | **IANA Time Zone Database** (tzdata) | Public domain | POSIX time-zone rules baked into the web-installer firmware at generation time |
 | **Node-RED** icon — by **Nick O'Leary**, OpenJS Foundation | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) | `images/brands/node-red.svg`, also embedded unmodified in `images/badges/node-red-mqtt.svg`. Attribution required; the license is recorded in the file's own metadata. |
 | Third-party logos (`images/brands/`) | Owners' brand terms, **not** this project's license | See [Logos](#logos) below |
@@ -74,7 +75,8 @@ All images live in [`images/`](images/README.md). The overview image (`images/ov
 (`images/badges/`) are original project artwork under this project's license, except for the embedded
 Lucide icons, the Espressif symbol on the chip drawing, and the third-party logos embedded in the overview
 image and the badges. The step diagrams, the overview image and the badges reference common system fonts by
-name (`Inter`, `Segoe UI`, `Verdana`, …) as CSS fallbacks; no font files are embedded or redistributed.
+name (`Inter`, `Segoe UI`, `Verdana`, …) as CSS fallbacks; no font files are embedded in them. The overview
+generator bundles a subset of Inter (OFL 1.1, see above) only to measure text and render the PNG.
 
 ### Logos
 
