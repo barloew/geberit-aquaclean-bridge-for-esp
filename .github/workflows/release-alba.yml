@@ -1,0 +1,52 @@
+name: Release Alba firmware (web installer)
+
+# The shared client credential is injected from a repository secret at build time and never printed.
+# Fork safety: only a tag push on this branch or a manual dispatch can run this — no pull_request,
+# no pull_request_target — so a fork's pull request can never reach the secret.
+on:
+  push:
+    tags: ["alba-v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # create the pre-release and upload firmware.bin
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Inject the shared client credential
+        env:
+          ALBA_BRIDGE_ID_C: ${{ secrets.ALBA_BRIDGE_ID_C }}
+        run: |
+          if [ -z "$ALBA_BRIDGE_ID_C" ]; then
+            echo "::error::secret ALBA_BRIDGE_ID_C is not set"; exit 1
+          fi
+          # Write the gitignored source file verbatim; the value is masked in logs and never echoed.
+          printf '%s' "$ALBA_BRIDGE_ID_C" > firmware/main/aquaclean_bridge_id.c
+
+      - name: Build and merge to a single image
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.5
+          target: esp32s3
+          path: firmware
+          command: idf.py build && idf.py merge-bin -o firmware.bin
+
+      - name: Publish the web-installer binary as a pre-release asset
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: true
+          files: firmware/firmware.bin
+
+      - name: Dry-run artifact (manual dispatch, no release)
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: alba-firmware
+          path: firmware/firmware.bin
