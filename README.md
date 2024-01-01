@@ -1,31 +1,27 @@
 # AquaClean Series 250 bridge (experimental)
 
 This branch is a **separate, experimental** dual-role BLE bridge for the **Geberit AquaClean Alba** — a
-**Series 250** device — which uses Geberit's encrypted platform. It is **not** part of the main
+**Series 250** device, which uses a different protocol. It is **not** part of the main
 [Geberit AquaClean Bridge](https://github.com/barloew/geberit-aquaclean-bridge-for-esp) ESPHome component, and the
 two cannot share one firmware:
 
-- The main bridge is an **ESPHome component on Bluedroid** and speaks the cleartext **Series 248** protocol (Sela,
-  Mera, Tuma, Cama).
-- This is a **standalone ESP-IDF firmware on NimBLE**. Its crypto and codec are plain mbedTLS and are
-  stack-independent, so they could later be ported onto the main bridge's existing Bluedroid dual-role; this branch
-  is the proving ground.
+- The main bridge is an ESPHome component for Geberit AquaClean **Series 248** shower toilets (Sela, Mera, Tuma,
+  Cama).
+- This is a **standalone ESP-IDF firmware**. Its components are stack-independent, so they could later be ported
+  onto the main bridge; this branch is the proving ground.
 
 > **Status:** builds clean for ESP32-S3; the BT public-address clone is confirmed on hardware and the command codec
 > is unit-tested. **Not yet run end-to-end against a real Alba.**
 
 ## What it does
 
-NimBLE runs two roles at once:
+This experimental BLE bridge runs two roles at once:
 
 - **Central** → connects to the real Alba toilet and holds a persistent secure session.
 - **Peripheral** → clones the toilet's address and advertises as the toilet, so the **clients that would normally
-  connect to the toilet connect to the ESP32 instead**: the Alba remote, the Geberit app, and — once wired up —
-  home-automation and HomeKit clients. It terminates each client's session locally, all at the same time.
-
-Decrypted frames are relayed between the two links (`on_remote_app` / `on_toilet_app` in `firmware/main/main.c`),
-which is where home-automation control would hook in (Home Assistant, Homey, …). Each link has its own ephemeral
-keys; the bridge decrypts on one side and re-encrypts on the other.
+  connect to the toilet connect to the ESP32 instead**: the Alba remote, the Geberit app, and — once wired up to the
+  main bridge — home-automation and HomeKit clients. It terminates each client's session locally, all at the same
+  time.
 
 ## Install
 
