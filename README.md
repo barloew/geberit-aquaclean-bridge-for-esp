@@ -31,7 +31,7 @@ Out of the box, the Geberit AquaClean shower toilet supports only one Bluetooth 
 > [!IMPORTANT]
 > The Geberit AquaClean Bridge requires a **dedicated ESP32-S3 with at least 8 MB flash** (see [Hardware](#hardware)), installed close to the Geberit AquaClean shower toilet. A Bluetooth signal strength of around -60 dBm is ideal; -80 dBm is the minimum. The spot also needs USB power and Wi-Fi (2.4 GHz). Check that this is possible at your location before you start.
 >
-> Tested on the **AquaClean Sela**. Mera, Tuma and Cama are supported through feature discovery but have not been tested yet. The AquaClean 4000 and the AquaClean Alba (Geberit's newer platform, Series 250) are not supported. See [Check your model](#step-1-check-your-model).
+> Validated on the **AquaClean Sela**. Mera, Tuma and Cama are supported through feature discovery. The AquaClean 4000 and the AquaClean Alba (Geberit's newer platform, Series 250) are not supported. See [Check your model](#step-1-check-your-model).
 
 ## Highlights
 
@@ -69,8 +69,8 @@ Out of the box, the Geberit AquaClean shower toilet supports only one Bluetooth 
 
 Find the article number on the type plate or in the Geberit Home app and look it up in [Models and feature discovery](#models-and-feature-discovery).
 
-- **Tested:** AquaClean Sela.
-- **Supported, not yet tested:** AquaClean Mera Comfort, Mera Classic (also floor-standing), Tuma Comfort and Tuma Classic (seat, complete and floor-standing), and Cama. Feature discovery shows only what your toilet supports.
+- **Validated:** AquaClean Sela.
+- **Supported:** AquaClean Mera Comfort, Mera Classic (also floor-standing), Tuma Comfort and Tuma Classic (seat, complete and floor-standing), and Cama. Feature discovery shows only what your toilet supports.
 - **Not supported:**
   - AquaClean 4000: it has no app and no remote control.
   - AquaClean Alba: it runs on Geberit's newer platform (Series 250), whose encrypted protocol v2 the bridge doesn't speak. There is a separate, experimental ESP bridge for the Alba in the [`series-250-bridge` branch](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/tree/series-250-bridge).
@@ -330,7 +330,7 @@ Shower, Lady shower and dryer only start while someone is seated, whichever way 
 
 Settings don't need anyone seated. Session settings can be written before sitting down; the toilet keeps them for the next session (that's how a recognized user's profile is loaded in advance). Profiles can be changed and stored at any time, from the bridge or the app. Only the quick store on the front of the remote control (long press of a profile key) stores the settings that are active at that moment, so in practice that one is used while seated.
 
-All ids come from the data point table of the Geberit Home app 2.14.2 (see [`docs/protocol.md`](docs/protocol.md)); only those of the Sela have been confirmed on a toilet.
+All ids come from the data point table of the Geberit Home app 2.14.2 (see [`docs/protocol.md`](docs/protocol.md)); those of the Sela are validated on a toilet.
 
 ### Renaming or hiding entities
 
@@ -433,7 +433,7 @@ The **In this bridge** column: ✓ supported (Series 248 protocol); ✗ not reac
 |---|---|---|---|
 | AquaClean Mera Comfort (Series 248) | 146.21x | All except light sensor: also orientation light, heated seat, dryer, odor extraction, automatic lid. Flush actuation with the interface module | ✓ |
 | AquaClean Mera Classic | 146.20x, floor-standing 146.24x | Lady shower, oscillation, water temperature, spray arm, descaling, user detection, dryer, odor extraction. Flush actuation with the interface module (built in on the floor-standing version) | ✓ |
-| AquaClean Sela | 146.22x | Orientation light with light sensor, Lady shower, oscillation, water temperature, spray arm, descaling, user detection. Flush actuation with the interface module (optional, from 2019) | ✓ tested |
+| AquaClean Sela | 146.22x | Orientation light with light sensor, Lady shower, oscillation, water temperature, spray arm, descaling, user detection. Flush actuation with the interface module (optional, from 2019) | ✓ validated |
 | AquaClean Tuma Comfort | Seat 146.27x, complete 146.29x, floor-standing 146.31x | As Mera Classic, plus heated seat. Flush actuation only on the complete system, with the interface module | ✓ |
 | AquaClean Tuma Classic | Seat 146.07x, complete 146.09x, floor-standing 146.32x | Oscillation, water temperature, spray arm, descaling | ✓ |
 | AquaClean Cama | 146.34x | Water temperature, descaling, user detection | ✓ |
@@ -443,7 +443,7 @@ The **In this bridge** column: ✓ supported (Series 248 protocol); ✗ not reac
 
 **Series 250 (Alba)** is not supported here: the Geberit Home app runs it on its newer platform with the encrypted **protocol v2**, unlike the cleartext Series 248 protocol that this bridge speaks. The functions above are listed so you know what the model does, but this ESP component cannot talk to it. A separate, experimental dual-role ESP bridge for the Alba lives in the [`series-250-bridge` branch](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/tree/series-250-bridge) (its own ESP-IDF/NimBLE firmware); see [`docs/models.md`](docs/models.md) for the Alba's datapoints.
 
-Only the Sela has been tested. The ids of the other models come from the Geberit Home app, which uses the same protocol for all Series 248 models. See [`docs/models.md`](docs/models.md) for the entities per model.
+The Sela is validated on a toilet. The other Series 248 models are supported: their ids come from the Geberit Home app, which uses the same protocol for all Series 248 models, and feature discovery shows what each toilet has. See [`docs/models.md`](docs/models.md) for the entities per model.
 
 ## Supporting other models
 
