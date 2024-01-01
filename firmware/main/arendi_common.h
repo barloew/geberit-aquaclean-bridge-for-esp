@@ -35,8 +35,7 @@ extern "C" {
 #define SEC_ENCRYPTED 0x20
 
 /* VERSION_RESP body advertising protocol v2 */
-#define SEC_VERSION_RESP_BODY \
-  { 0x00, 0x05, 0x00, 0x00, 0x00, 0x01 }
+#define SEC_VERSION_RESP_BODY {0x00, 0x05, 0x00, 0x00, 0x00, 0x01}
 
 /* Key sets the peripheral advertises in EP_RESP (bit0 + bit1) */
 #define KEYSET_MASK 0x0003

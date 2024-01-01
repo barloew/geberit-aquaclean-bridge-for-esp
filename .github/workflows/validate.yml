@@ -19,14 +19,16 @@ jobs:
           persist-credentials: false
       - name: Check formatting
         run: |
-          # Pin the clang-format major version so CI and local agree (the floating
-          # "clang-format" on the runner image tracks a newer version whose style
-          # differs). Sources are kept formatted with clang-format 18.
-          sudo apt-get update && sudo apt-get install -y clang-format-18
+          # Pin the exact clang-format build via pip so CI and local are byte-identical
+          # (apt's clang-format and the runner's floating one drift between patch
+          # releases and flag differently). Sources are kept formatted with this version.
+          python3 -m venv /tmp/cf && /tmp/cf/bin/pip install --quiet "clang-format==18.1.8"
+          CF=/tmp/cf/bin/clang-format
+          "$CF" --version
           # Skip the generated datapoint table.
           mapfile -t F < <(find firmware/main \( -name '*.c' -o -name '*.h' \) ! -name 'alba_dp_table.h')
           echo "Checking ${#F[@]} files"
-          clang-format-18 --dry-run --Werror "${F[@]}"
+          "$CF" --dry-run --Werror "${F[@]}"
 
   build:
     name: idf.py build (esp32s3)

@@ -46,8 +46,7 @@ static const char *TAG = "aqc-bridge";
 /* ---- configuration ---------------------------------------------------- */
 /* The toilet's public BD_ADDR. Standard order e4:85:01:cd:c4:1e. Default only;
  * the web portal can override it at runtime (stored in NVS). */
-#define TOILET_MAC_STD \
-  { 0xe4, 0x85, 0x01, 0xcd, 0xc4, 0x1e }
+#define TOILET_MAC_STD {0xe4, 0x85, 0x01, 0xcd, 0xc4, 0x1e}
 /* Same address in NimBLE little-endian order, for the central scan/connect.
  * Not const: app_main() may replace it with the NVS-stored value. */
 static uint8_t TOILET_ADDR[6] = {0x1e, 0xc4, 0xcd, 0x01, 0x85, 0xe4};
