@@ -38,11 +38,12 @@ bridge can do.
 The bridge needs no Homey-specific firmware — you integrate it from the Homey side via one of the two
 routes:
 
-- **Native API (easiest).** Use a Homey ESPHome app (e.g. "ESPHome" / "ESPHome Controller") to talk to the
-  bridge directly over the native API, locally, no cloud. Needs **Homey Pro (2023) or newer** (or Pro mini /
-  self-hosted server), firmware 13+, the native API enabled (`api:` with an encryption key), and both on the
-  same network. Entities map to Homey capabilities; anything without a match becomes a generic `esphome_*`
-  capability. These are community apps, so maturity varies.
+- **Native API (easiest).** Use a Homey ESPHome app to talk to the bridge directly over the native API,
+  locally, no cloud, with the native API enabled (`api:` with an encryption key) and both on the same
+  network. The current **ESPHome Controller** app needs **Homey OS 13+** on a Homey Pro (2023) or newer,
+  Pro mini, or self-hosted server; for an older Homey Pro (2016–2019) the older **ESPHome** app works too
+  (Homey OS 5+, less actively maintained). Entities map to Homey capabilities; anything without a match
+  becomes a generic `esphome_*` capability. These are community apps, so maturity varies.
 - **MQTT (platform-neutral, more manual).** Point the bridge's MQTT route at your broker and subscribe with
   Homey's **MQTT Client** app, mapping topics to Homey devices/flows by hand. Note: Homey's "Home Assistant
   Discovery" (in the MQTT Hub app) publishes Homey's *own* devices outward — it does **not** ingest the
