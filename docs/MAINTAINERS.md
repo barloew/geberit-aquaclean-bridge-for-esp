@@ -76,7 +76,8 @@ esphome compile  examples/atoms3-lite.yaml     # full C++ build
 esphome run      examples/atoms3-lite.yaml     # compile + flash + logs
 ```
 
-To build exactly what ships, compile a generated file, e.g. `firmware/aquaclean-atoms3-lite-nl.yaml`.
+To build exactly what ships, compile a generated file, e.g. `firmware/aquaclean-mqtt-atoms3-lite-nl.yaml`
+(MQTT route) or `firmware/aquaclean-api-atoms3-lite-nl.yaml` (native-API route, runtime key via `/setup`).
 
 ### 1.5 The generation pipeline — edit the generator, not its output
 
@@ -156,7 +157,8 @@ Pinned: Python 3.12, ESPHome **2026.10.2**, ruff **0.15.16**. `clang-format` con
   firmware artifacts under `site/firmware/`, then `actions/deploy-pages`. Needs repo **Settings → Pages →
   Source: GitHub Actions**, and the workflow's `pages: write` / `id-token: write` permissions (already set).
 - Trigger a release: push a tag (see 5). Locally you can't run Pages, but you can dry-run a single build with
-  `esphome compile firmware/aquaclean-atoms3-lite-en.yaml`. **If you change the matrix, change
+  `esphome compile firmware/aquaclean-mqtt-atoms3-lite-en.yaml` (or `-api-` for the native-API route).
+  **If you change the matrix, change
   `gen_firmware.py` and regenerate — never hand-edit `build.yml`.**
 
 ### 3.3 Shared governance workflows

@@ -19,6 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        route: [mqtt, api]
         board: [atoms3-lite, atoms3r, xiao-esp32s3, lilygo-tdongle-s3]
         language: [en, nl, de, fr, it, es, pl, cs, hu, da, sv, nb, fi, pt, ar, tr, et, hr, lv, lt, ro, ru, sk, sl, sr, uk, zh, ko, he]
     steps:
@@ -26,16 +27,16 @@ jobs:
       - uses: esphome/build-action@v7
         id: esphome
         with:
-          yaml-file: firmware/aquaclean-${{ matrix.board }}-${{ matrix.language }}.yaml
+          yaml-file: firmware/aquaclean-${{ matrix.route }}-${{ matrix.board }}-${{ matrix.language }}.yaml
           version: "2026.10.2"
           complete-manifest: true
       - name: Collect
         run: |
-          mkdir -p out/${{ matrix.board }}/${{ matrix.language }}
-          cp -r "${{ steps.esphome.outputs.name }}"/* out/${{ matrix.board }}/${{ matrix.language }}/
+          mkdir -p out/${{ matrix.route }}/${{ matrix.board }}/${{ matrix.language }}
+          cp -r "${{ steps.esphome.outputs.name }}"/* out/${{ matrix.route }}/${{ matrix.board }}/${{ matrix.language }}/
       - uses: actions/upload-artifact@v4
         with:
-          name: firmware-${{ matrix.board }}-${{ matrix.language }}
+          name: firmware-${{ matrix.route }}-${{ matrix.board }}-${{ matrix.language }}
           path: out
 
   pages:

@@ -13,13 +13,31 @@
 </head>
 <body>
   <h1>Geberit AquaClean Bridge for ESP</h1>
-  <p>Install the MQTT firmware from this page (Chrome or Edge, USB cable), then connect it to Wi-Fi here.</p>
-  <ol>
-    <li>Choose your board and language, press <b>Install</b> and enter your Wi-Fi in the same window.</li>
+  <p>Install from this page with Chrome or Edge and a USB cable. Pick a route: <b>Native API</b> for Home
+     Assistant, Homey or ioBroker, or <b>MQTT</b> for an MQTT broker (openHAB, Node-RED, Domoticz, …). No Wi-Fi in
+     the browser? The bridge opens the hotspot "AquaClean Setup" (captive portal) to enter it.</p>
+  <ol id="steps-api">
+    <li>Choose route <b>Native API</b>, your board and language, press <b>Install</b> and enter your Wi-Fi in the
+        same window (or later on the "AquaClean Setup" hotspot).</li>
+    <li>Open <code>http://aquaclean-xxxxxx.local/setup</code> (on the hotspot: <code>http://192.168.4.1/setup</code>),
+        press <b>Generate random key</b>, copy it, then <b>Save to bridge</b>.</li>
+    <li>Add the bridge in your controller — it is discovered automatically — and paste that key. Done.</li>
+  </ol>
+  <ol id="steps-mqtt" hidden>
+    <li>Choose route <b>MQTT</b>, your board and language, press <b>Install</b> and enter your Wi-Fi in the same
+        window (or later on the "AquaClean Setup" hotspot).</li>
     <li>Open the bridge's web page (<b>Visit device</b>, or <code>http://aquaclean-xxxxxx.local</code>).</li>
     <li>Under <b>AquaClean Bridge</b>: enter the MQTT broker, port, user and password, choose the time zone and
         press <b>Connect to MQTT broker</b>. The bridge restarts and announces itself with MQTT discovery.</li>
   </ol>
+  <div class="row">
+    <label>Route:
+      <select id="route">
+        <option value="api">Native API (Home Assistant, Homey, ioBroker)</option>
+        <option value="mqtt">MQTT (openHAB, Node-RED, Domoticz, …)</option>
+      </select>
+    </label>
+  </div>
   <div class="row">
     <label>Board:
       <select id="board"></select>
@@ -35,23 +53,29 @@
       </select>
     </label>
   </div>
-  <esp-web-install-button id="install" manifest="firmware/atoms3-lite/en/manifest.json"></esp-web-install-button>
+  <esp-web-install-button id="install" manifest="firmware/api/atoms3-lite/en/manifest.json"></esp-web-install-button>
   <p><small>No USB? The ESP opens the hotspot "AquaClean Setup" when it knows no Wi-Fi.</small></p>
   <script>
     const sel = document.getElementById('lang');
     const board = document.getElementById('board');
+    const route = document.getElementById('route');
     let lang = (navigator.language || 'en').slice(0, 2);
     if (lang === 'no' || lang === 'nn') lang = 'nb';
     if (lang === 'iw') lang = 'he';
     if ([...sel.options].some(o => o.value === lang)) sel.value = lang;
-    const set = () => document.getElementById('install')
-      .setAttribute('manifest', `firmware/${board.value}/${sel.value}/manifest.json`);
+    const set = () => {
+      document.getElementById('install')
+        .setAttribute('manifest', `firmware/${route.value}/${board.value}/${sel.value}/manifest.json`);
+      document.getElementById('steps-api').hidden = route.value !== 'api';
+      document.getElementById('steps-mqtt').hidden = route.value !== 'mqtt';
+    };
     fetch('boards.json').then(r => r.json()).then(list => {
       for (const b of list) board.add(new Option(b.name, b.id));
       set();
     });
     sel.addEventListener('change', set);
     board.addEventListener('change', set);
+    route.addEventListener('change', set);
   </script>
 </body>
 </html>
