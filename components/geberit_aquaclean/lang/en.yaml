@@ -1,0 +1,265 @@
+language_name: English
+
+devices:
+  toilet: "AquaClean Toilet"
+  session: "Active session"
+  maintenance: "Physical maintenance"
+  profile_1: "User profile 1"
+  profile_2: "User profile 2"
+  profile_3: "User profile 3"
+  profile_4: "User profile 4"
+  profile_5: "User profile 5"
+  profile_6: "User profile 6"
+
+names:
+  last_error_text: "Last error"
+  stat_uptime: "Toilet operating time"
+  stat_run_time: "Active operating time"
+  stat_showers: "Showers total"
+  stat_lady_showers: "Lady showers total"
+  stat_oscillation: "Showers with oscillation"
+  stat_lady_oscillation: "Lady showers with oscillation"
+  stat_dryer: "Dryer uses total"
+  stat_odor: "Odor extraction uses"
+  stat_seat_heating: "Seat heating uses"
+  stat_lid: "Lid lifter uses"
+  stat_cleaning: "Cleanings"
+  stat_users: "Toilet visits total"
+  stat_system_flush: "System flushes"
+  stat_profile: "Profile {n} uses"
+  stat_last_shower: "Last shower duration"
+  stat_avg_shower: "Average shower duration"
+  stat_last_lady: "Last lady shower duration"
+  stat_avg_lady: "Average lady shower duration"
+  stat_last_sitting: "Last toilet visit duration"
+  stat_avg_sitting: "Average toilet visit duration"
+  read_statistics: "Read statistics"
+  homekit_qr: "Show HomeKit QR code"
+  maintenance_mode: "Physical maintenance"
+  # Shower session (the running session; ignored while nobody is seated)
+  seated: User detected
+  shower_active: Shower active
+  lady_shower_active: Lady shower active
+  shower_toggle: Start or stop shower
+  lady_shower_toggle: Start or stop Lady shower
+  spray_intensity: Spray intensity
+  spray_arm_position: Spray arm position
+  lady_spray_intensity: Spray intensity Lady
+  lady_spray_arm_position: Spray arm position Lady
+  water_temperature: Water temperature
+  oscillating_spray: Oscillating spray
+  # Default settings (what every new session starts with)
+  default_spray_intensity: "Default spray intensity"
+  default_spray_arm_position: "Default spray arm position"
+  default_lady_spray_intensity: "Default spray intensity Lady"
+  default_lady_spray_arm_position: "Default spray arm position Lady"
+  default_water_temperature: "Default water temperature"
+  default_oscillating_spray: "Default oscillating spray"
+  # Device settings
+  orientation_light: Orientation light
+  light_activation: Orientation light activation
+  light_color: Orientation light color
+  light_brightness: Orientation light brightness
+  light_run_on_time: Orientation light run-on time
+  light_window_1_start: Orientation light window 1 start
+  light_window_1_end: Orientation light window 1 end
+  light_window_2_start: Orientation light window 2 start
+  light_window_2_end: Orientation light window 2 end
+  days_until_descaling: Next descaling in
+  water_hardness: Water hardness
+  # Remote control
+  remote_connected: "Remote control connected"
+  remote_passthrough: "Remote control pass-through to toilet active"
+  remote_last_button: "Remote control last button"
+  remote_button: "Remote control button"
+  remote_firmware: "Remote control firmware"
+  remote_forward: "Remote control forward to toilet"
+  remote_pairing: "Pair remote control"
+  remote_unpair: "Unpair remote control"
+  # Bridge (the ESP itself)
+  connected: Toilet connected
+  app_connected: "Geberit Home app connected"
+  reconnects: Reconnections
+  bridge_health: "Bridge health"
+  free_heap: "Free memory"
+  min_free_heap: "Lowest free memory"
+  largest_free_block: "Largest free block"
+  timeouts: Timeouts
+  connection_uptime: Connected for
+  pair_as_remote: "Pair with toilet"
+  refresh_settings: Refresh settings
+  discovery: Discovery mode
+  raw_status: Raw status
+  last_response: Last response
+  toilet_advertisement: "Advertisement"
+  procedures_seen: Procedures seen
+  scan_settings: Scan settings
+  settings_scan: Settings scan
+  device_type: Device type
+  article_number: Article number
+  serial_number: Serial number
+  production_date: Production date
+  commissioning_date: "Commissioning"
+  model: "Model"
+  functions: "Found functions"
+  rediscover: "Rediscover functions"
+  profile_activate: "Activate profile {n} settings"
+  profile_store: "Store settings in profile {n}"
+  shower_count: "Showers today"
+  seat_heating: "Seat heating"
+  dryer_temperature: "Dryer temperature"
+  dryer_intensity: "Dryer intensity"
+  dryer: "Dryer"
+  odor_extraction: "Odor extraction"
+  demo_mode: "Demo mode"
+  lid_auto_open: "Open lid automatically"
+  lid_auto_close: "Close lid automatically"
+  lid_sensor_range: "Lid sensor range"
+  odor_extraction_run_on: "Odor extraction run-on"
+  firmware: "Firmware"
+  default_seat_heating: "Default seat heating"
+  default_dryer_temperature: "Default dryer temperature"
+  default_dryer_intensity: "Default dryer intensity"
+  default_dryer: "Default dryer"
+  default_odor_extraction: "Default odor extraction"
+  last_descaling: "Last descaling"
+  descaling_count: "Number of descalings"
+  days_until_filter_change: "Days until filter change"
+  filter_reset: "Filter replaced"
+  toilet_address: "Address"
+  search_toilet: "Search for a nearby toilet"
+  remote_address: "Remote control address"
+  user_name: "User"
+  welcome_light: "Welcome light"
+  user_recognized: "Recognized"
+  user_active: "Seated"
+  recognized_user: "Recognized user"
+  active_user: "Active user"
+  recognition_threshold: "User recognition signal strength"
+  user_ha_device: "Home Assistant device"
+  profile_clear: "Clear profile"
+  user_rssi: "Device signal user profile {n}"
+  irk_capture: "Capture IRK"
+  user_irk: "IRK"
+  irk_show: "Show IRK"
+  user_irk_set: "Enter IRK"
+  irk_android: "Capture IRK as Android keyboard"
+  toilet_signal: "Toilet signal"
+  shower_restricted_in: "Without descaling the shower stops in"
+  dryer_active: "Dryer running"
+  dryer_toggle: "Toggle dryer"
+  stop_all: "Stop shower and dryer"
+  seat_heating_on: "Seat heating on"
+  preflush: "Pre-flush"
+  wc_water_heating: "WC water heating"
+  default_seat_heating_on: "Default seat heating on"
+  default_preflush: "Default pre-flush"
+  default_wc_water_heating: "Default WC water heating"
+  descaling_state: "Descaling status"
+  descaling_time_left: "Descaling time left"
+  descaling_start: "Start descaling"
+  descaling_continue: "Continue descaling"
+  descaling_cancel: "Cancel descaling"
+  shower_unlock: "Unlock shower"
+  showers_until_unlock: "Showers until unlock"
+  descaling_requested: "Descaling requested since"
+  odor_toggle: "Toggle odor extraction"
+  odor_run_on_toggle: "Toggle odor extraction run-on"
+  last_error: "Last error code"
+  service_state: "Arm cleaning status"
+  arm_cleaning_start: "Start arm cleaning"
+  arm_cleaning_next: "Arm cleaning next step"
+  spray_calibration: "Spray calibration"
+  lid_toggle: "Open or close lid"
+  lid_calibration: "Calibrate lid"
+  lid_angle_start: "Adjust lid opening angle"
+  lid_angle_up: "Lid opening angle larger"
+  lid_angle_down: "Lid opening angle smaller"
+  lid_angle_save: "Save lid opening angle"
+  auto_flush: "Automatic flush"
+  light_sensor_sensitivity: "Light sensor sensitivity"
+  accessibility_mode: "Accessibility mode"
+  registration: "Registration"
+  draining: "Draining"
+  drain: "Drain pump and pipe"
+  flush: "Flush"
+  ssm_modules: "Connected modules"
+  lid_offset: "Lid offset"
+  shower_arm_offset: "Shower arm offset"
+  dryer_arm_offset: "Dryer arm offset"
+  shower_arm_adjust_start: "Adjust shower arm position"
+  shower_arm_adjust_up: "Shower arm position higher"
+  shower_arm_adjust_down: "Shower arm position lower"
+  shower_arm_adjust_save: "Save shower arm position"
+  dryer_arm_adjust_start: "Adjust dryer arm position"
+  dryer_arm_adjust_up: "Dryer arm position higher"
+  dryer_arm_adjust_down: "Dryer arm position lower"
+  dryer_arm_adjust_save: "Save dryer arm position"
+  trial_end: "Trial period end"
+  trial_remaining: "Trial period remaining"
+  trial_extended_remaining: "Extended trial remaining"
+  stop_shower: "Stop shower"
+
+options:
+  last_error_text: ["No error", "Error code", "", "Main control", "", "Odour extraction", "Shower unit", "Lid", "Dryer", "Hot water", "Seat heating", "Side panel", "User detection", "Proximity sensor", "Orientation light", "Interface", "Dryer unit", "Water heater"]
+  bridge_health: ["OK", "Degraded", "Recovering", "Needs power-cycle"]
+  welcome_light: ["Off", "Blue", "Turquoise", "Magenta", "Orange", "Yellow", "Warm white", "White"]
+  light_activation: ["Off", "On", Automatic, Time-controlled]
+  light_color: [Blue, Turquoise, Magenta, Orange, Yellow, Warm white, White]
+  light_run_on_time: [5 min, 10 min, 20 min, 30 min, 60 min]
+  water_hardness: [Soft, Medium, Hard]
+  descaling_state: ["Idle", "Preparing", "Waiting for user", "Descaling", "Flushing"]
+  service_state: ["OK", "Shower arm not cleaned", "Dryer arm not cleaned", "Shower and dryer arm not cleaned"]
+  auto_flush: ["Off", "On", "Pre-flush"]
+  registration: ["Not registered", "Private", "Public"]
+  light_activation_approach: ["Off", "On", "On approach", "In the dark"]
+  descaling_state_v2: ["Idle", "Descaling 2", "Waiting for user 1", "Descaling 1", "Waiting for user 2"]
+  descaling_state_v3: ["Idle", "Descaling or flushing"]
+
+buttons:
+  shower: Shower
+  spray_minus: "Spray −"
+  spray_plus: "Spray +"
+  arm_back: Spray arm back
+  arm_forward: Spray arm forward
+  lady_shower: Lady shower
+  profile_1: User profile 1
+  profile_2: User profile 2
+  profile_3: User profile 3
+  arrow_right: Arrow right
+  arrow_left: Arrow left
+  arrow_down: Arrow down
+  arrow_up: Arrow up
+  oscillation: Oscillating motion
+  orientation_light: Orientation light
+  ok: OK
+  temperature: Temperature
+  home: Home
+  maintenance: Care and maintenance
+  unknown: Unknown
+
+button_states: [pressed, long press, released]
+
+features:
+  orientation_light: "Orientation light"
+  lady_shower: "Lady shower"
+  oscillation: "Oscillating spray"
+  water_temperature: "Adjustable water temperature"
+  spray_arm: "Adjustable spray arm position"
+  descaling: "Descaling function"
+  user_detection: "User detection"
+  seat_heating: "Heated seat"
+  dryer: "Warm-air dryer"
+  odor_extraction: "Odor extraction"
+  automatic_lid: "Automatic lid"
+  light_sensor: "Light sensor"
+
+variants:
+  seat: "seat"
+  complete_system: "complete system"
+  floor_standing: "floor-standing"
+
+texts:
+  nobody: "Nobody"
+  not_supported: "not supported yet"
+  model_unknown: "Unknown model"

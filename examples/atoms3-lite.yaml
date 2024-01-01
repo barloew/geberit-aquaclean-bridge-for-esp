@@ -1,0 +1,61 @@
+# Geberit AquaClean on an M5Stack AtomS3 Lite. One YAML for both routes: the substitution "route" picks one, and
+# only that one is built (never both: Home Assistant would show everything twice).
+#   route: api   Home Assistant with the ESPHome integration (native API). No web interface: Home Assistant
+#                shows everything. secrets.yaml: wifi_ssid, wifi_password, aquaclean_ota_password,
+#                aquaclean_api_key
+#   route: mqtt  MQTT (Home Assistant via MQTT discovery, openHAB, Node-RED, Domoticz, ...) plus the web
+#                interface on the ESP. secrets.yaml: wifi_ssid, wifi_password, aquaclean_ota_password, and the
+#                broker's password (see below)
+substitutions:
+  name: geberit-aquaclean
+  friendly_name: Geberit AquaClean Bridge
+  route: api                        # api or mqtt
+  language: nl                      # see README, Languages
+  # log_obfuscate: "true"          # for logs in a public issue: addresses, names, serial number masked
+  # Physical maintenance (descaling, arm cleaning, calibration): read the warning in the README; with "true"
+  # a long press of the maintenance key on the remote control shows it for 60 minutes
+  # maintenance_disclaimer_accepted: "true"
+  # toilet_mac / remote_mac are optional: without them the nearest toilet is found and the remote control
+  # that pairs in the pairing window is used (both stored on the ESP)
+  # toilet_mac: "F0:10:A5:33:33:5E"
+  # remote_mac: "E4:85:01:DE:99:02"
+  # --- only for route: mqtt ---
+  # mqtt_broker: homeassistant.local
+  # mqtt_username: aquaclean
+  # mqtt_password: !secret mqtt_password
+  # timezone: Europe/Amsterdam
+  # encrypted MQTT: also the package mqtt_tls below, and
+  # mqtt_port: "8883"
+  # mqtt_ca: !secret mqtt_ca
+  # password on the web interface: also the package web_auth below, and
+  # web_username: admin
+  # web_password: !secret aquaclean_web_password
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+
+packages:
+  # board: board-atoms3-lite.yaml, board-atoms3r.yaml or board-xiao-esp32s3.yaml
+  board: github://barloew/geberit-aquaclean-bridge-for-esp/packages/board-atoms3-lite.yaml@v1.36.0
+  aquaclean: github://barloew/geberit-aquaclean-bridge-for-esp/packages/aquaclean.yaml@v1.36.0
+  route: github://barloew/geberit-aquaclean-bridge-for-esp/packages/route_${route}.yaml@v1.36.0
+  # only with route: mqtt
+  # mqtt_tls: github://barloew/geberit-aquaclean-bridge-for-esp/packages/mqtt_tls.yaml@v1.36.0
+  # web_auth: github://barloew/geberit-aquaclean-bridge-for-esp/packages/web_auth.yaml@v1.36.0
+
+external_components:
+  - source: github://barloew/geberit-aquaclean-bridge-for-esp@v1.36.0
+    components: [geberit_aquaclean]
+
+logger:
+  logs:
+    ble_device_base: INFO
+
+ota:
+  - platform: esphome
+    password: !secret aquaclean_ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password

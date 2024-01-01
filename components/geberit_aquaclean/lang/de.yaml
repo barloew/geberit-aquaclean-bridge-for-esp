@@ -1,0 +1,260 @@
+language_name: Deutsch
+
+devices:
+  toilet: "AquaClean WC"
+  session: "Aktive Sitzung"
+  maintenance: "Physische Wartung"
+  profile_1: "Benutzerprofil 1"
+  profile_2: "Benutzerprofil 2"
+  profile_3: "Benutzerprofil 3"
+  profile_4: "Benutzerprofil 4"
+  profile_5: "Benutzerprofil 5"
+  profile_6: "Benutzerprofil 6"
+
+names:
+  last_error_text: "Letzter Fehler"
+  stat_uptime: "Betriebszeit WC"
+  stat_run_time: "Betriebszeit aktiv"
+  stat_showers: "Duschvorgänge gesamt"
+  stat_lady_showers: "Ladydusche-Vorgänge gesamt"
+  stat_oscillation: "Duschvorgänge mit Oszillation"
+  stat_lady_oscillation: "Ladydusche-Vorgänge mit Oszillation"
+  stat_dryer: "Föhnvorgänge gesamt"
+  stat_odor: "Geruchsabsaugung genutzt"
+  stat_seat_heating: "Sitzheizung genutzt"
+  stat_lid: "Deckelöffner genutzt"
+  stat_cleaning: "Reinigungen"
+  stat_users: "WC-Besuche gesamt"
+  stat_system_flush: "Systemspülungen"
+  stat_profile: "Nutzung Profil {n}"
+  stat_last_shower: "Dauer letzte Dusche"
+  stat_avg_shower: "Durchschnittliche Duschdauer"
+  stat_last_lady: "Dauer letzte Ladydusche"
+  stat_avg_lady: "Durchschnittliche Ladydusche-Dauer"
+  stat_last_sitting: "Dauer letzter WC-Besuch"
+  stat_avg_sitting: "Durchschnittliche Dauer WC-Besuch"
+  read_statistics: "Statistik lesen"
+  homekit_qr: "HomeKit-QR-Code anzeigen"
+  maintenance_mode: "Physische Wartung"
+  seated: Benutzer erkannt
+  shower_active: Analdusche aktiv
+  lady_shower_active: Ladydusche aktiv
+  shower_toggle: Dusche starten oder stoppen
+  lady_shower_toggle: Ladydusche starten oder stoppen
+  spray_intensity: Duschstrahlstärke
+  spray_arm_position: Duscharmposition
+  lady_spray_intensity: Duschstrahlstärke Lady
+  lady_spray_arm_position: Duscharmposition Lady
+  water_temperature: Wassertemperatur
+  oscillating_spray: Oszillierdusche
+  default_spray_intensity: "Standard Duschstrahlstärke"
+  default_spray_arm_position: "Standard Duscharmposition"
+  default_lady_spray_intensity: "Standard Duschstrahlstärke Lady"
+  default_lady_spray_arm_position: "Standard Duscharmposition Lady"
+  default_water_temperature: "Standard Wassertemperatur"
+  default_oscillating_spray: "Standard Oszillierdusche"
+  orientation_light: Orientierungslicht
+  light_activation: Orientierungslicht Aktivierung
+  light_color: Orientierungslicht Farbe
+  light_brightness: Orientierungslicht Helligkeit
+  light_run_on_time: Orientierungslicht Nachlaufzeit
+  light_window_1_start: Orientierungslicht Zeitfenster 1 Beginn
+  light_window_1_end: Orientierungslicht Zeitfenster 1 Ende
+  light_window_2_start: Orientierungslicht Zeitfenster 2 Beginn
+  light_window_2_end: Orientierungslicht Zeitfenster 2 Ende
+  days_until_descaling: Nächste Entkalkung in
+  water_hardness: Wasserhärte
+  remote_connected: "Fernbedienung verbunden"
+  remote_passthrough: "Fernbedienung Weitergabe an WC aktiv"
+  remote_last_button: "Fernbedienung letzte Taste"
+  remote_button: "Fernbedienung Taste"
+  remote_firmware: "Fernbedienung Firmware"
+  remote_forward: "Fernbedienung an WC weitergeben"
+  remote_pairing: "Fernbedienung koppeln"
+  remote_unpair: "Fernbedienung entkoppeln"
+  connected: WC verbunden
+  app_connected: "Geberit Home App verbunden"
+  reconnects: Neuverbindungen
+  bridge_health: "Bridge-Status"
+  free_heap: "Freier Speicher"
+  min_free_heap: "Niedrigster freier Speicher"
+  largest_free_block: "Größter freier Block"
+  timeouts: Zeitüberschreitungen
+  connection_uptime: Verbunden seit
+  pair_as_remote: "Mit WC koppeln"
+  refresh_settings: Einstellungen aktualisieren
+  discovery: Erkundungsmodus
+  raw_status: Status roh
+  last_response: Letzte Antwort
+  toilet_advertisement: "Advertising"
+  procedures_seen: Gesehene Prozeduren
+  scan_settings: Einstellungen scannen
+  settings_scan: Einstellungsscan
+  device_type: Gerätetyp
+  article_number: Artikelnummer
+  serial_number: Seriennummer
+  production_date: Produktionsdatum
+  commissioning_date: "Inbetriebnahme"
+  model: "Modell"
+  functions: "Gefundene Funktionen"
+  rediscover: "Funktionen neu erkennen"
+  profile_activate: "Einstellungen von Profil {n} aktivieren"
+  profile_store: "Einstellungen in Profil {n} speichern"
+  shower_count: "Duschvorgänge heute"
+  seat_heating: "WC-Sitzheizung"
+  dryer_temperature: "Föhntemperatur"
+  dryer_intensity: "Föhnintensität"
+  dryer: "Warmluftföhn"
+  odor_extraction: "Geruchsabsaugung"
+  demo_mode: "Demomodus"
+  lid_auto_open: "Deckel automatisch öffnen"
+  lid_auto_close: "Deckel automatisch schließen"
+  lid_sensor_range: "Reichweite Deckelsensor"
+  odor_extraction_run_on: "Nachlauf Geruchsabsaugung"
+  firmware: "Firmware"
+  default_seat_heating: "Standard WC-Sitzheizung"
+  default_dryer_temperature: "Standard Föhntemperatur"
+  default_dryer_intensity: "Standard Föhnintensität"
+  default_dryer: "Standard Warmluftföhn"
+  default_odor_extraction: "Standard Geruchsabsaugung"
+  last_descaling: "Letzte Entkalkung"
+  descaling_count: "Anzahl Entkalkungen"
+  days_until_filter_change: "Tage bis Filterwechsel"
+  filter_reset: "Filter gewechselt"
+  toilet_address: "Adresse"
+  search_toilet: "WC in der Nähe suchen"
+  remote_address: "Fernbedienung Adresse"
+  user_name: "Benutzer"
+  welcome_light: "Willkommenslicht"
+  user_recognized: "Erkannt"
+  user_active: "Hat Platz genommen"
+  recognized_user: "Erkannter Benutzer"
+  active_user: "Aktiver Benutzer"
+  recognition_threshold: "Signalstärke Benutzererkennung"
+  user_ha_device: "HA-Gerät"
+  profile_clear: "Profil löschen"
+  user_rssi: "Gerätesignal Benutzerprofil {n}"
+  irk_capture: "IRK erfassen"
+  user_irk: "IRK"
+  irk_show: "IRK anzeigen"
+  user_irk_set: "IRK eingeben"
+  irk_android: "IRK als Android-Tastatur erfassen"
+  toilet_signal: "WC-Signal"
+  shower_restricted_in: "Ohne Entkalkung stoppt die Dusche in"
+  dryer_active: "Föhn aktiv"
+  dryer_toggle: "Föhn umschalten"
+  stop_all: "Dusche und Föhn stoppen"
+  seat_heating_on: "Sitzheizung ein"
+  preflush: "Vorspülung"
+  wc_water_heating: "WC-Wasserheizung"
+  default_seat_heating_on: "Standard Sitzheizung ein"
+  default_preflush: "Standard Vorspülung"
+  default_wc_water_heating: "Standard WC-Wasserheizung"
+  descaling_state: "Entkalkungsstatus"
+  descaling_time_left: "Entkalkung Restzeit"
+  descaling_start: "Entkalkung starten"
+  descaling_continue: "Entkalkung fortsetzen"
+  descaling_cancel: "Entkalkung abbrechen"
+  shower_unlock: "Dusche entsperren"
+  showers_until_unlock: "Duschgänge bis Entsperrung"
+  descaling_requested: "Entkalkung angefordert seit"
+  odor_toggle: "Geruchsabsaugung umschalten"
+  odor_run_on_toggle: "Nachlauf Geruchsabsaugung umschalten"
+  last_error: "Letzter Fehlercode"
+  service_state: "Reinigungsstatus Arme"
+  arm_cleaning_start: "Armreinigung starten"
+  arm_cleaning_next: "Armreinigung nächster Schritt"
+  spray_calibration: "Düsenkalibrierung"
+  lid_toggle: "Deckel öffnen oder schließen"
+  lid_calibration: "Deckel kalibrieren"
+  lid_angle_start: "Deckelöffnungswinkel einstellen"
+  lid_angle_up: "Deckelöffnungswinkel größer"
+  lid_angle_down: "Deckelöffnungswinkel kleiner"
+  lid_angle_save: "Deckelöffnungswinkel speichern"
+  auto_flush: "Automatische Spülung"
+  light_sensor_sensitivity: "Lichtsensor-Empfindlichkeit"
+  accessibility_mode: "Barrierefreier Modus"
+  registration: "Registrierung"
+  draining: "Entleeren"
+  drain: "Pumpe und Leitung entleeren"
+  flush: "Spülen"
+  ssm_modules: "Angeschlossene Module"
+  lid_offset: "Deckel-Offset"
+  shower_arm_offset: "Duscharm-Offset"
+  dryer_arm_offset: "Föhnarm-Offset"
+  shower_arm_adjust_start: "Duscharmposition einstellen"
+  shower_arm_adjust_up: "Duscharmposition höher"
+  shower_arm_adjust_down: "Duscharmposition niedriger"
+  shower_arm_adjust_save: "Duscharmposition speichern"
+  dryer_arm_adjust_start: "Föhnarmposition einstellen"
+  dryer_arm_adjust_up: "Föhnarmposition höher"
+  dryer_arm_adjust_down: "Föhnarmposition niedriger"
+  dryer_arm_adjust_save: "Föhnarmposition speichern"
+  trial_end: "Ende der Testphase"
+  trial_remaining: "Testphase verbleibend"
+  trial_extended_remaining: "Verlängerte Testphase verbleibend"
+  stop_shower: "Dusche stoppen"
+
+options:
+  last_error_text: ["Kein Fehler", "Fehlercode", "", "Hauptsteuerung", "", "Geruchsabsaugung", "Duscheinheit", "Deckel", "Trockner", "Warmwasser", "Sitzheizung", "Seitenteil", "Benutzererkennung", "Näherungssensor", "Orientierungslicht", "Schnittstelle", "Trocknereinheit", "Durchlauferhitzer"]
+  bridge_health: ["OK", "Beeinträchtigt", "Erholt sich", "Aus- und Einschalten erforderlich"]
+  welcome_light: ["Aus", "Blau", "Türkis", "Magenta", "Orange", "Gelb", "Warmweiss", "Weiss"]
+  light_activation: [Aus, Ein, Automatisch, Zeitgesteuert]
+  light_color: [Blau, Türkis, Magenta, Orange, Gelb, Warmweiss, Weiss]
+  light_run_on_time: [5 min, 10 min, 20 min, 30 min, 60 min]
+  water_hardness: [Weich, Mittel, Hart]
+  descaling_state: ["Inaktiv", "Vorbereitung", "Wartet auf Benutzer", "Entkalken", "Spülen"]
+  service_state: ["OK", "Duscharm nicht gereinigt", "Föhnarm nicht gereinigt", "Dusch- und Föhnarm nicht gereinigt"]
+  auto_flush: ["Aus", "Ein", "Vorspülung"]
+  registration: ["Nicht registriert", "Privat", "Öffentlich"]
+  light_activation_approach: ["Aus", "Ein", "Bei Annäherung", "Bei Dunkelheit"]
+  descaling_state_v2: ["Inaktiv", "Entkalken 2", "Wartet auf Benutzer 1", "Entkalken 1", "Wartet auf Benutzer 2"]
+  descaling_state_v3: ["Inaktiv", "Entkalken oder Spülen"]
+
+buttons:
+  shower: Dusche
+  spray_minus: "Duschstrahl −"
+  spray_plus: "Duschstrahl +"
+  arm_back: Duscharm zurück
+  arm_forward: Duscharm vor
+  lady_shower: Ladydusche
+  profile_1: Benutzerprofil 1
+  profile_2: Benutzerprofil 2
+  profile_3: Benutzerprofil 3
+  arrow_right: Pfeil rechts
+  arrow_left: Pfeil links
+  arrow_down: Pfeil unten
+  arrow_up: Pfeil oben
+  oscillation: Oszillierbewegung
+  orientation_light: Orientierungslicht
+  ok: OK
+  temperature: Temperatur
+  home: Home
+  maintenance: Wartung und Pflege
+  unknown: Unbekannt
+
+button_states: [gedrückt, lang gedrückt, losgelassen]
+
+features:
+  orientation_light: "Orientierungslicht"
+  lady_shower: "Ladydusche"
+  oscillation: "Oszillierende Dusche"
+  water_temperature: "Einstellbare Wassertemperatur"
+  spray_arm: "Einstellbare Duscharmposition"
+  descaling: "Entkalkungsfunktion"
+  user_detection: "Benutzererkennung"
+  seat_heating: "Sitzheizung"
+  dryer: "Warmluftföhn"
+  odor_extraction: "Geruchsabsaugung"
+  automatic_lid: "Automatische Deckelbedienung"
+  light_sensor: "Lichtsensor"
+
+variants:
+  seat: "Aufsatz"
+  complete_system: "Komplettanlage"
+  floor_standing: "Stand-WC"
+
+texts:
+  nobody: "Niemand"
+  not_supported: "noch nicht unterstützt"
+  model_unknown: "Unbekanntes Modell"

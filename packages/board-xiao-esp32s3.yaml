@@ -1,0 +1,96 @@
+# Seeed Studio XIAO ESP32S3 (ESP32-S3R8: 8 MB flash, 8 MB octal PSRAM; the Plus has 16 MB flash and works too):
+# orange user LED on GPIO21 (lit when low), BOOT button on GPIO0. Fit the supplied U.FL antenna: Wi-Fi and
+# Bluetooth only work well with it.
+#
+# The XIAO has a single-color LED, so the status is a pattern instead of a color:
+#   dim, steady        = toilet connected (remote control and app may be connected too)
+#   bright, steady     = app connected
+#   fast blinking      = pairing window for the remote control open
+#   slow blinking      = no connection to the toilet
+#   two bright blinks  = user recognized, profile loaded (welcome light), or IRK capture finished
+#                        (no color, so success and failure look the same; see the log)
+# Button (BOOT): hold 3 s = pair the ESP with the toilet as remote control (then switch the toilet off and on).
+
+esp32:
+  board: esp32-s3-devkitc-1
+  variant: esp32s3
+  flash_size: 8MB
+  framework:
+    type: esp-idf
+    # Same as the AtomS3 Lite: Bluetooth and Wi-Fi need internal RAM, PSRAM does not replace it
+    sdkconfig_options:
+      CONFIG_ESP_WIFI_IRAM_OPT: n
+      CONFIG_ESP_WIFI_RX_IRAM_OPT: n
+      CONFIG_ESP_WIFI_STATIC_RX_BUFFER_NUM: "6"
+
+psram:
+  mode: octal
+  speed: 80MHz
+
+output:
+  - platform: ledc
+    id: aquaclean_status_led_out
+    pin:
+      number: GPIO21
+      inverted: true
+
+light:
+  - platform: monochromatic
+    id: aquaclean_status_led
+    name: Status LED
+    output: aquaclean_status_led_out
+    internal: true
+    gamma_correct: 1.0
+    default_transition_length: 0s
+
+binary_sensor:
+  - platform: gpio
+    id: aquaclean_board_button
+    internal: true
+    pin:
+      number: GPIO0
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    on_multi_click:
+      - timing:
+          - ON for at least 3s
+        then:
+          - lambda: id(aquaclean).button_action(esphome::geberit_aquaclean::BTN_PAIR_AS_REMOTE);
+
+interval:
+  - interval: 100ms
+    then:
+      - lambda: |-
+          static uint32_t tick = 0;
+          tick++;
+          auto *hub = id(aquaclean);
+          auto *link = hub->link();
+          static float last = -1;
+          float wr, wg, wb;
+          float level;
+          if (hub->welcome_led(wr, wg, wb)) {
+            level = (wr + wg + wb) > 0 ? 1.0 : 0.0;     // the two welcome (or IRK) blinks
+          } else if (link != nullptr && link->is_pairing()) {
+            level = (tick / 2) % 2 == 0 ? 1.0 : 0.0;    // fast: 200 ms on, 200 ms off
+          } else if (!hub->is_ready()) {
+            level = (tick / 10) % 2 == 0 ? 0.6 : 0.0;   // slow: 1 s on, 1 s off
+          } else if (hub->app_connected()) {
+            level = 0.8;
+          } else {
+            level = 0.15;
+          }
+          // only send a change to the LED
+          if (level == last)
+            return;
+          last = level;
+          auto call = id(aquaclean_status_led).make_call();
+          if (level <= 0) {
+            call.set_state(false);
+          } else {
+            call.set_state(true);
+            call.set_brightness(level);
+          }
+          call.set_transition_length(0);
+          call.perform();

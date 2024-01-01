@@ -1,0 +1,53 @@
+name: New model support
+description: Ask for support for an AquaClean model the bridge does not handle yet
+title: "[Model] "
+labels: ["new-model", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Please write in English** — the working language of this project.
+
+        Series 248 models speak a cleartext protocol and can usually be added. Series 250 (Alba)
+        uses an encrypted protocol (protocol v2) and is **not** supported by this component; see the README.
+  - type: input
+    id: model
+    attributes:
+      label: Model name
+      placeholder: AquaClean Mera Classic
+    validations:
+      required: true
+  - type: input
+    id: article
+    attributes:
+      label: Article number
+      placeholder: 146.20x
+    validations:
+      required: true
+  - type: dropdown
+    id: series
+    attributes:
+      label: Series (if you know it)
+      options:
+        - "248 (cleartext — classic family)"
+        - "250 (encrypted — Alba)"
+        - Unknown
+    validations:
+      required: true
+  - type: textarea
+    id: capabilities
+    attributes:
+      label: What can the official app / remote do with it?
+      description: Shower, dryer, odor extraction, orientation light, profiles, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence from this bridge
+      description: >-
+        Paste the discovery log (the "Ontdekking/Discovery" and "Apparaatgegevens/Device data" lines) from a bridge
+        connected to the toilet, plus the reported Model/Article number. This is what lets a model be mapped.
+      render: shell
+    validations:
+      required: false

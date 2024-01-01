@@ -1,0 +1,54 @@
+name: Claude issue triage
+
+# Automatically triages every newly opened issue: classifies it, applies the right label, and asks
+# for an ESPHome log when a bug report has none. Requires the Claude GitHub App and the
+# ANTHROPIC_API_KEY secret (see claude.yml).
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            You are triaging a new GitHub issue for the Geberit AquaClean Bridge for ESP (an ESPHome
+            external component). Issue #${{ github.event.issue.number }}:
+
+            Title: ${{ github.event.issue.title }}
+
+            Body:
+            ${{ github.event.issue.body }}
+
+            Do this, using the `gh` CLI (GH_TOKEN is set):
+            1. Classify as one of: bug, enhancement, new-model, question/support, or field-test feedback.
+            2. Ensure the matching label is applied (bug | enhancement | new-model). Leave `needs-triage`.
+               For a pure usage question, add `question` and comment that Discussions is the better place,
+               linking https://github.com/barloew/geberit-aquaclean-bridge-for-esp/discussions
+            3. If the issue concerns the experimental Alba firmware — it selected the "Series 250 bridge" option in
+               the form, or mentions the Alba / Series 250 / the `series-250-bridge` branch — also apply the `alba`
+               label, and note in a short comment that the Alba firmware lives on the `series-250-bridge` branch.
+            4. If it is a bug and the body contains no log, post one short, friendly comment asking for a
+               DEBUG-level log and the Model/Article number. Always comment in English (the working language);
+               if the issue itself is not in English, also kindly ask the author to rewrite it in English.
+            5. Apply the connection-route label if the form states one: `native-api` for "Native API (ESPHome)",
+               `mqtt` for "MQTT". If it says "Not sure", add no route label.
+            6. If the issue is really field-test feedback (test results against the plan), kindly point the
+               author to the "Field testing" Discussions category, which is where test results belong, and
+               add the `field-test` label.
+            Keep any comment to a few sentences. Do not close the issue. Do not change the title or body.
+          claude_args: "--allowed-tools Bash(gh:*)"
+        env:
+          GH_TOKEN: ${{ github.token }}

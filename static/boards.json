@@ -1,0 +1,14 @@
+[
+  {
+    "id": "atoms3-lite",
+    "name": "M5Stack AtomS3 Lite"
+  },
+  {
+    "id": "atoms3r",
+    "name": "M5Stack AtomS3R"
+  },
+  {
+    "id": "xiao-esp32s3",
+    "name": "Seeed XIAO ESP32S3"
+  }
+]

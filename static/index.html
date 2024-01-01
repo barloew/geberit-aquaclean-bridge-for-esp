@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geberit AquaClean Bridge for ESP – installer</title>
+  <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 3rem auto; padding: 0 1rem; color: #222; }
+    h1 { font-size: 1.6rem; } select { font-size: 1rem; padding: .3rem; }
+    .row { margin: 1.5rem 0; } small { color: #666; }
+  </style>
+</head>
+<body>
+  <h1>Geberit AquaClean Bridge for ESP</h1>
+  <p>Install the MQTT firmware from this page (Chrome or Edge, USB cable), then connect it to Wi-Fi here.</p>
+  <ol>
+    <li>Choose your board and language, press <b>Install</b> and enter your Wi-Fi in the same window.</li>
+    <li>Open the bridge's web page (<b>Visit device</b>, or <code>http://aquaclean-xxxxxx.local</code>).</li>
+    <li>Under <b>AquaClean Bridge</b>: enter the MQTT broker, port, user and password, choose the time zone and
+        press <b>Connect to MQTT broker</b>. The bridge restarts and announces itself with MQTT discovery.</li>
+  </ol>
+  <div class="row">
+    <label>Board:
+      <select id="board"></select>
+    </label>
+  </div>
+  <div class="row">
+    <label>Language / Taal / Sprache:
+      <select id="lang">
+        <option value="en">English</option><option value="nl">Nederlands</option><option value="de">Deutsch</option>
+        <option value="fr">Français</option><option value="it">Italiano</option><option value="es">Español</option>
+        <option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="da">Dansk</option><option value="sv">Svenska</option><option value="nb">Norsk</option><option value="fi">Suomi</option><option value="pt">Português</option><option value="ar">العربية</option><option value="tr">Türkçe</option>
+        <option value="et">Eesti</option><option value="hr">Hrvatski</option><option value="lv">Latviešu</option><option value="lt">Lietuvių</option><option value="ro">Română</option><option value="ru">Русский</option><option value="sk">Slovenčina</option><option value="sl">Slovenščina</option><option value="sr">Srpski</option><option value="uk">Українська</option><option value="zh">中文</option><option value="ko">한국어</option><option value="he">עברית</option>
+      </select>
+    </label>
+  </div>
+  <esp-web-install-button id="install" manifest="firmware/atoms3-lite/en/manifest.json"></esp-web-install-button>
+  <p><small>No USB? The ESP opens the hotspot "AquaClean Setup" when it knows no Wi-Fi.</small></p>
+  <script>
+    const sel = document.getElementById('lang');
+    const board = document.getElementById('board');
+    let lang = (navigator.language || 'en').slice(0, 2);
+    if (lang === 'no' || lang === 'nn') lang = 'nb';
+    if (lang === 'iw') lang = 'he';
+    if ([...sel.options].some(o => o.value === lang)) sel.value = lang;
+    const set = () => document.getElementById('install')
+      .setAttribute('manifest', `firmware/${board.value}/${sel.value}/manifest.json`);
+    fetch('boards.json').then(r => r.json()).then(list => {
+      for (const b of list) board.add(new Option(b.name, b.id));
+      set();
+    });
+    sel.addEventListener('change', set);
+    board.addEventListener('change', set);
+  </script>
+</body>
+</html>

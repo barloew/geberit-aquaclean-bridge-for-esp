@@ -1,0 +1,125 @@
+name: Bug report
+description: Something that used to work, or should work, is broken
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Please write in English** — the working language of this project.
+
+        Search [existing issues](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/issues?q=is%3Aissue)
+        first. For a model that is not recognized at all, use the **New model support** form instead.
+        A log is almost always needed to diagnose a bug — paste it below.
+  - type: dropdown
+    id: part
+    attributes:
+      label: Which part?
+      description: The main ESPHome component, or the separate experimental Alba firmware.
+      options:
+        - ESPHome component — Series 248 (main)
+        - Series 250 bridge (Alba) — experimental (series-250-bridge branch)
+    validations:
+      required: true
+  - type: dropdown
+    id: route
+    attributes:
+      label: Connection route to Home Assistant
+      options:
+        - Native API (ESPHome)
+        - MQTT
+        - Not sure
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: Install method
+      description: How the firmware got onto the ESP. Pick "Other" and describe if yours isn't listed — no setup is excluded.
+      options:
+        - ESPHome (own YAML build)
+        - Web installer (prebuilt firmware)
+        - Home Assistant ESPHome add-on
+        - Other (describe in "What happened")
+    validations:
+      required: false
+  - type: input
+    id: model
+    attributes:
+      label: Model (text sensor "Model")
+      description: What the bridge reports under *Model*, e.g. "AquaClean Sela".
+      placeholder: AquaClean Sela
+    validations:
+      required: true
+  - type: input
+    id: article
+    attributes:
+      label: Article number
+      description: The *Article number* text sensor, e.g. 146.22x.xx.1.
+    validations:
+      required: false
+  - type: dropdown
+    id: board
+    attributes:
+      label: ESP board
+      options:
+        - M5Stack AtomS3 Lite
+        - M5Stack AtomS3R
+        - Seeed XIAO ESP32S3
+        - Other ESP32-S3
+        - Other ESP32
+    validations:
+      required: true
+  - type: dropdown
+    id: route
+    attributes:
+      label: How did you install the firmware?
+      options:
+        - ESPHome YAML (own build / Home Assistant add-on)
+        - Web installer (MQTT route)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Bridge version
+      description: The release tag or the firmware date, e.g. v1.35.0.
+    validations:
+      required: true
+  - type: input
+    id: esphome
+    attributes:
+      label: ESPHome / Home Assistant version
+      placeholder: ESPHome 2026.10.2, Home Assistant 2026.11.0
+    validations:
+      required: false
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you did and what went wrong.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: ESPHome log
+      description: Paste the relevant log (DEBUG level). It will be formatted automatically — no backticks needed.
+      render: shell
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and discussions.
+          required: true
+        - label: I am on the latest release, or I say above which version I am on.
+          required: true

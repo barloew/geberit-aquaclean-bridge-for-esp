@@ -1,0 +1,13 @@
+{
+  "name": "AquaClean Series 250 bridge (experimental)",
+  "version": "experimental",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        { "path": "firmware.bin", "offset": 0 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,260 @@
+language_name: Français
+
+devices:
+  toilet: "AquaClean WC"
+  session: "Session active"
+  maintenance: "Entretien physique"
+  profile_1: "Profil utilisateur 1"
+  profile_2: "Profil utilisateur 2"
+  profile_3: "Profil utilisateur 3"
+  profile_4: "Profil utilisateur 4"
+  profile_5: "Profil utilisateur 5"
+  profile_6: "Profil utilisateur 6"
+
+names:
+  last_error_text: "Dernière erreur"
+  stat_uptime: "Temps de fonctionnement WC"
+  stat_run_time: "Temps de fonctionnement actif"
+  stat_showers: "Douches au total"
+  stat_lady_showers: "Douches féminines au total"
+  stat_oscillation: "Douches avec oscillation"
+  stat_lady_oscillation: "Douches féminines avec oscillation"
+  stat_dryer: "Séchages au total"
+  stat_odor: "Utilisations de l'aspiration des odeurs"
+  stat_seat_heating: "Utilisations du chauffage de l'abattant"
+  stat_lid: "Utilisations de l'ouverture de l'abattant"
+  stat_cleaning: "Nettoyages"
+  stat_users: "Visites WC au total"
+  stat_system_flush: "Rinçages du système"
+  stat_profile: "Utilisations profil {n}"
+  stat_last_shower: "Durée de la dernière douche"
+  stat_avg_shower: "Durée moyenne de la douche"
+  stat_last_lady: "Durée de la dernière douche féminine"
+  stat_avg_lady: "Durée moyenne de la douche féminine"
+  stat_last_sitting: "Durée de la dernière visite WC"
+  stat_avg_sitting: "Durée moyenne d'une visite WC"
+  read_statistics: "Lire les statistiques"
+  homekit_qr: "Afficher le code QR HomeKit"
+  maintenance_mode: "Entretien physique"
+  seated: Utilisateur détecté
+  shower_active: Douchette active
+  lady_shower_active: Douchette dame active
+  shower_toggle: Démarrer ou arrêter la douchette
+  lady_shower_toggle: Démarrer ou arrêter la douchette dame
+  spray_intensity: Intensité du jet
+  spray_arm_position: Position du bras de douchette
+  lady_spray_intensity: Intensité du jet dame
+  lady_spray_arm_position: Position du bras dame
+  water_temperature: Température de l'eau
+  oscillating_spray: Jet oscillant
+  default_spray_intensity: "Intensité du jet par défaut"
+  default_spray_arm_position: "Position du bras de douchette par défaut"
+  default_lady_spray_intensity: "Intensité du jet dame par défaut"
+  default_lady_spray_arm_position: "Position du bras dame par défaut"
+  default_water_temperature: "Température de l'eau par défaut"
+  default_oscillating_spray: "Jet oscillant par défaut"
+  orientation_light: Éclairage d'orientation
+  light_activation: Éclairage d'orientation activation
+  light_color: Éclairage d'orientation couleur
+  light_brightness: Éclairage d'orientation luminosité
+  light_run_on_time: Éclairage d'orientation temporisation
+  light_window_1_start: Éclairage d'orientation plage 1 début
+  light_window_1_end: Éclairage d'orientation plage 1 fin
+  light_window_2_start: Éclairage d'orientation plage 2 début
+  light_window_2_end: Éclairage d'orientation plage 2 fin
+  days_until_descaling: Prochain détartrage dans
+  water_hardness: Dureté de l'eau
+  remote_connected: "Télécommande connectée"
+  remote_passthrough: "Transmission de la télécommande au WC active"
+  remote_last_button: "Dernière touche de la télécommande"
+  remote_button: "Touche de la télécommande"
+  remote_firmware: "Micrologiciel de la télécommande"
+  remote_forward: "Transmettre la télécommande au WC"
+  remote_pairing: "Appairer la télécommande"
+  remote_unpair: "Dissocier la télécommande"
+  connected: WC connecté
+  app_connected: "Application Geberit Home connectée"
+  reconnects: Reconnexions
+  bridge_health: "État de la passerelle"
+  free_heap: "Mémoire libre"
+  min_free_heap: "Mémoire libre minimale"
+  largest_free_block: "Plus grand bloc libre"
+  timeouts: Délais dépassés
+  connection_uptime: Connecté depuis
+  pair_as_remote: "Appairer avec le WC"
+  refresh_settings: Actualiser les réglages
+  discovery: Mode découverte
+  raw_status: État brut
+  last_response: Dernière réponse
+  toilet_advertisement: "Annonce"
+  procedures_seen: Procédures observées
+  scan_settings: Scanner les réglages
+  settings_scan: Scan des réglages
+  device_type: Type d'appareil
+  article_number: Numéro d'article
+  serial_number: Numéro de série
+  production_date: Date de production
+  commissioning_date: "Mise en service"
+  model: "Modèle"
+  functions: "Fonctions trouvées"
+  rediscover: "Redétecter les fonctions"
+  profile_activate: "Activer les réglages du profil {n}"
+  profile_store: "Enregistrer les réglages dans le profil {n}"
+  shower_count: "Douches aujourd'hui"
+  seat_heating: "Chauffage de l'abattant"
+  dryer_temperature: "Température du séchage"
+  dryer_intensity: "Intensité du séchage"
+  dryer: "Séchage à air chaud"
+  odor_extraction: "Aspiration des odeurs"
+  demo_mode: "Mode démonstration"
+  lid_auto_open: "Ouverture automatique du couvercle"
+  lid_auto_close: "Fermeture automatique du couvercle"
+  lid_sensor_range: "Portée du capteur du couvercle"
+  odor_extraction_run_on: "Temporisation de l'aspiration des odeurs"
+  firmware: "Micrologiciel"
+  default_seat_heating: "Chauffage de l'abattant par défaut"
+  default_dryer_temperature: "Température du séchage par défaut"
+  default_dryer_intensity: "Intensité du séchage par défaut"
+  default_dryer: "Séchage à air chaud par défaut"
+  default_odor_extraction: "Aspiration des odeurs par défaut"
+  last_descaling: "Dernier détartrage"
+  descaling_count: "Nombre de détartrages"
+  days_until_filter_change: "Jours avant changement du filtre"
+  filter_reset: "Filtre remplacé"
+  toilet_address: "Adresse"
+  search_toilet: "Rechercher un WC à proximité"
+  remote_address: "Adresse de la télécommande"
+  user_name: "Utilisateur"
+  welcome_light: "Lumière de bienvenue"
+  user_recognized: "Reconnu"
+  user_active: "Assis"
+  recognized_user: "Utilisateur reconnu"
+  active_user: "Utilisateur actif"
+  recognition_threshold: "Puissance du signal de reconnaissance des utilisateurs"
+  user_ha_device: "Appareil HA"
+  profile_clear: "Effacer le profil"
+  user_rssi: "Signal de l'appareil profil utilisateur {n}"
+  irk_capture: "Capturer l'IRK"
+  user_irk: "IRK"
+  irk_show: "Afficher l'IRK"
+  user_irk_set: "Saisir l'IRK"
+  irk_android: "Capturer l'IRK comme clavier Android"
+  toilet_signal: "Signal des WC"
+  shower_restricted_in: "Sans détartrage, la douche s'arrête dans"
+  dryer_active: "Séchage en cours"
+  dryer_toggle: "Basculer le séchage"
+  stop_all: "Arrêter douche et séchage"
+  seat_heating_on: "Chauffage du siège activé"
+  preflush: "Pré-rinçage"
+  wc_water_heating: "Chauffage de l'eau du WC"
+  default_seat_heating_on: "Chauffage du siège activé par défaut"
+  default_preflush: "Pré-rinçage par défaut"
+  default_wc_water_heating: "Chauffage de l'eau du WC par défaut"
+  descaling_state: "État du détartrage"
+  descaling_time_left: "Temps restant du détartrage"
+  descaling_start: "Démarrer le détartrage"
+  descaling_continue: "Poursuivre le détartrage"
+  descaling_cancel: "Annuler le détartrage"
+  shower_unlock: "Déverrouiller la douche"
+  showers_until_unlock: "Douches avant déverrouillage"
+  descaling_requested: "Détartrage demandé depuis"
+  odor_toggle: "Basculer l'aspiration des odeurs"
+  odor_run_on_toggle: "Basculer la temporisation de l'aspiration"
+  last_error: "Dernier code d'erreur"
+  service_state: "État de nettoyage des bras"
+  arm_cleaning_start: "Démarrer le nettoyage des bras"
+  arm_cleaning_next: "Nettoyage des bras étape suivante"
+  spray_calibration: "Calibrage du jet"
+  lid_toggle: "Ouvrir ou fermer le couvercle"
+  lid_calibration: "Calibrer le couvercle"
+  lid_angle_start: "Régler l'angle d'ouverture"
+  lid_angle_up: "Angle d'ouverture plus grand"
+  lid_angle_down: "Angle d'ouverture plus petit"
+  lid_angle_save: "Enregistrer l'angle d'ouverture"
+  auto_flush: "Chasse automatique"
+  light_sensor_sensitivity: "Sensibilité du capteur de lumière"
+  accessibility_mode: "Mode accessibilité"
+  registration: "Enregistrement"
+  draining: "Vidange"
+  drain: "Vidanger pompe et conduite"
+  flush: "Tirer la chasse"
+  ssm_modules: "Modules connectés"
+  lid_offset: "Décalage du couvercle"
+  shower_arm_offset: "Décalage du bras de douche"
+  dryer_arm_offset: "Décalage du bras de séchage"
+  shower_arm_adjust_start: "Régler la position du bras de douche"
+  shower_arm_adjust_up: "Position du bras de douche plus haute"
+  shower_arm_adjust_down: "Position du bras de douche plus basse"
+  shower_arm_adjust_save: "Enregistrer la position du bras de douche"
+  dryer_arm_adjust_start: "Régler la position du bras de séchage"
+  dryer_arm_adjust_up: "Position du bras de séchage plus haute"
+  dryer_arm_adjust_down: "Position du bras de séchage plus basse"
+  dryer_arm_adjust_save: "Enregistrer la position du bras de séchage"
+  trial_end: "Fin de la période d'essai"
+  trial_remaining: "Période d'essai restante"
+  trial_extended_remaining: "Période d'essai prolongée restante"
+  stop_shower: "Arrêter la douche"
+
+options:
+  last_error_text: ["Aucune erreur", "Code d'erreur", "", "Commande principale", "", "Extraction des odeurs", "Unité de douche", "Couvercle", "Séchoir", "Eau chaude", "Chauffage du siège", "Panneau latéral", "Détection d'utilisateur", "Capteur de proximité", "Éclairage d'orientation", "Interface", "Unité de séchage", "Chauffe-eau"]
+  bridge_health: ["OK", "Dégradé", "Rétablissement en cours", "Redémarrage électrique requis"]
+  welcome_light: ["Arrêt", "Bleu", "Turquoise", "Magenta", "Orange", "Jaune", "Blanc chaud", "Blanc"]
+  light_activation: [Arrêt, Marche, Automatique, Programmé]
+  light_color: [Bleu, Turquoise, Magenta, Orange, Jaune, Blanc chaud, Blanc]
+  light_run_on_time: [5 min, 10 min, 20 min, 30 min, 60 min]
+  water_hardness: [Douce, Moyenne, Dure]
+  descaling_state: ["Inactif", "Préparation", "En attente de l'utilisateur", "Détartrage", "Rinçage"]
+  service_state: ["OK", "Bras de douche non nettoyé", "Bras de séchage non nettoyé", "Bras de douche et de séchage non nettoyés"]
+  auto_flush: ["Arrêt", "Marche", "Pré-rinçage"]
+  registration: ["Non enregistré", "Privé", "Public"]
+  light_activation_approach: ["Arrêt", "Marche", "À l'approche", "Dans l'obscurité"]
+  descaling_state_v2: ["Inactif", "Détartrage 2", "En attente de l'utilisateur 1", "Détartrage 1", "En attente de l'utilisateur 2"]
+  descaling_state_v3: ["Inactif", "Détartrage ou rinçage"]
+
+buttons:
+  shower: Douchette
+  spray_minus: "Jet −"
+  spray_plus: "Jet +"
+  arm_back: Bras de douchette arrière
+  arm_forward: Bras de douchette avant
+  lady_shower: Douchette dame
+  profile_1: Profil utilisateur 1
+  profile_2: Profil utilisateur 2
+  profile_3: Profil utilisateur 3
+  arrow_right: Flèche droite
+  arrow_left: Flèche gauche
+  arrow_down: Flèche bas
+  arrow_up: Flèche haut
+  oscillation: Mouvement oscillatoire
+  orientation_light: Éclairage d'orientation
+  ok: OK
+  temperature: Température
+  home: Accueil
+  maintenance: Maintenance et entretien
+  unknown: Inconnue
+
+button_states: [appuyée, appui long, relâchée]
+
+features:
+  orientation_light: "Lumière d'orientation"
+  lady_shower: "Douchette dame"
+  oscillation: "Douche oscillante"
+  water_temperature: "Température de l'eau réglable"
+  spray_arm: "Position du bras de douche réglable"
+  descaling: "Fonction de détartrage"
+  user_detection: "Détection de l'utilisateur"
+  seat_heating: "Siège chauffant"
+  dryer: "Séchage à air chaud"
+  odor_extraction: "Aspiration des odeurs"
+  automatic_lid: "Ouverture automatique du couvercle"
+  light_sensor: "Capteur de lumière"
+
+variants:
+  seat: "abattant"
+  complete_system: "WC complet"
+  floor_standing: "WC au sol"
+
+texts:
+  nobody: "Personne"
+  not_supported: "pas encore pris en charge"
+  model_unknown: "Modèle inconnu"
