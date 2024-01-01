@@ -410,10 +410,10 @@ The bridge announces itself with MQTT discovery (prefix `homeassistant`), so mos
 
 </summary>
 
-All six profiles have the same entities on the bridge: their shower settings, **Activate profile N settings**, **Store settings in profile N** (both in **Active session**), name, link and welcome light. They differ in where the settings live:
+Every profile has the same core entities on the bridge: their shower settings, **Activate profile N settings**, **Store settings in profile N** (both in **Active session**), name, link and welcome light. Spray intensity and arm position are separate for the shower and the Lady shower in every profile. Profiles differ in where the settings live — and profiles 4–6 can do one thing the toilet can't:
 
 - **Profiles 1–3** are stored in the toilet, the same profiles as profile keys 1–3 on the remote control. The bridge reads them from the toilet and shows them; a change on the bridge is written to the toilet, and a change made with the remote (long press of a profile key stores the current settings) shows up on the bridge. A short press of the key loads the profile, as always.
-- **Profiles 4–6** exist only on the bridge. The toilet doesn't know them; the bridge loads them by writing their settings into the session.
+- **Profiles 4–6** exist only on the bridge. The toilet doesn't know them; the bridge loads them by writing their settings into the session. The toilet keeps a single oscillation and a single water temperature, shared by both showers, so a toilet profile can't set them apart — but a bridge profile can: 4–6 add a separate **Oscillating spray Lady** and **Water temperature Lady**. When the recognized user of such a profile starts a shower, the bridge writes that shower's oscillation and water temperature into the session first — the shower's own values for the shower, the Lady values for the Lady shower. **Store settings in profile N** captures the session as the shower values; set the Lady values on their own entities.
 
 Recognition works for all six profiles. **Clear profile** empties a profile: name, link, welcome light and IRK, and for profiles 4–6 also the settings.
 
