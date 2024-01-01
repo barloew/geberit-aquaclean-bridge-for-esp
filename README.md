@@ -43,7 +43,7 @@ Out of the box, the Geberit AquaClean shower toilet supports only one Bluetooth 
 - **Up to six user profiles.** That's twice as many profiles as the Geberit remote supports.
 - **Automatic user recognition.** All six profiles are recognized by their linked smartphone, watch, wearable or tracker, even when it uses randomized MAC addresses. The Identity Resolving Key (IRK) can be captured by the Geberit AquaClean Bridge itself, or reused if it's already known in Home Assistant. Addresses are resolved on the ESP32 itself, so MAC address changes are picked up instantly. Profiles 1–3 can still be picked on the remote as well.
 - **Personal control, whatever you use.** Once you're recognized, your profile is loaded before you sit down. Just press shower on the remote control, in Home Assistant or another home automation app, or in Apple Home: it runs with your settings, without picking a profile first. A profile key on the remote still overrides it.
-- **Apple HomeKit and Siri (optional).** The bridge itself becomes an Apple Home accessory. It works alongside Home Assistant or MQTT, or completely stand-alone without any other home automation system. Control your toilet from the Home app or by voice with Siri.
+- **Apple HomeKit and Siri (optional).** The bridge itself becomes an Apple Home accessory. It works alongside native API or MQTT, or completely stand-alone without any other home automation system. Control your toilet from the Home app or by voice with Siri.
 - **Concurrent connections.** Home automation, HomeKit, the remote control and one Geberit Home app, all at the same time. While the app is open, it takes priority; commands from Home Assistant, MQTT and HomeKit keep working.
 - **Automatic discovery.** Your Geberit AquaClean shower toilet is found automatically, along with the features and controls your model supports. Your home automation system shows exactly those, nothing more and nothing less.
 - **Complete visibility and control.** Device characteristics, usage and maintenance status are available to your automations.
@@ -548,7 +548,7 @@ While it's hidden, the bridge refuses maintenance commands, also from actions an
 
 </summary>
 
-The bridge itself can be an Apple Home accessory. It works alongside Home Assistant or MQTT, or completely stand-alone without any other home automation system. It appears as one accessory with up to four switches; only those your toilet has:
+The bridge itself can be an Apple Home accessory. It works alongside native API or MQTT, or completely stand-alone without any other home automation system. It appears as one accessory with up to four switches; only those your toilet has:
 
 | Switch | Works |
 |---|---|
