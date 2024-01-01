@@ -7,8 +7,8 @@
     {
       "icon": "list-checks",
       "title": "Check your model",
-      "text": "Tested on the AquaClean Sela. Mera, Tuma and Cama are supported but untested.",
-      "details": "Find the article number on the type plate or in the Geberit Home app and look it up in [Models and feature discovery](#models-and-feature-discovery).\n\n- **Tested:** AquaClean Sela.\n- **Supported, not yet tested:** AquaClean Mera Comfort, Mera Classic (also floor-standing), Tuma Comfort and Tuma Classic (seat, complete and floor-standing), and Cama. Feature discovery shows only what your toilet supports.\n- **Not supported:**\n  - AquaClean 4000: it has no app and no remote control.\n  - AquaClean Alba: it runs on Geberit's newer platform (Series 250), whose encrypted protocol v2 the bridge doesn't speak. There is a separate, experimental ESP bridge for the Alba in the [`series-250-bridge` branch](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/tree/series-250-bridge).\n\nHave a different model? See [Supporting other models](#supporting-other-models)."
+      "text": "Validated on the AquaClean Sela. Mera, Tuma and Cama are supported.",
+      "details": "Find the article number on the type plate or in the Geberit Home app and look it up in [Models and feature discovery](#models-and-feature-discovery).\n\n- **Validated:** AquaClean Sela.\n- **Supported:** AquaClean Mera Comfort, Mera Classic (also floor-standing), Tuma Comfort and Tuma Classic (seat, complete and floor-standing), and Cama. Feature discovery shows only what your toilet supports.\n- **Not supported:**\n  - AquaClean 4000: it has no app and no remote control.\n  - AquaClean Alba: it runs on Geberit's newer platform (Series 250), whose encrypted protocol v2 the bridge doesn't speak. There is a separate, experimental ESP bridge for the Alba in the [`series-250-bridge` branch](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/tree/series-250-bridge).\n\nHave a different model? See [Supporting other models](#supporting-other-models)."
     },
     {
       "icon": "map-pin",

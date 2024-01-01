@@ -24,7 +24,7 @@
   </g>
   <text x="24" y="94" class="sub">STEP 1</text>
   <text x="24" y="120" class="title">Check your model</text>
-  <text x="24" y="145" class="text">Tested on the AquaClean Sela.</text>
-  <text x="24" y="163" class="text">Mera, Tuma and Cama are supported</text>
-  <text x="24" y="181" class="text">but untested.</text>
+  <text x="24" y="145" class="text">Validated on the AquaClean Sela.</text>
+  <text x="24" y="163" class="text">Mera, Tuma and Cama are</text>
+  <text x="24" y="181" class="text">supported.</text>
 </svg>
