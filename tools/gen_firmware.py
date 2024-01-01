@@ -499,11 +499,11 @@ jobs:
           GH_TOKEN: ${{{{ github.token }}}}
         run: |
           tag=$(gh release list --repo "$GITHUB_REPOSITORY" --limit 100 --json tagName --jq 'map(.tagName | select(startswith("alba-v"))) | .[0]')
-          if [ -n "$tag" ]; then
-            gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern firmware.bin --dir site/series-250
+          if [ -n "$tag" ] && gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern firmware.bin --dir site/series-250; then
             echo "Added Alba firmware from $tag"
           else
-            echo "No Alba release yet; the Series 250 installer page ships without a binary"
+            echo "No Alba firmware.bin available (no release, or the release has no asset yet);"
+            echo "the Series 250 installer page ships without a binary. This never blocks the 248 deploy."
           fi
       - uses: actions/upload-pages-artifact@v3
         with:
