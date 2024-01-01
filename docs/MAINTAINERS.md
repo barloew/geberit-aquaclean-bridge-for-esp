@@ -44,7 +44,9 @@ static/index.html, boards.json   the web installer page (GENERATED boards.json)
 static/series-250/                the Series 250 browser flasher hosted on this branch's Pages (see section 2)
 tools/gen_firmware.py             GENERATES firmware/*.yaml, packages/mqtt_setup.yaml, static/boards.json, .github/workflows/build.yml
 tools/check_lang_keys.py          verifies all 29 lang files have identical key structure
-tools/steps/                      README install-step cards (steps.json → docs/steps/*.svg)
+tools/steps/                      README install-step cards (steps.json → images/steps/*.svg)
+tools/badges/generate.py          README platform badges (logos in images/brands/ → images/badges/*.svg)
+images/                           ALL images: overview, steps, badges, ui icons, illustrations, brands (see images/README.md)
 docs/                             models.md, routes.md, protocol.md (private-safe), TEST_PLAN.md, SOURCES.md, this file
 ```
 

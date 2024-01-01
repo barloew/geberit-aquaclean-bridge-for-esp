@@ -64,12 +64,41 @@ as libsodium 1.0.21 (`crypto_sign/ed25519/ref10`). ISC license, Copyright (c) 20
 
 | Asset | License | Where / what |
 |---|---|---|
-| **Lucide** icons (`lucide-static`) — © Lucide Contributors | ISC | The icons embedded in the installation step diagrams (`docs/steps/*.svg`); <https://lucide.dev> |
+| **Lucide** icons (`lucide-static`) — © Lucide Contributors | ISC | The icons embedded in the installation step diagrams (`images/steps/*.svg`); <https://lucide.dev> |
 | **IANA Time Zone Database** (tzdata) | Public domain | POSIX time-zone rules baked into the web-installer firmware at generation time |
+| **Node-RED** icon — by **Nick O'Leary**, OpenJS Foundation | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) | `images/brands/node-red.svg`, also embedded unmodified in `images/badges/node-red-mqtt.svg`. Attribution required; the license is recorded in the file's own metadata. |
+| Third-party logos (`images/brands/`) | Owners' brand terms, **not** this project's license | See [Logos](#logos) below |
 
-The SVG/PNG diagrams and other documentation artwork in `docs/` are original project artwork, except for the
-embedded Lucide icons noted above. The step diagrams reference common system fonts by name
-(`-apple-system`, `Segoe UI`, `Noto Sans`, …) as CSS fallbacks; no font files are embedded or redistributed.
+All images live in [`images/`](images/README.md). The overview image (`images/overview/`), the step cards
+(`images/steps/`), the line icons (`images/ui/`), the drawings (`images/illustrations/`) and the badges
+(`images/badges/`) are original project artwork under this project's license, except for the embedded
+Lucide icons, the Espressif symbol on the chip drawing, and the third-party logos embedded in the overview
+image and the badges. The step diagrams, the overview image and the badges reference common system fonts by
+name (`Inter`, `Segoe UI`, `Verdana`, …) as CSS fallbacks; no font files are embedded or redistributed.
+
+### Logos
+
+The logos in `images/brands/` are **not** covered by this project's license. They remain the property of their
+owners and are used only to show compatibility or protocol support (nominative use), unmodified. Their use
+does not suggest endorsement, certification or affiliation. Before using one somewhere new, check the owner's
+brand guidelines.
+
+| File | Owner | Source | Notes |
+|---|---|---|---|
+| `esphome.svg` | Open Home Foundation | ESPHome media assets | The "Made for ESPHome" badge is not used |
+| `home-assistant.svg` | Open Home Foundation | Home Assistant brand guidelines | The "Works with Home Assistant" badge is not used |
+| `mqtt.svg` | MQTT.org / OASIS Open | mqtt/mqttorg-graphics on GitHub | |
+| `homey.svg` | Athom B.V. | Homey press kit | |
+| `iobroker.svg` | ioBroker | ioBroker repositories | License terms to be verified (CC BY-SA 4.0 was reported) |
+| `openhab.svg` | openHAB Foundation e.V. | openHAB artwork page | The Foundation Member logo is not used |
+| `node-red.svg` | OpenJS Foundation | Node-RED resources | Icon by Nick O'Leary, CC BY 3.0 (see above) |
+| `domoticz.png` | Domoticz project | Domoticz repository | No SVG available |
+| `espressif-logo.svg` | Espressif Systems | Espressif logo guidelines | Full logo (symbol and wordmark), unmodified |
+| `espressif-symbol.svg`, `espressif-symbol-white.svg` | Espressif Systems | Derived from `espressif-logo.svg` | Symbol only (white: recoloured for the chip drawing); to be checked against Espressif's guidelines, which normally ask for symbol and wordmark |
+
+Deliberately **not** used: the Bluetooth, Wi-Fi, USB, Apple / "Works with Apple Home" and Geberit logos. Their
+use needs a membership, certification or license (Bluetooth SIG, Wi-Fi Alliance, USB-IF, Apple MFi) that this
+project doesn't have, or isn't nominative. Generic line icons from `images/ui/` stand in for them.
 
 ## Code this project is derived from (no code copied)
 
