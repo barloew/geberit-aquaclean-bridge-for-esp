@@ -34,7 +34,7 @@ surfaces:
   seat_heating: "Seat heating"
   descaling: "Descaling + shower-head cleaning"
   user_detection: "User detected / seated"
-  last_error: "Error-code label (status index 6 -> module-aware text + hex)"
+  last_error: "Error-code label (module-aware text)"
   profiles: "Bridge user profiles 1-6 (store / activate)"
   irk_recognition: "Automatic user recognition via IRK"
   remote_passthrough: "Remote control stays connected / keys pass through"
@@ -142,7 +142,7 @@ validations:
     bridge_release: "v1.36.0"
     device_firmware: "RS08 TS57"      # main control node; BT node 10.18; remote 3.60.101.900/0001
     by: "maintainer"
-    evidence: "AquaClean Sela on an AtomS3 Lite (GigaDevice flash): error 0x071B reproduced (log 8fe51613); native API + HomeKit validated on hardware (HomeKit started, Ed25519 selftest OK, accessory paired) and the toilet connected with the stored pairing key, model 146.22x.xx.1 / firmware RS08 TS57 read out."
+    evidence: "AquaClean Sela on an AtomS3 Lite (GigaDevice flash): a toilet error reproduced and labelled (log 8fe51613); native API + HomeKit validated on hardware (HomeKit started, Ed25519 selftest OK, accessory paired) and the toilet connected with the stored pairing key, model 146.22x.xx.1 / firmware RS08 TS57 read out."
   - id: sela-hw-lilygo
     model: sela
     status: validated

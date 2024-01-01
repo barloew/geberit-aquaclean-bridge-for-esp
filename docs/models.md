@@ -1,6 +1,6 @@
 # Models and their entities
 
-Every entity of the component names the capabilities it needs (`CAPS_OF` in `__init__.py`); the build stops on an entity without a classification. After the feature discovery has read the article number, an entity is created in Home Assistant only when the detected model has all its capabilities. A model that is not in the list gets only what every model has. On top of that, a setting the toilet does not answer stays hidden, and pre-flush, automatic flush and flush need the interface module for the flush actuation (status 64, bit 0).
+Every entity of the component names the capabilities it needs (`CAPS_OF` in `__init__.py`); the build stops on an entity without a classification. After the feature discovery has read the article number, an entity is created in Home Assistant only when the detected model has all its capabilities. A model that is not in the list gets only what every model has. On top of that, a setting the toilet does not answer stays hidden, and pre-flush, automatic flush and flush need the interface module for the flush actuation.
 
 ## Sources
 

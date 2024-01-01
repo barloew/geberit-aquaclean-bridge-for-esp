@@ -1,16 +1,17 @@
 # Sources
 
 The code itself carries no source references; this document lists where the knowledge in it comes from and
-where it is used. Observations are described in more detail in `docs/protocol.md`.
+where it is used. The protocol internals derived from these sources are kept in the maintainer's private
+store, outside this repository; [`protocol.md`](protocol.md) is the public, function-level overview.
 
 ## Third-party work
 
 | Source | Used for | Where |
 |---|---|---|
 | **irk-capture** by Derek Seaman and Kyle Teal, MIT license, <https://github.com/DerekSeaman/irk-capture> | The idea of IRK capture: advertise briefly as a heart rate sensor (iPhone, Apple Watch) or as a keyboard (Android) with characteristics that need encryption, so the phone pairs and hands over its Identity Resolving Key. Rewritten for Bluedroid; no code copied. | `irk_capture.cpp` |
-| **Geberit Home app 2.14.2** (`com.geberit.home`), static analysis of the decompiled .NET assemblies (`Geberit.ComLib.Bluetooth`, `AcDataPointDefinitionFactory`), supplied by the user | Data point table: status, command, setting, profile and counter ids (id = data point index minus the first index of its block), enum values, UTC/local timestamp types, the user's local time (counter 0b) next to the factory RTC in UTC, the flush trigger module bit (status 64) | `__init__.py` (entities from v1.23.0 on), `hub.cpp` (counter list, status ids, commands), `docs/protocol.md` |
-| **Geberit Home app 2.14.2**, own reading of the decompiled `Geberit.ComLib.Bluetooth.dll` (`Legacy.AquaCleanProduct`, `AcDeviceIdentification`, `AcNodeInfo`) | Every fixed request of the app with node, context and procedure, and the answer layouts: node ids (05), firmware versions (0e), node info and firmware SAP number (11, 13), Bluetooth node version (81), device identification (82: 12/20/10/40 bytes), initial operation date (86), and that 11/13 are reads, not subscriptions | `hub.cpp` (device data), `docs/protocol.md` |
-| **Geberit data point list** (DP numbers of the Mera, value ranges unvalidated) | Candidate functions and DP numbers of other models | `docs/protocol.md`, Mera / Tuma Comfort entities in `__init__.py` |
+| **Geberit Home app 2.14.2** (`com.geberit.home`), static analysis of the decompiled .NET assemblies (`Geberit.ComLib.Bluetooth`, `AcDataPointDefinitionFactory`), supplied by the user | The data-point table behind the toilet's status readouts, commands, settings, profiles and counters, the enum meanings, and the UTC/local timestamp handling | `__init__.py` (entities), `hub.cpp` |
+| **Geberit Home app 2.14.2**, own reading of the decompiled `Geberit.ComLib.Bluetooth.dll` (`Legacy.AquaCleanProduct`, `AcDeviceIdentification`, `AcNodeInfo`) | Every fixed request the app sends and the shape of each answer: node and device information, firmware versions, the firmware SAP number, and the initial-operation date | `hub.cpp` (device data) |
+| **Geberit data point list** (the Mera's functions, value ranges unvalidated) | Candidate functions of other models | Mera / Tuma Comfort entities in `__init__.py` |
 | **Geberit AquaClean model overview** | Article number prefixes per model and the functions of each model | `MODELS` and feature tables in `__init__.py`, feature discovery in `hub.cpp` |
 | **Lucide** icons (`lucide-static`), ISC license, <https://lucide.dev> | The icons on the installation step cards, embedded in the SVGs | `images/steps/*.svg`, `tools/steps/generate.py` |
 | **tzdata** (IANA time zone database, public domain), via ESPHome and aioesphomeapi | The POSIX rules of the time zones of the web installer firmware (both routes), parsed at generation time | `packages/timezone.yaml`, `tools/gen_firmware.py` |
@@ -21,13 +22,13 @@ where it is used. Observations are described in more detail in `docs/protocol.md
 
 | What | Used in |
 |---|---|
-| GATT tables of the toilet and the remote control | `hub.cpp` (service and characteristic UUIDs), `remote_link.cpp` (handles of the remote control) |
+| GATT tables of the toilet and the remote control | `hub.cpp`, `remote_link.cpp` |
 | Sniffle recordings of the toilet's advertisement and scan response | `remote_link.cpp` (advertising as the toilet) |
 | Decrypted recording of the toilet pairing with the remote control | `toilet_side.cpp` (GATT server layout of the remote control) |
-| App traffic: the requests after connecting, the acknowledgement of large answers, the fixed fields of answer 82, the CRC | `hub.cpp` |
-| Test: a stored common setting (52) changes the light only after it switches on again; the active layer (0b) changes it at once | `hub.cpp` (`write_setting`) |
+| App traffic: the requests after connecting, the acknowledgement of large answers, the device-identification answer, and the frame checksum | `hub.cpp` |
+| Test: a stored setting changes the light only after it switches on again; the active layer changes it at once | `hub.cpp` (`write_setting`) |
 | Counters: showers today and days until descaling, rollover once a night | `hub.cpp` (counter list) |
-| The app writes its user profile as session settings when connecting; profile keys of the remote control copy a toilet profile into the session; commissioning date via proc 86 in context 00 | `hub.cpp`, `__init__.py` |
+| The app writes its user profile as session settings when connecting; profile keys of the remote control copy a toilet profile into the session; the commissioning date is read on connect | `hub.cpp`, `__init__.py` |
 | Bluedroid loses the bond with the toilet while connected and logs `BTM_GetSecurityFlags failed` for hours | `toilet_side.cpp` (bond watchdog) |
 | After a software restart the ESP32 applies the time zone only after the first time sync; before v1.24.4 the ESP therefore wrote UTC to the toilet clock | `hub.h`, `hub.cpp` (clock) |
 | The Sela answers some setting ids of functions it does not have (pre-flush, automatic flush, light sensor sensitivity) | `__init__.py` (flush entities need the flush module) |

@@ -32,7 +32,7 @@ Branch **main**
 | Orientation light | `validated` |
 | Descaling + shower-head cleaning | `validated` |
 | User detected / seated | `validated` |
-| Error-code label (status index 6 -> module-aware text + hex) | `validated` |
+| Error-code label (module-aware text) | `validated` |
 | Bridge user profiles 1-6 (store / activate) | `validated` |
 | Automatic user recognition via IRK | `validated` |
 | Remote control stays connected / keys pass through | `validated` |

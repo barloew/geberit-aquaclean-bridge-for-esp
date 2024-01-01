@@ -475,7 +475,7 @@ ENTITIES: list[Ent] = [
     Ent("lady_shower_active", "status", G_SESSION, {"device_class": "running", CONF_ICON: "mdi:shower"}, setting=(2,)),
     Ent("shower_toggle", "button", G_SESSION, {CONF_ICON: "mdi:shower-head"}, action=BTN_SHOWER),
     Ent("lady_shower_toggle", "button", G_SESSION, {CONF_ICON: "mdi:shower"}, action=BTN_LADY_SHOWER),
-    # Status and commands (docs/protocol.md)
+    # Status and commands (see the private reverse-engineering package)
     Ent("dryer_active", "status", G_SESSION, {"device_class": "running", CONF_ICON: "mdi:hair-dryer"}, setting=(3,)),
     _cmd("dryer_toggle", G_SESSION, 0x02, "mdi:hair-dryer"),
     _cmd("stop_all", G_SESSION, 0x03, "mdi:stop-circle-outline"),  # models with a dryer: "stop shower and dryer"

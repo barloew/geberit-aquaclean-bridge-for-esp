@@ -396,7 +396,7 @@ Shower, Lady shower and dryer only start while someone is seated, whichever way 
 
 Settings don't need anyone seated. Session settings can be written before sitting down; the toilet keeps them for the next session (that's how a recognized user's profile is loaded in advance). Profiles can be changed and stored at any time, from the bridge or the app. Only the quick store on the front of the remote control (long press of a profile key) stores the settings that are active at that moment, so in practice that one is used while seated.
 
-All ids come from the data point table of the Geberit Home app 2.14.2 (see [`docs/protocol.md`](docs/protocol.md)); those of the Sela are validated on a toilet.
+The functions and settings follow the Geberit Home app 2.14.2; those on the Sela are validated on a real toilet. See [`docs/protocol.md`](docs/protocol.md) for a function-level overview.
 
 ### Renaming or hiding entities
 
@@ -536,10 +536,10 @@ Newer or other AquaClean models may advertise and answer differently. The discov
 | Raw status | All 12 status values; unknown indexes show up here first |
 | Toilet advertisement | Name, manufacturer data and services the toilet advertises |
 | Procedures seen | Which requests the app uses, and how often |
-| Scan settings → Settings scan | Which setting ids 00–1f answer for every kind (session 07, default 53, common 51, schedule 57); values in the log |
+| Scan settings → Settings scan | Which settings answer for each kind; values in the log |
 | Last response | Answer to a raw request |
 
-Raw requests can be sent from Home Assistant (native API route) with the action `esphome.<node>_aquaclean_raw_request` (context, procedure and args as hex strings, e.g. `context: "01"`, `procedure: "53"`, `args: "0103"`). On any route — so also over MQTT, from Homey or ioBroker — the **Raw request** field (a diagnostic entity, hidden until enabled) does the same: type the three hex values separated by spaces, e.g. `01 53 0103`; the answer appears in **Last response**.
+Raw requests can be sent from Home Assistant (native API route) with the action `esphome.<node>_aquaclean_raw_request` (context, procedure and args as hex strings). On any route — so also over MQTT, from Homey or ioBroker — the **Raw request** field (a diagnostic entity, hidden until enabled) does the same: type the three hex values (context, procedure, args) separated by spaces; the answer appears in **Last response**.
 
 A practical route for a new model:
 
@@ -599,7 +599,7 @@ Arabic, Hebrew, Russian, Ukrainian, Chinese and Korean use no Latin letters, whi
 - **Sharing a log in a public issue.** Set `log_obfuscate: "true"` (substitution) to mask Bluetooth addresses, user names, linked devices, the serial number and keys down to their last four characters. Copy the log from the bridge's web interface: the `[S]` lines of the ESPHome log viewer are not masked.
 - **Timeouts.** An unanswered request is retried once before it counts; a single missed status poll is left to the next poll. Around 1% missed polls is normal with Wi-Fi and Bluetooth on one radio.
 - **Bond watchdog.** If the bond with the toilet disappears while connected, the bridge reconnects within 30 s.
-- **Protocol.** The protocol is described in [`docs/protocol.md`](docs/protocol.md); its sources are listed in [`docs/SOURCES.md`](docs/SOURCES.md).
+- **Protocol.** A function-level overview is in [`docs/protocol.md`](docs/protocol.md); its sources are listed in [`docs/SOURCES.md`](docs/SOURCES.md). The reverse-engineering internals are kept private, outside this repository.
 
 ## Trademark & Legal Disclaimer
 

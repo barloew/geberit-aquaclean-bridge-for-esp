@@ -20,7 +20,7 @@ promotes a surface from `supported` to `validated` in `support/matrix.yaml`.
 | `sela/orientation_light` | Orientation light | `validated` |  |  |  |  |
 | `sela/descaling` | Descaling + shower-head cleaning | `validated` |  |  |  |  |
 | `sela/user_detection` | User detected / seated | `validated` |  |  |  |  |
-| `sela/last_error` | Error-code label (status index 6 -> module-aware text + hex) | `validated` |  |  |  |  |
+| `sela/last_error` | Error-code label (module-aware text) | `validated` |  |  |  |  |
 | `sela/profiles` | Bridge user profiles 1-6 (store / activate) | `validated` |  |  |  |  |
 | `sela/irk_recognition` | Automatic user recognition via IRK | `validated` |  |  |  |  |
 | `sela/remote_passthrough` | Remote control stays connected / keys pass through | `validated` |  |  |  |  |
