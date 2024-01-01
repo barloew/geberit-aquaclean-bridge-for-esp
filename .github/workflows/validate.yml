@@ -78,6 +78,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        route: [api, mqtt]
         board: [atoms3-lite, atoms3r, xiao-esp32s3]
         language: [en, nl, de]
     steps:
@@ -89,4 +90,4 @@ jobs:
           python-version: "3.12"
       - run: pip install esphome==2026.10.2
       - name: Validate config
-        run: esphome config firmware/aquaclean-${{ matrix.board }}-${{ matrix.language }}.yaml
+        run: esphome config firmware/aquaclean-${{ matrix.route }}-${{ matrix.board }}-${{ matrix.language }}.yaml
