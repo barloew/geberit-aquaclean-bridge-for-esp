@@ -24,6 +24,7 @@ promotes a surface from `supported` to `validated` in `support/matrix.yaml`.
 | `sela/profiles` | Bridge user profiles 1-6 (store / activate) | `validated` |  |  |  |  |
 | `sela/irk_recognition` | Automatic user recognition via IRK | `validated` |  |  |  |  |
 | `sela/remote_passthrough` | Remote control stays connected / keys pass through | `validated` |  |  |  |  |
+| `sela/flush` | Pre-flush / automatic flush | `supported` |  |  |  |  |
 
 ## AquaClean Mera Comfort  (`supported`)
 

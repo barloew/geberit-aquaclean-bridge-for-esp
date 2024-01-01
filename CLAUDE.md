@@ -98,6 +98,16 @@ themselves in the docs just as clearly as a Home Assistant user.
 - No AI attribution: never add `Co-Authored-By`, `Claude-Session` or other AI author/co-author lines
   to commits, PRs or files. The maintainer is the author.
 
+### Support claims follow the matrix
+
+- `support/matrix.yaml` is the single source of truth for what is validated, supported, builds or is
+  unsupported (models, features, routes, boards). The README, `docs/`, the step cards and the overview
+  image **always follow it**; never write a support claim that the matrix doesn't make.
+- To change a claim, change `support/matrix.yaml` first, run `python3 support/generate.py`
+  (regenerates `docs/SUPPORT.md`, `support/TEST_FORM.md`, `support/_generated/caption.txt`), then
+  bring the README and docs in line. Use the matrix's own terms (validated / supported / builds /
+  unsupported); `validated` needs a validation record.
+
 ### Images and logos
 
 - **All images live in the top-level `images/`** (layout and per-file notes in `images/README.md`):

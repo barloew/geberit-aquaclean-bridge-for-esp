@@ -92,9 +92,11 @@ The bridge needs an ESP32-S3 with **at least 8 MB flash**, dedicated to the brid
 
 | Board | Package | Status |
 |---|---|---|
-| M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, tested |
+| M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, validated |
 | M5Stack AtomS3R | `board-atoms3r.yaml` | Builds, not yet tested on hardware |
 | Seeed XIAO ESP32S3 (also Plus) | `board-xiao-esp32s3.yaml` | Builds, not yet tested on hardware. Connect the included U.FL antenna. |
+
+Other ESP32-S3 boards with at least 8 MB flash build too, but haven't been tested on hardware.
 
 The web installer has firmware for all three. In ESPHome YAML, choose the board with the `board:` line, for example `.../packages/board-atoms3r.yaml@v1.36.0`. See [Hardware](#hardware) for status indicators and buttons per board.
 
@@ -174,9 +176,11 @@ The bridge needs a **dedicated ESP32-S3 with at least 8 MB flash**: one bridge p
 
 | Board | Package | Status |
 |---|---|---|
-| M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, tested |
+| M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, validated |
 | M5Stack AtomS3R | `board-atoms3r.yaml` | Builds, not yet tested on hardware |
 | Seeed XIAO ESP32S3 (also Plus) | `board-xiao-esp32s3.yaml` | Builds, not yet tested on hardware |
+
+Other ESP32-S3 boards with at least 8 MB flash build too, but haven't been tested on hardware.
 
 ### M5Stack AtomS3 Lite
 
@@ -319,7 +323,7 @@ Your home automation system shows nine devices, whichever route you use (names f
 
 Seat heating, dryer, odor extraction, the automatic lid, pre-flush, WC water heating and accessibility mode exist on other models; [feature discovery](#models-and-feature-discovery) hides them on models without them. Light sensor sensitivity is on the Sela.
 
-- **Flush** and **automatic flush** need Geberit's interface module for the flush actuation, except on the floor-standing Mera where it is built in. They appear on the Mera Comfort and Classic, the Sela (from 2019, optional) and the Tuma Comfort complete system (optional) once the bridge sees the module. The Tuma Classic and the Alba have no flush actuation.
+- **Flush** and **automatic flush** need Geberit's interface module for the flush actuation, except on the floor-standing Mera where it is built in. They appear on the Mera Comfort and Classic, the Sela (from 2019, optional) and the Tuma Comfort complete system (optional) once the bridge sees the module. On the Sela, flushing is supported but not validated: the Sela it was validated on has no interface module. The Tuma Classic and the Alba have no flush actuation.
 - **Draining** appears only on the Cama (from the app's data points). The Sela (from 2019), Mera and Tuma refresh and drain the water themselves; only the old boiler models (AquaClean 4000, 5000, 8000, Sela before 2019) have a drain screw.
 - **Connected modules**, **arm offsets** and **arm position adjustment** are disabled by default.
 - The **trial period** sensors appear only on the Cama test set (146.30x), a Geberit trial unit that isn't sold.
@@ -433,7 +437,7 @@ The **In this bridge** column: ✓ supported (Series 248 protocol); ✗ not reac
 |---|---|---|---|
 | AquaClean Mera Comfort (Series 248) | 146.21x | All except light sensor: also orientation light, heated seat, dryer, odor extraction, automatic lid. Flush actuation with the interface module | ✓ |
 | AquaClean Mera Classic | 146.20x, floor-standing 146.24x | Lady shower, oscillation, water temperature, spray arm, descaling, user detection, dryer, odor extraction. Flush actuation with the interface module (built in on the floor-standing version) | ✓ |
-| AquaClean Sela | 146.22x | Orientation light with light sensor, Lady shower, oscillation, water temperature, spray arm, descaling, user detection. Flush actuation with the interface module (optional, from 2019) | ✓ validated |
+| AquaClean Sela | 146.22x | Orientation light with light sensor, Lady shower, oscillation, water temperature, spray arm, descaling, user detection. Flush actuation with the interface module (optional, from 2019; supported, not validated) | ✓ validated |
 | AquaClean Tuma Comfort | Seat 146.27x, complete 146.29x, floor-standing 146.31x | As Mera Classic, plus heated seat. Flush actuation only on the complete system, with the interface module | ✓ |
 | AquaClean Tuma Classic | Seat 146.07x, complete 146.09x, floor-standing 146.32x | Oscillation, water temperature, spray arm, descaling | ✓ |
 | AquaClean Cama | 146.34x | Water temperature, descaling, user detection | ✓ |

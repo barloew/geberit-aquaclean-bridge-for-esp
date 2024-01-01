@@ -66,11 +66,12 @@ models:
       profiles: validated
       irk_recognition: validated
       remote_passthrough: validated
+      # with Geberit's interface module (optional, from 2019); the validation Sela has no module:
+      flush: supported
       # absent on the Sela (README: these exist on larger models):
       dryer: unsupported
       odor_extraction: unsupported
       auto_lid: unsupported
-      flush: unsupported
       seat_heating: unsupported
 
   mera-comfort:
@@ -124,10 +125,10 @@ routes_status:
 
 # Hardware boards the firmware targets.
 boards:
-  esp32-s3-generic: { status: validated, note: "reference board (>=8 MB flash)" }
+  m5stack-atoms3-lite: { status: validated, validation: sela-hw, note: "recommended; reference board" }
   m5stack-atoms3r: { status: builds, note: "builds, not yet tested on hardware" }
-  m5stack-atoms3-lite: { status: builds, note: "builds, not yet tested on hardware" }
   xiao-esp32s3: { status: builds, note: "builds (also Plus), not yet tested on hardware" }
+  esp32-s3-generic: { status: builds, note: "any ESP32-S3 with >=8 MB flash; builds, not yet tested on hardware" }
 
 # Evidence records. A `validated` status must reference one of these.
 validations:

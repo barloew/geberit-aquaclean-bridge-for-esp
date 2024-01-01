@@ -36,10 +36,10 @@ Branch **main**
 | Bridge user profiles 1-6 (store / activate) | `validated` |
 | Automatic user recognition via IRK | `validated` |
 | Remote control stays connected / keys pass through | `validated` |
+| Pre-flush / automatic flush | `supported` |
 | Dryer | `unsupported` |
 | Odor extraction | `unsupported` |
 | Automatic lid | `unsupported` |
-| Pre-flush / automatic flush | `unsupported` |
 | Seat heating | `unsupported` |
 
 ## Integration routes
@@ -54,10 +54,10 @@ Branch **main**
 
 | Board | Status | Note |
 |---|---|---|
-| esp32-s3-generic | `validated` | reference board (>=8 MB flash) |
+| m5stack-atoms3-lite | `validated` | recommended; reference board |
 | m5stack-atoms3r | `builds` | builds, not yet tested on hardware |
-| m5stack-atoms3-lite | `builds` | builds, not yet tested on hardware |
 | xiao-esp32s3 | `builds` | builds (also Plus), not yet tested on hardware |
+| esp32-s3-generic | `builds` | any ESP32-S3 with >=8 MB flash; builds, not yet tested on hardware |
 
 ## AquaClean device firmware seen
 
