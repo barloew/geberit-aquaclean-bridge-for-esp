@@ -36,3 +36,8 @@ api:
 time:
   - platform: homeassistant
     id: aquaclean_time
+  # Fallback clock for native-API controllers that provide no time of their own (Homey, ioBroker): every time
+  # platform updates the same system clock, so SNTP keeps aquaclean_time.now() valid when no Home Assistant is
+  # connected. Home Assistant users are unaffected (HA time still syncs and sets the time zone).
+  - platform: sntp
+    id: aquaclean_sntp

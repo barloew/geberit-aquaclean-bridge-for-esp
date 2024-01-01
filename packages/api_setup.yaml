@@ -1,0 +1,35 @@
+# route: api with a RUNTIME encryption key — codeless onboarding for native-API controllers
+# (Homey, ioBroker, Home Assistant). Chosen with the substitution "route: api_setup".
+# Never together with route_mqtt.yaml.
+#
+# The key is NOT in YAML: the device boots keyless (unencrypted native API) and you set a 32-byte base64 key
+# once at http://<device>/setup or via the "AquaClean Setup" captive portal. save_noise_psk() then stores it
+# in flash and enables encryption. This needs api: encryption: {} with no key (a YAML key compiles the runtime
+# setter out), which this file provides.
+#
+# Security note: until a key is set the native API is unencrypted on the LAN (same posture as the plain-MQTT
+# web-installer image). Set a key to harden. The /setup endpoint refuses to overwrite an active key.
+
+esphome:
+  includes:
+    - psk_setup.h
+  on_boot:
+    priority: -100   # web_server_base is initialised by now
+    then:
+      - lambda: 'geberit_aquaclean::register_psk_endpoint(id(aquaclean_web_server_base));'
+
+packages:
+  api: !include api.yaml
+
+api:
+  encryption: {}
+
+web_server_base:
+  id: aquaclean_web_server_base
+
+web_server:
+  port: 80
+  local: true
+
+# captive_portal is provided by provisioning.yaml (always paired with this route); the /setup and
+# /api/set_psk endpoints attach to the shared web_server_base, so they also work on the captive portal.
