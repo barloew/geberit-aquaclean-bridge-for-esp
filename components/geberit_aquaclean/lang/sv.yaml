@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Senaste toalettbesökets längd"
   stat_avg_sitting: "Genomsnittlig längd toalettbesök"
   read_statistics: "Läs statistik"
+  homekit_enable: "Apple Home"
   homekit_qr: "Visa HomeKit-QR-kod"
   maintenance_mode: "Fysiskt underhåll"
   seated: "Användare upptäckt"

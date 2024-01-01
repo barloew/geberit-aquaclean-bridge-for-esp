@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Son klozet kullanım süresi"
   stat_avg_sitting: "Ortalama klozet kullanım süresi"
   read_statistics: "İstatistikleri oku"
+  homekit_enable: "Apple Home"
   homekit_qr: "HomeKit QR kodunu göster"
   maintenance_mode: "Fiziksel bakım"
   seated: "Kullanıcı algılandı"

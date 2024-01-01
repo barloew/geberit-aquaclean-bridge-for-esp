@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Paskutinio apsilankymo tualete trukmė"
   stat_avg_sitting: "Vidutinė apsilankymo tualete trukmė"
   read_statistics: "Nuskaityti statistiką"
+  homekit_enable: "Apple Home"
   homekit_qr: "Rodyti HomeKit QR kodą"
   maintenance_mode: "Fizinė priežiūra"
   seated: "Vartotojas aptiktas"

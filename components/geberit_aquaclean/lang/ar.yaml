@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "مدة آخر زيارة للمرحاض"
   stat_avg_sitting: "متوسط مدة زيارة المرحاض"
   read_statistics: "قراءة الإحصائيات"
+  homekit_enable: "Apple Home"
   homekit_qr: "عرض رمز QR لـ HomeKit"
   maintenance_mode: "الصيانة الفعلية"
   seated: "تم اكتشاف مستخدم"

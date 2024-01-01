@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Czas ostatniej wizyty w toalecie"
   stat_avg_sitting: "Średni czas wizyty w toalecie"
   read_statistics: "Odczytaj statystyki"
+  homekit_enable: "Apple Home"
   homekit_qr: "Pokaż kod QR HomeKit"
   maintenance_mode: "Konserwacja fizyczna"
   seated: "Wykryto użytkownika"

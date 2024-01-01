@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Last toilet visit duration"
   stat_avg_sitting: "Average toilet visit duration"
   read_statistics: "Read statistics"
+  homekit_enable: "Apple Home"
   homekit_qr: "Show HomeKit QR code"
   maintenance_mode: "Physical maintenance"
   # Shower session (the running session; ignored while nobody is seated)

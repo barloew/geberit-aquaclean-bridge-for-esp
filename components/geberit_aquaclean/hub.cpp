@@ -136,6 +136,7 @@ void AquaCleanHub::setup() {
     if (sw->action() == SW_PAIRING) on = false;
     this->switch_action(sw, sw->action(), on);
   }
+  this->switches_restored_ = true;  // from here a SW_HOMEKIT toggle is a user action, not a restore
 }
 
 void AquaCleanHub::apply_language_() {
@@ -2008,6 +2009,20 @@ void AquaCleanHub::switch_action(HubSwitch *sw, uint8_t action, bool state) {
     case SW_DISCOVERY:
       this->discovery_ = state;
       ESP_LOGI(TAG, LT("Discovery mode %s"), state ? LT("on") : LT("off"));
+      break;
+    case SW_HOMEKIT:
+#ifdef USE_AQUACLEAN_HOMEKIT
+      this->hk_runtime_enabled_ = state;
+      // Turning on starts HomeKit live from the loop; turning it off needs a restart (the SDK has no clean
+      // stop). Only react to a real user toggle, not to the boot-time restore of the switch state.
+      if (this->switches_restored_ && !state && this->hk_started_) {
+        ESP_LOGI(TAG, LT("HomeKit off, restarting"));
+        this->set_timeout("hk_apply", 800, []() {
+          global_preferences->sync();
+          App.safe_reboot();
+        });
+      }
+#endif
       break;
     default:
       break;

@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Trajanje poslednje posete WC-u"
   stat_avg_sitting: "Prosečno trajanje posete WC-u"
   read_statistics: "Čitaj statistiku"
+  homekit_enable: "Apple Home"
   homekit_qr: "Prikaži HomeKit QR kod"
   maintenance_mode: "Fizičko održavanje"
   seated: "Korisnik prepoznat"

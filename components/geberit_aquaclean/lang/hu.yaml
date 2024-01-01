@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Utolsó toalett-látogatás időtartama"
   stat_avg_sitting: "Toalett-látogatás átlagos időtartama"
   read_statistics: "Statisztika olvasása"
+  homekit_enable: "Apple Home"
   homekit_qr: "HomeKit QR-kód megjelenítése"
   maintenance_mode: "Fizikai karbantartás"
   seated: "Felhasználó érzékelve"

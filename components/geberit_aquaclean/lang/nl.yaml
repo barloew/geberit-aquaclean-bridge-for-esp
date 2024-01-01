@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Duur laatste toiletbezoek"
   stat_avg_sitting: "Gemiddelde duur toiletbezoek"
   read_statistics: "Statistieken lezen"
+  homekit_enable: "Apple Home"
   homekit_qr: "HomeKit-QR-code tonen"
   maintenance_mode: "Fysiek onderhoud"
   seated: Gebruiker gedetecteerd

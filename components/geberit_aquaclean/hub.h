@@ -366,6 +366,9 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
     this->hk_setup_code_ = setup_code;
     this->hk_reset_ = reset_pairings;
   }
+  /// Initial run state of HomeKit. Always-on builds (homekit: enabled: true) pass true here; builds with the
+  /// runtime toggle pass false, and the SW_HOMEKIT switch sets it from its restored state.
+  void set_homekit_runtime_enabled(bool on) { this->hk_runtime_enabled_ = on; }
   void set_homekit_name(uint8_t i, const char *name) { this->hk_names_[i] = name; }
   void set_homekit_entities(binary_sensor::BinarySensor *shower, binary_sensor::BinarySensor *lady,
                             binary_sensor::BinarySensor *dryer, switch_::Switch *odor) {
@@ -395,6 +398,7 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
   bool hk_reset_due_{false};
   ESPPreferenceObject hk_reset_pref_;
   bool hk_started_{false};
+  bool hk_runtime_enabled_{false};  // gates homekit_start_(); set by codegen or the SW_HOMEKIT switch
   const char *hk_names_[4]{};
   binary_sensor::BinarySensor *hk_flags_[3]{};
   switch_::Switch *hk_odor_{nullptr};
@@ -509,6 +513,7 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
   void publish_status_enum_(StatusEnum &e);
   std::vector<SettingEntity *> settings_;
   std::vector<HubSwitch *> switches_;
+  bool switches_restored_{false};  // true once the boot-time restore of switch states has finished
   std::vector<SettingSelect *> selects_;
 
   // language

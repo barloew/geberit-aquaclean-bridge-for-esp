@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "최근 화장실 방문 시간"
   stat_avg_sitting: "평균 화장실 방문 시간"
   read_statistics: "통계 읽기"
+  homekit_enable: "Apple Home"
   homekit_qr: "HomeKit QR 코드 표시"
   maintenance_mode: "현장 유지관리"
   seated: "사용자 감지됨"

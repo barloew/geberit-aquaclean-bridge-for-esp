@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Pēdējā tualetes apmeklējuma ilgums"
   stat_avg_sitting: "Vidējais tualetes apmeklējuma ilgums"
   read_statistics: "Nolasīt statistiku"
+  homekit_enable: "Apple Home"
   homekit_qr: "Rādīt HomeKit QR kodu"
   maintenance_mode: "Fiziskā apkope"
   seated: "Lietotājs konstatēts"

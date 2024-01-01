@@ -405,8 +405,9 @@ void AquaCleanHub::homekit_loop_(uint32_t now) {
     if (this->hk_qr_due_ && this->homekit_notify_qr_(true)) this->hk_qr_due_ = false;
   }
   if (!this->hk_started_) {
-    // after the stored feature set decided which entities exist, and with a network
-    if (now > 5000 && network::is_connected()) this->homekit_start_();
+    // after the stored feature set decided which entities exist, and with a network; only when enabled
+    // (always-on builds set this at codegen, the runtime-toggle build from the HomeKit switch)
+    if (this->hk_runtime_enabled_ && now > 5000 && network::is_connected()) this->homekit_start_();
     return;
   }
   if (this->hk_layout_due_ && this->hk_started_ && hap_update_config_number() == HAP_SUCCESS) {

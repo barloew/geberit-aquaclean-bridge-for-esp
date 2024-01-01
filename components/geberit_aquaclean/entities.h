@@ -175,6 +175,7 @@ enum SwitchAction : uint8_t {
   SW_DISCOVERY = 3,
   SW_IRK_ANDROID = 4,
   SW_MAINTENANCE = 5,
+  SW_HOMEKIT = 6,
 };
 
 class HubButton : public button::Button {

@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Duración de la última visita"
   stat_avg_sitting: "Duración media de la visita"
   read_statistics: "Leer estadísticas"
+  homekit_enable: "Apple Home"
   homekit_qr: "Mostrar código QR de HomeKit"
   maintenance_mode: "Mantenimiento físico"
   seated: Usuario detectado

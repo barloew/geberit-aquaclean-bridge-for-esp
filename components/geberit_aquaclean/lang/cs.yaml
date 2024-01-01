@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Doba poslední návštěvy toalety"
   stat_avg_sitting: "Průměrná doba návštěvy toalety"
   read_statistics: "Načíst statistiky"
+  homekit_enable: "Apple Home"
   homekit_qr: "Zobrazit QR kód HomeKit"
   maintenance_mode: "Fyzická údržba"
   seated: "Uživatel rozpoznán"

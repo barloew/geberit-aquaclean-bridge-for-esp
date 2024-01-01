@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Varighed sidste toiletbesøg"
   stat_avg_sitting: "Gennemsnitlig varighed toiletbesøg"
   read_statistics: "Læs statistik"
+  homekit_enable: "Apple Home"
   homekit_qr: "Vis HomeKit-QR-kode"
   maintenance_mode: "Fysisk vedligeholdelse"
   seated: "Bruger registreret"

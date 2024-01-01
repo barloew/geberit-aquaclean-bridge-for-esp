@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Durata ultimei vizite la toaletă"
   stat_avg_sitting: "Durata medie a vizitei la toaletă"
   read_statistics: "Citire statistici"
+  homekit_enable: "Apple Home"
   homekit_qr: "Afișează codul QR HomeKit"
   maintenance_mode: "Întreținere fizică"
   seated: "Utilizator detectat"

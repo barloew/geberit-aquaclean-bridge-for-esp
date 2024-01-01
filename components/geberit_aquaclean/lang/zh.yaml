@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "上次如厕时长"
   stat_avg_sitting: "如厕平均时长"
   read_statistics: "读取统计"
+  homekit_enable: "Apple Home"
   homekit_qr: "显示 HomeKit 二维码"
   maintenance_mode: "现场维护"
   seated: "检测到用户"

@@ -92,6 +92,7 @@ CONF_ENABLED = "enabled"
 CONF_PORT = "port"
 CONF_SETUP_CODE = "setup_code"
 CONF_RESET_PAIRINGS = "reset_pairings"
+CONF_RUNTIME_TOGGLE = "runtime_toggle"
 # esp-homekit-sdk, ESPHome variant (mdns left to ESPHome), vendored in homekit_sdk/ (see its README)
 HOMEKIT_SDK_DIR = Path(__file__).resolve().parent.parent.parent / "homekit_sdk"
 HOMEKIT_SDK_COMPONENTS = ["esp_hap_core", "esp_hap_apple_profiles", "esp_hap_platform", "hkdf-sha", "mu_srp"]
@@ -125,6 +126,9 @@ HOMEKIT_SCHEMA = cv.All(
             cv.Optional(CONF_PORT, default=32042): cv.port,
             # true: forget all Apple Home pairings at the next start (set back to false afterwards)
             cv.Optional(CONF_RESET_PAIRINGS, default=False): cv.boolean,
+            # true: HomeKit is compiled in but starts only when the "Apple Home" switch is on (the switch
+            # appears, default off). false (default): HomeKit always starts, as before, with no switch.
+            cv.Optional(CONF_RUNTIME_TOGGLE, default=False): cv.boolean,
         }
     ),
     _homekit_sockets,
@@ -244,7 +248,8 @@ BTN_IRK_CAPTURE = 64  # + profile number
 BTN_IRK_SHOW = 80  # + profile number
 BTN_ACTIVATE_PROFILE = 16  # + profile number (1-4)
 BTN_STORE_PROFILE = 32  # + profile number
-SW_FORWARD, SW_PAIRING, SW_ADVERTISE, SW_DISCOVERY, SW_IRK_ANDROID, SW_MAINTENANCE = range(6)
+(SW_FORWARD, SW_PAIRING, SW_ADVERTISE, SW_DISCOVERY, SW_IRK_ANDROID, SW_MAINTENANCE,
+ SW_HOMEKIT) = range(7)
 
 G_SESSION = "session"
 G_DEFAULTS = "defaults"
@@ -702,6 +707,10 @@ ENTITIES: list[Ent] = [
     # toilet answers before they become sensors
     Ent("read_statistics", "button", G_MAIN, {CONF_ICON: "mdi:chart-box-outline", CONF_ENTITY_CATEGORY: DIAG},
         action=BTN_READ_STATS, discovery=True),
+    # HomeKit: runtime on/off switch (only with homekit runtime_toggle; default off). Turning it on starts
+    # HomeKit; turning it off restarts the bridge without it. See _homekit_to_code for the gating.
+    Ent("homekit_enable", "hub_switch", G_MAIN, {CONF_ICON: "mdi:apple", CONF_ENTITY_CATEGORY: CONFIG,
+        "restore_mode": "RESTORE_DEFAULT_OFF"}, action=SW_HOMEKIT, homekit=True),
     # HomeKit: show the setup QR code again (Home Assistant notification; page /homekit with the web server)
     Ent("homekit_qr", "button", G_MAIN, {CONF_ICON: "mdi:qrcode", CONF_ENTITY_CATEGORY: CONFIG},
         action=BTN_HOMEKIT_QR, homekit=True),
@@ -819,7 +828,7 @@ ESP_ONLY = {
     "app_connected", "irk_android", "advertise", "recognized_user", "active_user",
     "search_devices", "recognition_threshold", "toilet_address", "search_toilet", "maintenance_mode", "discovery",
     "toilet_advertisement", "read_statistics", "procedures_seen", "scan_settings", "settings_scan", "read_device_info", "device_data",
-    "counters", "raw_status", "last_response", "toilet_signal", "homekit_qr",
+    "counters", "raw_status", "last_response", "toilet_signal", "homekit_enable", "homekit_qr",
     "bridge_health", "free_heap", "min_free_heap", "largest_free_block",
 }
 TOILET_CORE = {
@@ -1064,6 +1073,11 @@ def _expand_entities(config: dict) -> dict:
             if e.key in config:
                 raise cv.Invalid(f"'{e.key}' needs '{CONF_HOMEKIT}'", path=[e.key])
             continue
+        # the Apple Home on/off switch exists only with homekit: runtime_toggle: true
+        if e.key == "homekit_enable" and not (has_homekit and config[CONF_HOMEKIT].get(CONF_RUNTIME_TOGGLE)):
+            if e.key in config:
+                raise cv.Invalid("'homekit_enable' needs homekit: runtime_toggle: true", path=[e.key])
+            continue
         user = config.get(e.key) or {}
         if not isinstance(user, dict):
             raise cv.Invalid("expected entity options (name, icon, disabled_by_default, ...)", path=[e.key])
@@ -1234,6 +1248,8 @@ async def _homekit_to_code(hub, config, lang, created_vars):
     add_idf_sdkconfig_option("CONFIG_MBEDTLS_HKDF_C", True)
     cg.add_define("USE_AQUACLEAN_HOMEKIT")
     cg.add(hub.set_homekit(hk.get(CONF_SETUP_CODE, ""), hk[CONF_RESET_PAIRINGS]))
+    # With the runtime toggle, HomeKit waits for the "Apple Home" switch (default off); otherwise it is on.
+    cg.add(hub.set_homekit_runtime_enabled(not hk.get(CONF_RUNTIME_TOGGLE, False)))
     names = [lang["buttons"]["shower"], lang["buttons"]["lady_shower"], lang["names"]["dryer"],
              lang["names"]["odor_extraction"]]
     for i, n in enumerate(names):

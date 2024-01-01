@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Viimase WC külastuse kestus"
   stat_avg_sitting: "WC külastuse keskmine kestus"
   read_statistics: "Loe statistikat"
+  homekit_enable: "Apple Home"
   homekit_qr: "Näita HomeKiti QR-koodi"
   maintenance_mode: "Füüsiline hooldus"
   seated: "Kasutaja tuvastatud"

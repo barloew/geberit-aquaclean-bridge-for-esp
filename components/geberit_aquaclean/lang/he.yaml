@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "משך הביקור האחרון באסלה"
   stat_avg_sitting: "משך ביקור ממוצע באסלה"
   read_statistics: "קריאת סטטיסטיקה"
+  homekit_enable: "Apple Home"
   homekit_qr: "הצג קוד QR של HomeKit"
   maintenance_mode: "תחזוקה פיזית"
   seated: "זוהה משתמש"

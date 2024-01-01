@@ -34,6 +34,7 @@ names:
   stat_last_sitting: "Durée de la dernière visite WC"
   stat_avg_sitting: "Durée moyenne d'une visite WC"
   read_statistics: "Lire les statistiques"
+  homekit_enable: "Apple Home"
   homekit_qr: "Afficher le code QR HomeKit"
   maintenance_mode: "Entretien physique"
   seated: Utilisateur détecté
