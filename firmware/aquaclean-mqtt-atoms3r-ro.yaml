@@ -14,6 +14,7 @@ substitutions:
   mqtt_setup_user: "Utilizator MQTT"
   mqtt_setup_password: "Parolă MQTT"
   mqtt_setup_connect: "Conectare la brokerul MQTT"
+  mqtt_setup_topic_prefix: "Prefix subiect MQTT"
 esphome:
   name: ${name}
   friendly_name: ${friendly_name}

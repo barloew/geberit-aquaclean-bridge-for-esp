@@ -14,6 +14,7 @@ substitutions:
   mqtt_setup_user: "Uporabnik MQTT"
   mqtt_setup_password: "Geslo MQTT"
   mqtt_setup_connect: "Poveži s posrednikom MQTT"
+  mqtt_setup_topic_prefix: "Predpona teme MQTT"
 esphome:
   name: ${name}
   friendly_name: ${friendly_name}

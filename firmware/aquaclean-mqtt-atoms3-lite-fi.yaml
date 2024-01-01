@@ -14,6 +14,7 @@ substitutions:
   mqtt_setup_user: "MQTT-käyttäjä"
   mqtt_setup_password: "MQTT-salasana"
   mqtt_setup_connect: "Yhdistä MQTT-välittäjään"
+  mqtt_setup_topic_prefix: "MQTT-aiheen etuliite"
 esphome:
   name: ${name}
   friendly_name: ${friendly_name}

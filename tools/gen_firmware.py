@@ -36,38 +36,38 @@ LANGUAGES = ["en", "nl", "de", "fr", "it", "es", "pl", "cs", "hu", "da", "sv", "
 # Languages without Latin letters keep English entity names on the MQTT route (topics are built from the name)
 NON_LATIN = {"ar", "he", "ru", "uk", "zh", "ko"}
 
-# broker, port, user, password, connect (button: store and restart), time zone
+# broker, port, user, password, connect (button: store and restart), topic prefix, time zone
 TEXTS = {
-    "en": ("MQTT broker", "MQTT port", "MQTT user", "MQTT password", "Connect to MQTT broker", "Time zone"),
-    "nl": ("MQTT-broker", "MQTT-poort", "MQTT-gebruiker", "MQTT-wachtwoord", "Verbinden met MQTT-broker", "Tijdzone"),
-    "de": ("MQTT-Broker", "MQTT-Port", "MQTT-Benutzer", "MQTT-Passwort", "Mit MQTT-Broker verbinden", "Zeitzone"),
+    "en": ("MQTT broker", "MQTT port", "MQTT user", "MQTT password", "Connect to MQTT broker", "MQTT topic prefix", "Time zone"),
+    "nl": ("MQTT-broker", "MQTT-poort", "MQTT-gebruiker", "MQTT-wachtwoord", "Verbinden met MQTT-broker", "MQTT-topicprefix", "Tijdzone"),
+    "de": ("MQTT-Broker", "MQTT-Port", "MQTT-Benutzer", "MQTT-Passwort", "Mit MQTT-Broker verbinden", "MQTT-Topic-Präfix", "Zeitzone"),
     "fr": ("Broker MQTT", "Port MQTT", "Utilisateur MQTT", "Mot de passe MQTT", "Se connecter au broker MQTT",
-           "Fuseau horaire"),
-    "it": ("Broker MQTT", "Porta MQTT", "Utente MQTT", "Password MQTT", "Connetti al broker MQTT", "Fuso orario"),
-    "es": ("Bróker MQTT", "Puerto MQTT", "Usuario MQTT", "Contraseña MQTT", "Conectar al bróker MQTT", "Zona horaria"),
-    "pl": ("Broker MQTT", "Port MQTT", "Użytkownik MQTT", "Hasło MQTT", "Połącz z brokerem MQTT", "Strefa czasowa"),
-    "cs": ("MQTT broker", "MQTT port", "Uživatel MQTT", "Heslo MQTT", "Připojit k MQTT brokeru", "Časové pásmo"),
-    "hu": ("MQTT bróker", "MQTT port", "MQTT felhasználó", "MQTT jelszó", "Csatlakozás az MQTT brókerhez", "Időzóna"),
-    "da": ("MQTT-broker", "MQTT-port", "MQTT-bruger", "MQTT-adgangskode", "Forbind til MQTT-broker", "Tidszone"),
-    "sv": ("MQTT-broker", "MQTT-port", "MQTT-användare", "MQTT-lösenord", "Anslut till MQTT-broker", "Tidszon"),
-    "nb": ("MQTT-megler", "MQTT-port", "MQTT-bruker", "MQTT-passord", "Koble til MQTT-megler", "Tidssone"),
+           "Préfixe de topic MQTT", "Fuseau horaire"),
+    "it": ("Broker MQTT", "Porta MQTT", "Utente MQTT", "Password MQTT", "Connetti al broker MQTT", "Prefisso topic MQTT", "Fuso orario"),
+    "es": ("Bróker MQTT", "Puerto MQTT", "Usuario MQTT", "Contraseña MQTT", "Conectar al bróker MQTT", "Prefijo de tema MQTT", "Zona horaria"),
+    "pl": ("Broker MQTT", "Port MQTT", "Użytkownik MQTT", "Hasło MQTT", "Połącz z brokerem MQTT", "Prefiks tematu MQTT", "Strefa czasowa"),
+    "cs": ("MQTT broker", "MQTT port", "Uživatel MQTT", "Heslo MQTT", "Připojit k MQTT brokeru", "Předpona tématu MQTT", "Časové pásmo"),
+    "hu": ("MQTT bróker", "MQTT port", "MQTT felhasználó", "MQTT jelszó", "Csatlakozás az MQTT brókerhez", "MQTT téma-előtag", "Időzóna"),
+    "da": ("MQTT-broker", "MQTT-port", "MQTT-bruger", "MQTT-adgangskode", "Forbind til MQTT-broker", "MQTT-emnepræfiks", "Tidszone"),
+    "sv": ("MQTT-broker", "MQTT-port", "MQTT-användare", "MQTT-lösenord", "Anslut till MQTT-broker", "MQTT-ämnesprefix", "Tidszon"),
+    "nb": ("MQTT-megler", "MQTT-port", "MQTT-bruker", "MQTT-passord", "Koble til MQTT-megler", "MQTT-emneprefiks", "Tidssone"),
     "fi": ("MQTT-välittäjä", "MQTT-portti", "MQTT-käyttäjä", "MQTT-salasana", "Yhdistä MQTT-välittäjään",
-           "Aikavyöhyke"),
-    "pt": ("Broker MQTT", "Porta MQTT", "Utilizador MQTT", "Palavra-passe MQTT", "Ligar ao broker MQTT", "Fuso horário"),
+           "MQTT-aiheen etuliite", "Aikavyöhyke"),
+    "pt": ("Broker MQTT", "Porta MQTT", "Utilizador MQTT", "Palavra-passe MQTT", "Ligar ao broker MQTT", "Prefixo de tópico MQTT", "Fuso horário"),
     "tr": ("MQTT aracısı", "MQTT bağlantı noktası", "MQTT kullanıcısı", "MQTT parolası", "MQTT aracısına bağlan",
-           "Saat dilimi"),
-    "et": ("MQTT vahendaja", "MQTT port", "MQTT kasutaja", "MQTT parool", "Ühenda MQTT vahendajaga", "Ajavöönd"),
+           "MQTT konu öneki", "Saat dilimi"),
+    "et": ("MQTT vahendaja", "MQTT port", "MQTT kasutaja", "MQTT parool", "Ühenda MQTT vahendajaga", "MQTT teema eesliide", "Ajavöönd"),
     "hr": ("MQTT posrednik", "MQTT priključak", "MQTT korisnik", "MQTT lozinka", "Poveži s MQTT posrednikom",
-           "Vremenska zona"),
+           "MQTT prefiks teme", "Vremenska zona"),
     "lv": ("MQTT starpnieks", "MQTT ports", "MQTT lietotājs", "MQTT parole", "Savienot ar MQTT starpnieku",
-           "Laika josla"),
+           "MQTT tēmas prefikss", "Laika josla"),
     "lt": ("MQTT tarpininkas", "MQTT prievadas", "MQTT naudotojas", "MQTT slaptažodis",
-           "Prisijungti prie MQTT tarpininko", "Laiko juosta"),
-    "ro": ("Broker MQTT", "Port MQTT", "Utilizator MQTT", "Parolă MQTT", "Conectare la brokerul MQTT", "Fus orar"),
-    "sk": ("MQTT broker", "MQTT port", "Používateľ MQTT", "Heslo MQTT", "Pripojiť k MQTT brokeru", "Časové pásmo"),
-    "sl": ("Posrednik MQTT", "Vrata MQTT", "Uporabnik MQTT", "Geslo MQTT", "Poveži s posrednikom MQTT", "Časovni pas"),
+           "Prisijungti prie MQTT tarpininko", "MQTT temos prefiksas", "Laiko juosta"),
+    "ro": ("Broker MQTT", "Port MQTT", "Utilizator MQTT", "Parolă MQTT", "Conectare la brokerul MQTT", "Prefix subiect MQTT", "Fus orar"),
+    "sk": ("MQTT broker", "MQTT port", "Používateľ MQTT", "Heslo MQTT", "Pripojiť k MQTT brokeru", "Predpona témy MQTT", "Časové pásmo"),
+    "sl": ("Posrednik MQTT", "Vrata MQTT", "Uporabnik MQTT", "Geslo MQTT", "Poveži s posrednikom MQTT", "Predpona teme MQTT", "Časovni pas"),
     "sr": ("MQTT posrednik", "MQTT port", "MQTT korisnik", "MQTT lozinka", "Poveži se sa MQTT posrednikom",
-           "Vremenska zona"),
+           "MQTT prefiks teme", "Vremenska zona"),
 }
 
 # Time zones offered on the web page; the default follows the language
@@ -135,12 +135,18 @@ substitutions:
   mqtt_setup_user: MQTT user
   mqtt_setup_password: MQTT password
   mqtt_setup_connect: Connect to MQTT broker
+  mqtt_setup_topic_prefix: MQTT topic prefix
 
 globals:
   - id: aquaclean_mqtt_broker
     type: std::string
     restore_value: true
     max_restore_data_length: 64
+  - id: aquaclean_mqtt_topic_prefix
+    type: std::string
+    restore_value: true
+    max_restore_data_length: 64
+    initial_value: '"aquaclean"'
   - id: aquaclean_mqtt_user
     type: std::string
     restore_value: true
@@ -175,7 +181,11 @@ esphome:
             mqtt->set_broker_port(static_cast<uint16_t>(id(aquaclean_mqtt_port)));
             mqtt->set_username(id(aquaclean_mqtt_user));
             mqtt->set_password(id(aquaclean_mqtt_password));
-            ESP_LOGI("aquaclean.mqtt", "MQTT broker %s:%d", broker.c_str(), id(aquaclean_mqtt_port));
+            const std::string &prefix = id(aquaclean_mqtt_topic_prefix);
+            if (!prefix.empty())
+              mqtt->set_topic_prefix(prefix, "");  // 2nd arg != prefix → use it verbatim, no MAC suffix
+            ESP_LOGI("aquaclean.mqtt", "MQTT broker %s:%d, topic prefix %s", broker.c_str(),
+                     id(aquaclean_mqtt_port), prefix.c_str());
             mqtt->enable();
 
 text:
@@ -228,6 +238,23 @@ text:
           if (x != "********")
             id(aquaclean_mqtt_password) = x;
       - component.update: aquaclean_mqtt_password_text
+  - platform: template
+    id: aquaclean_mqtt_topic_prefix_text
+    name: ${mqtt_setup_topic_prefix}
+    icon: mdi:label-outline
+    entity_category: config
+    mode: text
+    max_length: 48
+    update_interval: never
+    web_server:
+      sorting_group_id: aquaclean_web_bridge
+      sorting_weight: 96
+    # base of every MQTT topic (<prefix>/<component>/<entity>/state|command); neutral by default, not the
+    # discovery prefix (that stays "homeassistant" in packages/mqtt.yaml, the shared discovery convention).
+    lambda: "return id(aquaclean_mqtt_topic_prefix);"
+    set_action:
+      - lambda: id(aquaclean_mqtt_topic_prefix) = x;
+      - component.update: aquaclean_mqtt_topic_prefix_text
 
 number:
   - platform: template
@@ -485,12 +512,12 @@ def main() -> None:
     fw = ROOT / "firmware"
     for old in fw.glob("aquaclean-*.yaml"):
         old.unlink()
-    keys = ("broker", "port", "user", "password", "connect")
+    keys = ("broker", "port", "user", "password", "connect", "topic_prefix")
     for board, board_name in BOARDS.items():
         for lang in LANGUAGES:
             t = TEXTS.get(lang, TEXTS["en"])
             texts = "\n".join(f"  mqtt_setup_{k}: {json.dumps(v, ensure_ascii=False)}" for k, v in zip(keys, t))
-            tz_label = json.dumps(t[5], ensure_ascii=False)  # the localized "Time zone" label
+            tz_label = json.dumps(t[6], ensure_ascii=False)  # the localized "Time zone" label
             (fw / f"aquaclean-mqtt-{board}-{lang}.yaml").write_text(
                 FIRMWARE_MQTT.format(board=board, board_name=board_name, lang=lang, tz=TZ_DEFAULT[lang],
                                      tz_label=tz_label, texts=texts),

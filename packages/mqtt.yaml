@@ -1,9 +1,14 @@
-# Route 2: MQTT, for Home Assistant without the ESPHome integration or for other systems (openHAB, Node-RED,
-# Domoticz, ...). With Home Assistant discovery: the devices and entities appear by themselves.
-# Use this or packages/api.yaml, not both (you would get everything twice).
+# Route 2: MQTT — publishes to any MQTT broker, for openHAB, Node-RED, Domoticz, ioBroker, Home Assistant (via
+# MQTT discovery) and anything else on a broker. With MQTT discovery the devices and entities appear by
+# themselves. Use this or packages/api.yaml, not both (you would get everything twice).
 #
-# Linking a user profile to a Home Assistant device (Private BLE Device, iBeacon) works here through
-# Home Assistant's mqtt_statestream. Add to configuration.yaml of Home Assistant:
+# Topics are <topic_prefix>/<component>/<entity>/state|command; topic_prefix defaults to "aquaclean" and is
+# yours to choose (on the web installer it is a field on the bridge's web page). The discovery prefix is a
+# separate thing: it defaults to "homeassistant", the shared discovery convention that Home Assistant, openHAB
+# and Domoticz all read — change discovery_prefix only if your system watches a different one.
+#
+# Home Assistant only: linking a user profile to a Home Assistant device (Private BLE Device, iBeacon) works
+# through Home Assistant's mqtt_statestream. Add to configuration.yaml of Home Assistant:
 #   mqtt_statestream:
 #     base_topic: statestream
 #     publish_attributes: true
@@ -12,10 +17,12 @@
 # The clock comes from the internet (SNTP); set your time zone with the substitution timezone.
 
 substitutions:
-  mqtt_broker: homeassistant.local
+  mqtt_broker: mqtt.local            # set your broker here (the web installer asks for it at runtime)
   mqtt_port: "1883"
   mqtt_username: ""
   mqtt_password: ""
+  mqtt_topic_prefix: aquaclean       # base of every topic; neutral, yours to change
+  mqtt_discovery_prefix: homeassistant  # the shared discovery convention (HA, openHAB, Domoticz); rarely changed
   mqtt_statestream: statestream
   timezone: Europe/Amsterdam
 
@@ -24,7 +31,9 @@ mqtt:
   port: ${mqtt_port}
   username: ${mqtt_username}
   password: ${mqtt_password}
+  topic_prefix: ${mqtt_topic_prefix}
   discovery: true
+  discovery_prefix: ${mqtt_discovery_prefix}
   discovery_unique_id_generator: mac
   discovery_object_id_generator: device_name
 

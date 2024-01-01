@@ -14,6 +14,7 @@ substitutions:
   mqtt_setup_user: "MQTT lietotājs"
   mqtt_setup_password: "MQTT parole"
   mqtt_setup_connect: "Savienot ar MQTT starpnieku"
+  mqtt_setup_topic_prefix: "MQTT tēmas prefikss"
 esphome:
   name: ${name}
   friendly_name: ${friendly_name}

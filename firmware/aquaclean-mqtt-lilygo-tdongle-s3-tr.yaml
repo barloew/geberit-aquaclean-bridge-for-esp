@@ -14,6 +14,7 @@ substitutions:
   mqtt_setup_user: "MQTT kullanıcısı"
   mqtt_setup_password: "MQTT parolası"
   mqtt_setup_connect: "MQTT aracısına bağlan"
+  mqtt_setup_topic_prefix: "MQTT konu öneki"
 esphome:
   name: ${name}
   friendly_name: ${friendly_name}

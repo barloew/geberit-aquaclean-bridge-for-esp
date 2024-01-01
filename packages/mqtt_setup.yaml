@@ -11,12 +11,18 @@ substitutions:
   mqtt_setup_user: MQTT user
   mqtt_setup_password: MQTT password
   mqtt_setup_connect: Connect to MQTT broker
+  mqtt_setup_topic_prefix: MQTT topic prefix
 
 globals:
   - id: aquaclean_mqtt_broker
     type: std::string
     restore_value: true
     max_restore_data_length: 64
+  - id: aquaclean_mqtt_topic_prefix
+    type: std::string
+    restore_value: true
+    max_restore_data_length: 64
+    initial_value: '"aquaclean"'
   - id: aquaclean_mqtt_user
     type: std::string
     restore_value: true
@@ -51,7 +57,11 @@ esphome:
             mqtt->set_broker_port(static_cast<uint16_t>(id(aquaclean_mqtt_port)));
             mqtt->set_username(id(aquaclean_mqtt_user));
             mqtt->set_password(id(aquaclean_mqtt_password));
-            ESP_LOGI("aquaclean.mqtt", "MQTT broker %s:%d", broker.c_str(), id(aquaclean_mqtt_port));
+            const std::string &prefix = id(aquaclean_mqtt_topic_prefix);
+            if (!prefix.empty())
+              mqtt->set_topic_prefix(prefix, "");  // 2nd arg != prefix → use it verbatim, no MAC suffix
+            ESP_LOGI("aquaclean.mqtt", "MQTT broker %s:%d, topic prefix %s", broker.c_str(),
+                     id(aquaclean_mqtt_port), prefix.c_str());
             mqtt->enable();
 
 text:
@@ -104,6 +114,23 @@ text:
           if (x != "********")
             id(aquaclean_mqtt_password) = x;
       - component.update: aquaclean_mqtt_password_text
+  - platform: template
+    id: aquaclean_mqtt_topic_prefix_text
+    name: ${mqtt_setup_topic_prefix}
+    icon: mdi:label-outline
+    entity_category: config
+    mode: text
+    max_length: 48
+    update_interval: never
+    web_server:
+      sorting_group_id: aquaclean_web_bridge
+      sorting_weight: 96
+    # base of every MQTT topic (<prefix>/<component>/<entity>/state|command); neutral by default, not the
+    # discovery prefix (that stays "homeassistant" in packages/mqtt.yaml, the shared discovery convention).
+    lambda: "return id(aquaclean_mqtt_topic_prefix);"
+    set_action:
+      - lambda: id(aquaclean_mqtt_topic_prefix) = x;
+      - component.update: aquaclean_mqtt_topic_prefix_text
 
 number:
   - platform: template
