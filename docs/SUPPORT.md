@@ -55,10 +55,10 @@ Branch **main**
 | Board | Status | Note |
 |---|---|---|
 | m5stack-atoms3-lite | `validated` | recommended; reference board |
-| m5stack-atoms3r | `builds` | builds, not yet tested on hardware |
+| m5stack-atoms3r | `builds` | builds, not yet tested on hardware. Has PSRAM — the board to prefer for MQTT + HomeKit at the same time. |
 | xiao-esp32s3 | `builds` | builds (also Plus), not yet tested on hardware |
 | esp32-s3-generic | `builds` | any ESP32-S3 with >=8 MB flash; builds, not yet tested on hardware |
-| lilygo-t-dongle-s3 | `validated` | ESP32-S3, 16 MB flash, no PSRAM. Hardware-validated on a Sela. The T-Dongle-S3-Plus (8 MB PSRAM) needs a psram: block. |
+| lilygo-t-dongle-s3 | `validated` | ESP32-S3, 16 MB flash, no PSRAM. Hardware-validated on a Sela. The T-Dongle-S3-Plus (8 MB PSRAM) needs a psram: block. HomeKit runs here too, but MQTT + HomeKit at the same time is tight on a board without PSRAM (lowest free heap ~5 KB during Apple Home pairing, log c67782f9) — it works, yet for heavy simultaneous use prefer a board with PSRAM (e.g. AtomS3R). |
 
 ## AquaClean device firmware seen
 

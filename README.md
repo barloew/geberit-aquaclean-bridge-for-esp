@@ -34,7 +34,7 @@ Out of the box, the Geberit AquaClean shower toilet supports only one Bluetooth 
 
 ## Highlights
 
-- **Easy installation.** For MQTT, install ready-made firmware in your language straight from the browser (Chrome or Edge, via USB); no ESPHome needed. For the ESPHome native API, start from the ready-made ESPHome example and set your board. Either way, the toilet and remote control are found automatically.
+- **Easy installation.** Install ready-made firmware in your language straight from the browser (Chrome or Edge, via USB) for either route — the native API for Home Assistant, Homey or ioBroker, or MQTT for any broker; no ESPHome needed. The toilet and remote control are found automatically.
 - **Personal welcome light.** The built-in orientation light becomes your personal greeting. Once you're recognized, it flashes in the color you picked for your profile. It's also a visual confirmation that your profile is loaded and ready.
 - **Up to six user profiles.** That's twice as many profiles as the Geberit remote supports.
 - **Automatic user recognition.** All six profiles are recognized by their linked smartphone, watch, wearable or tracker, even when it uses randomized MAC addresses. The Identity Resolving Key (IRK) can be captured by the Geberit AquaClean Bridge itself, or reused if it's already known in Home Assistant. Addresses are resolved on the ESP32 itself, so MAC address changes are picked up instantly. Profiles 1–3 can still be picked on the remote as well.
@@ -80,7 +80,7 @@ Have a different model? See [Supporting other models](#supporting-other-models).
 
 The bridge must be close to the toilet. The spot needs:
 
-- **Bluetooth signal:** around -60 dBm is ideal, -80 dBm is the minimum. For reference, the validated AtomS3 Lite install reads about -65 to -75 dBm on the **Toilet signal** diagnostic with **Reconnections** staying at 0; a climbing **Reconnections** count means the spot is marginal.
+- **Bluetooth signal:** around -60 dBm is ideal, -80 dBm is the minimum.
 - **Power and network:** USB power and Wi-Fi (2.4 GHz).
 
 To test a spot before buying anything, use a Bluetooth scanner app on your phone (such as nRF Connect) and look for the toilet's signal strength. A phone antenna differs from an ESP32, so treat it as an estimate. Once installed, the toilet's **Toilet signal** diagnostic shows the real value.
@@ -91,52 +91,45 @@ The bridge needs an ESP32-S3 with **at least 8 MB flash**, dedicated to the brid
 
 | Board | Package | Status |
 |---|---|---|
-| M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, validated; longest BLE range of these boards |
-| M5Stack AtomS3R | `board-atoms3r.yaml` | Builds, not yet tested on hardware |
+| M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, validated on hardware |
+| LilyGo T-Dongle-S3 | `board-lilygo-tdongle-s3.yaml` | Validated on hardware. 16 MB flash, no PSRAM; MQTT + HomeKit at once is tight here (see [Apple Home](#apple-home-homekit-optional)). |
+| M5Stack AtomS3R | `board-atoms3r.yaml` | Builds, not yet tested on hardware. Has PSRAM. |
 | Seeed XIAO ESP32S3 (also Plus) | `board-xiao-esp32s3.yaml` | Builds, not yet tested on hardware. Connect the included U.FL antenna. |
-| LilyGo T-Dongle-S3 | `board-lilygo-tdongle-s3.yaml` | Tested on hardware (Sela). No PSRAM; the Plus needs a `psram:` block. |
 
-Other ESP32-S3 boards with at least 8 MB flash build too, but haven't been tested on hardware.
-
-The web installer has firmware for all four boards. In ESPHome YAML, choose the board with the `board:` line, for example `.../packages/board-atoms3r.yaml@v1.36.0`. See [Hardware](#hardware) for status indicators and buttons per board.
+The web installer has firmware for all four. Any other ESP32-S3 with at least 8 MB flash works too over ESPHome YAML — set the `board:` line directly. In ESPHome YAML you pick a board package with the `board:` include, for example `.../packages/board-atoms3r.yaml@v1.36.0`. See [Hardware](#hardware) for status indicators and buttons per board.
 
 ### Step 4: Choose your route
 
-Both routes expose the same entities. Pick one; never both. They differ in how Home Assistant groups those entities: the native API route splits them into separate devices (toilet, active session, maintenance, user profiles), while the MQTT route currently shows them all under one device. Splitting them over MQTT is **planned** — it will be enabled once ESPHome ships its opt-in sub-device support.
+Both routes give the same devices and entities. Pick one; never both.
 
 | | Native API | MQTT |
 |---|---|---|
 | For | Home Assistant (ESPHome integration); also Homey, ioBroker | Home Assistant, openHAB, Node-RED, Domoticz, … |
-| Install | ESPHome YAML | Web installer, no ESPHome needed (or ESPHome YAML) |
-| Encryption | Noise (API key) | TLS, only when built with ESPHome YAML |
-| Web interface on the ESP | No | Yes |
-| Home Assistant device split | Separate devices per sub-device | One device for now (per-sub-device split planned) |
-| Apple Home (HomeKit) | Optional, ESPHome YAML | Optional, ESPHome YAML only |
+| Install | Web installer or ESPHome YAML | Web installer or ESPHome YAML |
+| Encryption | Noise (key set on the bridge's `/setup` page, or via YAML) | TLS (ESPHome YAML only) |
+| Web interface on the ESP | Installer image: yes (`/setup`, `/homekit`); YAML: add `web.yaml` | Yes |
+| Apple Home (HomeKit) | In every image; start with the Apple Home switch | In every image; start with the Apple Home switch |
 
 See [Two routes: ESPHome or MQTT](#two-routes-esphome-or-mqtt) for all differences.
 
 ### Step 5: Install the firmware
 
-#### MQTT: web installer
+Open the [web installer](https://barloew.github.io/geberit-aquaclean-bridge-for-esp/) in Chrome or Edge, connect the board with USB, choose your **route**, [board](#hardware) and [language](#languages), press **Install** and enter your Wi-Fi in the same window. If the bridge knows no Wi-Fi later on, it opens the hotspot **AquaClean Setup** (captive portal).
 
-The web installer installs the MQTT route. No ESPHome needed.
+#### Native API
 
-1. Open the [web installer](https://barloew.github.io/geberit-aquaclean-bridge-for-esp/) in Chrome or Edge and connect the board with USB.
-2. Choose your [board](#hardware) and [language](#languages), press **Install** and enter your Wi-Fi in the same window. If the bridge knows no Wi-Fi later on, it opens the hotspot **AquaClean Setup**.
-3. Press **Visit device**, or open `http://aquaclean-xxxxxx.local` (the last six characters are the end of the ESP's MAC address).
-4. Under **AquaClean Bridge**, enter **MQTT broker**, **MQTT port** (1883), **MQTT user** and **MQTT password**, choose your **Time zone**, and press **Connect to MQTT broker**. The bridge stores the settings and restarts. The password is never shown again; to change the broker later, edit the fields and press the button again.
-5. Connect your home automation system. See [Connecting over MQTT](#connecting-over-mqtt).
+1. After flashing, open `http://aquaclean-xxxxxx.local/setup` (the last six characters are the end of the ESP's MAC address; on the hotspot: `http://192.168.4.1/setup`).
+2. Press **Generate random key**, copy it, then **Save to bridge**.
+3. Add the bridge in your controller — Home Assistant, Homey and ioBroker discover it automatically — and paste that key.
+
+#### MQTT
+
+1. Open the bridge's web page (**Visit device**, or `http://aquaclean-xxxxxx.local`).
+2. Under **AquaClean Bridge**, enter **MQTT broker**, **MQTT port** (1883), **MQTT user** and **MQTT password**, choose your **Time zone**, and press **Connect to MQTT broker**. The bridge stores the settings and restarts. The password is never shown again; to change the broker later, edit the fields and press the button again.
+3. Connect your home automation system. See [Connecting over MQTT](#connecting-over-mqtt).
 
 > [!IMPORTANT]
-> The ready-made firmware has no password on its web page and on firmware updates, and no TLS: anyone on your network can open the page. For a password and encrypted MQTT, build the MQTT route with ESPHome YAML (`web_auth.yaml`, `mqtt_tls.yaml`, see [Packages](#packages)).
-
-#### Native API: ESPHome YAML
-
-1. Copy [`examples/atoms3-lite.yaml`](examples/atoms3-lite.yaml). It fits every board: set the `board:` line, `route: api` and your [language](#languages).
-2. Fill in `secrets.yaml`: `wifi_ssid`, `wifi_password`, `aquaclean_ota_password` and `aquaclean_api_key`. Copy a random API key from the [ESPHome API documentation](https://esphome.io/components/api/), or run `openssl rand -base64 32`.
-3. Flash it with ESPHome 2026.10 or newer.
-4. Add the bridge in Home Assistant (ESPHome integration) with the same API key.
-5. Allow it to perform Home Assistant actions: **Settings → Devices & services → ESPHome → Geberit AquaClean Bridge → Configure**. This is needed for notifications such as Show IRK and HomeKit pairing.
+> The ready-made firmware has no password on its web page and on firmware updates, and no TLS: anyone on your network can open the page. For a web-page password, encrypted MQTT (`web_auth.yaml`, `mqtt_tls.yaml`), or a compile-time API key, build with ESPHome YAML instead: copy [`examples/atoms3-lite.yaml`](examples/atoms3-lite.yaml) — it fits every board: set the `board:` line, `route:` and your [language](#languages) — fill in `secrets.yaml`, and flash with ESPHome 2026.10 or newer. On the native API route, HA's *Allow the device to perform Home Assistant actions* enables the Show IRK notification.
 
 > [!NOTE]
 > Only one bridge may run per toilet. Switch off any previous ESP first.
@@ -160,7 +153,7 @@ For each of the up to six profiles:
 
 ### Step 8: Add Apple Home
 
-HomeKit works stand-alone too, without Home Assistant or any other home automation system. It is built in only with ESPHome YAML, not in the ready-made firmware of the web installer. Add this to your YAML and flash:
+Apple HomeKit is compiled into every image and works stand-alone too, without Home Assistant or any other home automation system. It stays off until you turn on the **Apple Home** switch on the bridge — from its web page, or from whichever home automation system you use. With ESPHome YAML you can instead build it always-on:
 
 ```yaml
 geberit_aquaclean:
@@ -168,7 +161,7 @@ geberit_aquaclean:
     enabled: true
 ```
 
-Then add the accessory in the Home app with the setup code or QR code. The Home app warns about an uncertified accessory; that's expected. See [Apple Home](#apple-home-homekit-optional) for all options and how to find the setup code for each route.
+Then add the accessory in the Home app with the setup code or QR code. The Home app warns about an uncertified accessory; that's expected. The **HomeKit code** sensor and the page `http://<esp>/homekit` show the setup code on every route. See [Apple Home](#apple-home-homekit-optional) for all options.
 <!-- steps:end -->
 
 ## Hardware
@@ -229,21 +222,21 @@ A single orange LED shows the status as a pattern. The button is BOOT (GPIO0). T
 
 ## Two routes: ESPHome or MQTT
 
-The MQTT route is installed with the web installer or with ESPHome YAML, the native API route with ESPHome YAML. In YAML, the route is a single key: the substitution `route: api` or `route: mqtt` in [`examples/atoms3-lite.yaml`](examples/atoms3-lite.yaml). Only that route is built; both expose the same entities. They differ in Home Assistant device grouping: the native API route splits the entities into separate devices, while the MQTT route currently groups them under one device. Per-sub-device MQTT discovery is planned, pending ESPHome's opt-in sub-device support. For controllers (Home Assistant, Homey, …) and install methods, see [docs/routes.md](docs/routes.md).
+Either route is installed with the web installer or with ESPHome YAML. In YAML, the route is a single key: the substitution `route: api` or `route: mqtt` in [`examples/atoms3-lite.yaml`](examples/atoms3-lite.yaml). Only that route is built; both expose the same entities. They differ in Home Assistant device grouping: the native API route splits the entities into separate devices, while the MQTT route currently groups them under one device. Per-sub-device MQTT discovery is planned, pending ESPHome's opt-in sub-device support. For controllers (Home Assistant, Homey, …) and install methods, see [docs/routes.md](docs/routes.md).
 
 | | Route 1: ESPHome | Route 2: MQTT |
 |---|---|---|
 | Setting | `route: api` | `route: mqtt` |
-| Install | ESPHome YAML | Web installer, or ESPHome YAML |
-| Package | `packages/route_api.yaml` (= `api.yaml` + API key) | YAML: `packages/route_mqtt.yaml` (= `mqtt.yaml` + `web.yaml`; + `mqtt_tls.yaml` for TLS). Web installer: `mqtt.yaml` + `web.yaml` + `mqtt_setup.yaml` + `provisioning.yaml` |
+| Install | Web installer or ESPHome YAML | Web installer or ESPHome YAML |
+| Package | YAML: `packages/route_api.yaml` (= `api.yaml` + API key). Web installer: `api_setup.yaml` (keyless) + `provisioning.yaml` + `web.yaml` + `timezone.yaml` | YAML: `packages/route_mqtt.yaml` (= `mqtt.yaml` + `web.yaml`; + `mqtt_tls.yaml` for TLS). Web installer: `mqtt.yaml` + `web.yaml` + `mqtt_setup.yaml` + `provisioning.yaml` |
 | For | Home Assistant with the ESPHome integration; also Homey, ioBroker | Home Assistant via MQTT discovery, openHAB, Node-RED, Domoticz, … |
-| Web interface on the ESP | No (Home Assistant shows everything) | Yes |
-| Broker and time zone | – | YAML: substitutions. Web installer: on the bridge's web page |
-| Encryption | Noise (API key) | TLS with certificate check (optional, YAML only) |
-| Apple Home (HomeKit) | Optional | Optional, YAML only |
-| Clock | From Home Assistant | SNTP (substitution `timezone`) |
+| Web interface on the ESP | Installer image: yes (`/setup` for the key, `/homekit`); YAML: add `web.yaml` | Yes |
+| Broker and time zone | Time zone on the bridge's web page (installer image); Home Assistant sets it otherwise | YAML: substitutions. Web installer: on the bridge's web page |
+| Encryption | Noise (key set on the bridge's `/setup` page, or via YAML) | TLS with certificate check (optional, YAML only) |
+| Apple Home (HomeKit) | In every image; Apple Home switch | In every image; Apple Home switch |
+| Clock | Home Assistant, with an SNTP fallback for controllers that provide no time (Homey, ioBroker) | SNTP (time zone on the web page, or the `timezone` substitution in YAML) |
 | Linking a profile to a HA device | Directly | Via HA `mqtt_statestream` (see `packages/mqtt.yaml`) |
-| Actions `aquaclean_link_user` / `aquaclean_set_irk` / `aquaclean_raw_request` | Yes | No (the link script and the **Enter IRK** field work in both) |
+| Actions `aquaclean_link_user` / `aquaclean_set_irk` / `aquaclean_raw_request` | Yes (native-API actions) | Entity equivalents work on both routes: the link script, the **Enter IRK** field and the **Raw request** field |
 
 > [!WARNING]
 > Never use both routes at once: your home automation system would show everything twice. The component refuses a configuration with both `api:` and `mqtt:`.
@@ -443,15 +436,16 @@ The bridge itself can be an Apple Home accessory. It works alongside Home Assist
 | Dryer | Only while someone is seated, as above (the toilet blocks the dryer arm otherwise) |
 | Odor extraction | At any time, also without anyone seated, like the button on the remote control. After use it runs on for the run-on time set on the toilet (about 2 minutes by default) |
 
-A started shower runs with the settings of the profile that is loaded, so with those of the recognized user. It uses Espressif's esp-homekit-sdk (non-commercial HomeKit Accessory Protocol, no MFi), so the Home app warns about an uncertified accessory. HomeKit is built in only with ESPHome YAML; the web installer firmware doesn't include it.
+A started shower runs with the settings of the profile that is loaded, so with those of the recognized user. It uses Espressif's esp-homekit-sdk (non-commercial HomeKit Accessory Protocol, no MFi), so the Home app warns about an uncertified accessory. HomeKit is compiled into every image and stays off until you turn on the **Apple Home** switch; with ESPHome YAML you can build it always-on instead (`enabled: true` without the runtime switch).
 
 <details>
-<summary>HomeKit options (<code>setup_code</code>, <code>port</code>, <code>reset_pairings</code>)</summary>
+<summary>HomeKit options (<code>runtime_toggle</code>, <code>setup_code</code>, <code>port</code>, <code>reset_pairings</code>)</summary>
 
 ```yaml
 geberit_aquaclean:
   homekit:
-    enabled: true              # only then is HomeKit built in (default: false)
+    enabled: true              # compile HomeKit in (default: false in YAML; on in every web-installer image)
+    # runtime_toggle: true     # add the "Apple Home" switch and keep HomeKit off until it is turned on
     setup_code: "215-73-480"   # optional; default: derived from the MAC address (see the log)
     # port: 32042
     # reset_pairings: true     # forget all Apple Home pairings once after flashing; set back to false afterwards
@@ -459,10 +453,11 @@ geberit_aquaclean:
 
 </details>
 
-`mdns` must stay enabled. To pair, get the setup code or QR code:
+`mdns` must stay enabled. The setup code and QR code are available to every controller, whichever route you run:
 
-- **Native API route:** while the bridge isn't paired, Home Assistant shows the notification *AquaClean: pair with HomeKit* with the setup code and QR code. **Show HomeKit QR code** sends it again, for example after removing the accessory in the Home app.
-- **MQTT route** (with `packages/web.yaml`): the page `http://<ESP>/homekit` shows the setup code and QR code, behind the web interface password if set.
+- **HomeKit code** (any route): a sensor that shows the setup code and the `http://<ESP>/homekit` link, so every system the bridge talks to — Home Assistant, Homey, ioBroker, openHAB — can show it, no Home Assistant notification needed.
+- **Web page** `http://<ESP>/homekit`: the setup code and QR code, behind the web interface password if set.
+- **Home Assistant notification** (Home Assistant only): while the bridge isn't paired, Home Assistant shows *AquaClean: pair with HomeKit* with the code and QR code — but only if *Allow the device to perform Home Assistant actions* is on for the bridge (off by default). **Show HomeKit QR code** sends it again.
 
 Then in the Home app: **Add accessory** → scan the QR code, or **More options** → the accessory → enter the setup code.
 
@@ -473,7 +468,7 @@ At most 4 Apple devices can have the accessory open at the same time; see [Conne
 <details>
 <summary>Memory cost</summary>
 
-**Cost:** about 130 KB more flash and 4 KB static RAM, plus the HomeKit tasks and sessions at runtime. On the AtomS3 Lite with the native API route, about 95 KB of RAM stays free, and at least 55 KB at the busiest moment. Without a `homekit:` block, or with `enabled: false`, nothing of it is built in.
+**Cost:** about 130 KB more flash and 4 KB static RAM, plus the HomeKit tasks and sessions at runtime. On the AtomS3 Lite with the native API route, about 95 KB of RAM stays free, and at least 55 KB at the busiest moment. On a board without PSRAM, running MQTT and HomeKit at the same time is tight: during Apple Home pairing the lowest free heap measured about 5 KB — it works, but for heavy simultaneous use prefer a board with PSRAM, such as the AtomS3R. Every web-installer image carries HomeKit; until you turn on the Apple Home switch it uses the flash but none of the runtime RAM.
 
 </details>
 
@@ -543,7 +538,7 @@ Newer or other AquaClean models may advertise and answer differently. The discov
 | Scan settings → Settings scan | Which setting ids 00–1f answer for every kind (session 07, default 53, common 51, schedule 57); values in the log |
 | Last response | Answer to a raw request |
 
-Raw requests can be sent from Home Assistant (native API route) with the action `esphome.<node>_aquaclean_raw_request` (context, procedure and args as hex strings, e.g. `context: "01"`, `procedure: "53"`, `args: "0103"`).
+Raw requests can be sent from Home Assistant (native API route) with the action `esphome.<node>_aquaclean_raw_request` (context, procedure and args as hex strings, e.g. `context: "01"`, `procedure: "53"`, `args: "0103"`). On any route — so also over MQTT, from Homey or ioBroker — the **Raw request** field (a diagnostic entity, hidden until enabled) does the same: type the three hex values separated by spaces, e.g. `01 53 0103`; the answer appears in **Last response**.
 
 A practical route for a new model:
 

@@ -121,15 +121,18 @@ models:
 routes_status:
   native_api: { status: validated, validation: sela-hw }   # ESPHome native API — hardware-validated
   mqtt: { status: validated, validation: sela-hw-mqtt }       # hardware-validated (AtomS3 Lite + LilyGo)
+  # Every image carries HomeKit; users enable it at runtime (homekit: runtime_toggle -> Apple Home switch).
+  # Validated stand-alone and alongside both routes. Caveat: MQTT + HomeKit at once on a PSRAM-less board
+  # runs the heap to ~5 KB (see sela-hw-hk-toggle and the lilygo board note). Prefer PSRAM for heavy use.
   homekit: { status: validated, validation: sela-hw }       # hardware-validated
 
 # Hardware boards the firmware targets.
 boards:
   m5stack-atoms3-lite: { status: validated, validation: sela-hw, note: "recommended; reference board" }
-  m5stack-atoms3r: { status: builds, note: "builds, not yet tested on hardware" }
+  m5stack-atoms3r: { status: builds, note: "builds, not yet tested on hardware. Has PSRAM — the board to prefer for MQTT + HomeKit at the same time." }
   xiao-esp32s3: { status: builds, note: "builds (also Plus), not yet tested on hardware" }
   esp32-s3-generic: { status: builds, note: "any ESP32-S3 with >=8 MB flash; builds, not yet tested on hardware" }
-  lilygo-t-dongle-s3: { status: validated, validation: sela-hw-lilygo, note: "ESP32-S3, 16 MB flash, no PSRAM. Hardware-validated on a Sela. The T-Dongle-S3-Plus (8 MB PSRAM) needs a psram: block." }
+  lilygo-t-dongle-s3: { status: validated, validation: sela-hw-lilygo, note: "ESP32-S3, 16 MB flash, no PSRAM. Hardware-validated on a Sela. The T-Dongle-S3-Plus (8 MB PSRAM) needs a psram: block. HomeKit runs here too, but MQTT + HomeKit at the same time is tight on a board without PSRAM (lowest free heap ~5 KB during Apple Home pairing, log c67782f9) — it works, yet for heavy simultaneous use prefer a board with PSRAM (e.g. AtomS3R)." }
 
 # Evidence records. A `validated` status must reference one of these.
 validations:
@@ -153,7 +156,14 @@ validations:
     bridge_release: "v1.36.0"
     device_firmware: "RS08 TS57"
     by: "maintainer"
-    evidence: "MQTT route hardware-validated on a Sela over MQTT discovery: AtomS3 Lite (connected to the toilet; model, firmware RS08 TS57 and settings read out; all entities published) and LilyGo T-Dongle-S3 (log ac96e325). All prior MQTT and native-API validation ran on the AtomS3 Lite."
+    evidence: "MQTT route hardware-validated on a Sela over MQTT discovery: AtomS3 Lite (connected to the toilet; model, firmware RS08 TS57 and settings read out; all entities published) and LilyGo T-Dongle-S3 (log ac96e325). All prior MQTT and native-api validation ran on the AtomS3 Lite."
+  - id: sela-hw-hk-toggle
+    model: sela
+    status: validated
+    bridge_release: "v1.36.0"
+    device_firmware: "RS08 TS57"
+    by: "maintainer"
+    evidence: "Runtime HomeKit toggle (the 'Apple Home' switch, homekit: runtime_toggle) validated on hardware. AtomS3 Lite over the native API; LilyGo T-Dongle-S3 with MQTT + web server + HomeKit running together (logs cffca608, c67782f9). On the LilyGo the switch started HomeKit live, the state persisted across the MQTT-connect reboot and HomeKit restarted by itself, and a full Apple Home pairing (4 controllers) completed with MQTT connected. No-PSRAM heap floor during simultaneous MQTT + HomeKit + pairing: lowest free ~5.1 KB, largest block ~10 KB — works, but no headroom for a third concurrent heavy task."
 
 # Device-independent, CI-verified checks. NOT hardware validations: no device_firmware, not tied to
 # any model, and never shown as "tested on hardware". Kept separate on purpose.

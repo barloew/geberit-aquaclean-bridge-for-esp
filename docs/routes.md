@@ -3,14 +3,18 @@
 Two independent choices decide how the bridge fits your setup. Neither excludes any system — pick what
 suits you.
 
-## Connection route (how it talks to Home Assistant)
+## Connection route (how it talks to your controller)
 
-- **Native API (ESPHome).** The ESPHome native API connects directly to Home Assistant, encrypted, with
-  auto-discovery. Best when you run Home Assistant and want the tightest integration. A few non-HA systems
-  can also use the native API (see **Homey** below).
-- **MQTT.** The bridge publishes to an MQTT broker. Best when you don't use the ESPHome native API, or you
-  connect to something other than Home Assistant, or you prefer a broker-based setup. The broker and time
-  zone are entered on the device's own web page.
+- **Native API (ESPHome).** The native API connects directly, encrypted, with auto-discovery — to Home
+  Assistant (the ESPHome integration) and to other controllers that speak it, such as Homey (its ESPHome app)
+  and ioBroker. The Noise key is set on the bridge's `/setup` page (web installer) or in YAML.
+- **MQTT.** The bridge publishes to an MQTT broker — Home Assistant, openHAB, Node-RED, Domoticz and others.
+  Best when you don't use the native API or prefer a broker-based setup. The broker and time zone are entered
+  on the device's own web page.
+- **Apple HomeKit (optional, alongside either route or stand-alone).** Every image can also be an Apple Home
+  accessory, for the Home app and Siri — even stand-alone, without any other controller. It is compiled into
+  every image and stays off until you turn on the bridge's **Apple Home** switch. See the README's
+  [Apple Home](https://github.com/barloew/geberit-aquaclean-bridge-for-esp#apple-home-homekit-optional) section.
 
 Both routes expose the same functions and entities. Choose one; you can switch later.
 

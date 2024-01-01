@@ -26,7 +26,6 @@
   </g>
   <text x="24" y="94" class="sub">STEP 5</text>
   <text x="24" y="120" class="title">Install the firmware</text>
-  <text x="24" y="145" class="text">MQTT: web installer in your</text>
-  <text x="24" y="163" class="text">browser. Native API: build with</text>
-  <text x="24" y="181" class="text">ESPHome.</text>
+  <text x="24" y="145" class="text">Both routes install straight from</text>
+  <text x="24" y="163" class="text">the browser — no ESPHome needed.</text>
 </svg>

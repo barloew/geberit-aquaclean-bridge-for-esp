@@ -13,7 +13,7 @@ where it is used. Observations are described in more detail in `docs/protocol.md
 | **Geberit data point list** (DP numbers of the Mera, value ranges unvalidated) | Candidate functions and DP numbers of other models | `docs/protocol.md`, Mera / Tuma Comfort entities in `__init__.py` |
 | **Geberit AquaClean model overview** | Article number prefixes per model and the functions of each model | `MODELS` and feature tables in `__init__.py`, feature discovery in `hub.cpp` |
 | **Lucide** icons (`lucide-static`), ISC license, <https://lucide.dev> | The icons on the installation step cards, embedded in the SVGs | `images/steps/*.svg`, `tools/steps/generate.py` |
-| **tzdata** (IANA time zone database, public domain), via ESPHome and aioesphomeapi | The POSIX rules of the 50 time zones of the web installer firmware, parsed at generation time | `packages/mqtt_setup.yaml`, `tools/gen_firmware.py` |
+| **tzdata** (IANA time zone database, public domain), via ESPHome and aioesphomeapi | The POSIX rules of the time zones of the web installer firmware (both routes), parsed at generation time | `packages/timezone.yaml`, `tools/gen_firmware.py` |
 | **Bluetooth Core Specification**, Vol 3 Part H 2.2.2 | Resolving private random addresses: `ah(k, r) = e(k, 0^104 ‖ prand) mod 2^24`; checked with the specification's test vector (IRK `ec0234a357c8ad05341010a60a397d9b`, prand `708194`, hash `0dfbaa`) | `users.cpp` |
 | **Geberit AquaClean Sela user manuals** | Terms per language: Dutch 968.684.00.0 (09), English 968.681.00.0 (09), German 968.337.00.0 (07), French 968.682.00.0 (09), Spanish 968.689.00.0 (08), Italian short instructions 968.706.00.0 / 971.175.00.0 (menu names missing there translated in the same style) | `lang/*.yaml` |
 
