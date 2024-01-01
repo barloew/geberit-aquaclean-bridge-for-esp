@@ -49,6 +49,12 @@ These keep the RE work private while the code stays public:
    (tarball, GitHub Pages install image, issue, discussion, PR, review comment). "Internals" =
    DpId values, wire frames, raw command/status/error codes, enum value tables, and **above all the
    credential / PSK value**. The `.gitignore` is set up to block the obvious files; do not defeat it.
+   The one deliberate exception is the Series 250 shared client credential: it is compiled into the
+   Alba firmware binary the web installer distributes (built in CI from the `ALBA_BRIDGE_ID_C`
+   secret), which necessarily contains it so the firmware can authenticate. Its *value* is still
+   never published as text — not in source (beyond that branch's git-ignored `aquaclean_bridge_id.c`),
+   docs, logs, issues, PRs, review or chat — and the other internals above are never published in any
+   form.
 2. **User-facing pages may name functions, never internals.** "Starts the shower", yes; the DpId or
    the byte that does it, no.
 3. **Source code** may contain the minimum constants it genuinely needs to run (e.g. the credential

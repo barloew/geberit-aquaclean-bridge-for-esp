@@ -13,8 +13,9 @@ safely.
 When reporting, please:
 
 - Describe the issue and how to reproduce it.
-- **Do not include Series 250 (protocol v2) internals or the firmware's shared credential in any public
-  place.** Keep those in the private advisory only — the protocol documentation is not public. (The Alba is
+- **Do not include Series 250 (protocol v2) internals or the shared credential's value in any public report
+  or message.** Keep those in the private advisory only — the protocol documentation is not public, and the
+  credential's value belongs nowhere in text (it ships only compiled into the firmware binary). (The Alba is
   currently one model that uses protocol v2; the protocol is not specific to it.)
 
 ## Supported versions
