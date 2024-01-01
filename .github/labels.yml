@@ -67,3 +67,4 @@
 - name: ci
   color: ededed
   description: CI / tooling / workflows
+# Synced by .github/workflows/labels.yml (skip-delete: existing labels are kept).
