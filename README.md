@@ -779,7 +779,15 @@ This software is provided "as is", without warranty of any kind. Use at your own
 
 </details>
 
-## License
+<a name="license"></a>
+<details>
+<summary>
+
+## License <sub>[↑ back to top](#contents)</sub>
+
+</summary>
 
 See [LICENSE](LICENSE). Third-party components, embedded assets and trademark notices are listed in
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+</details>
