@@ -7,13 +7,13 @@ substitutions:
   name: aquaclean
   friendly_name: Geberit AquaClean Bridge
   language: tr
-  mqtt_setup_timezone_default: Europe/Istanbul
+  tz_label: "Saat dilimi"
+  tz_default: Europe/Istanbul
   mqtt_setup_broker: "MQTT aracısı"
   mqtt_setup_port: "MQTT bağlantı noktası"
   mqtt_setup_user: "MQTT kullanıcısı"
   mqtt_setup_password: "MQTT parolası"
   mqtt_setup_connect: "MQTT aracısına bağlan"
-  mqtt_setup_timezone: "Saat dilimi"
 esphome:
   name: ${name}
   friendly_name: ${friendly_name}
@@ -25,6 +25,7 @@ packages:
   mqtt: !include ../packages/mqtt.yaml
   web: !include ../packages/web.yaml
   mqtt_setup: !include ../packages/mqtt_setup.yaml
+  timezone: !include ../packages/timezone.yaml
   provisioning: !include ../packages/provisioning.yaml
 
 external_components:

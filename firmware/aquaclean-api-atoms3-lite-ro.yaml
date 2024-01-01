@@ -10,6 +10,8 @@ substitutions:
   name: aquaclean
   friendly_name: Geberit AquaClean Bridge
   language: ro
+  tz_label: "Fus orar"
+  tz_default: Europe/Bucharest
 esphome:
   name: ${name}
   friendly_name: ${friendly_name}
@@ -19,6 +21,8 @@ packages:
   board: !include ../packages/board-atoms3-lite.yaml
   aquaclean: !include ../packages/aquaclean.yaml
   route: !include ../packages/api_setup.yaml
+  web: !include ../packages/web.yaml
+  timezone: !include ../packages/timezone.yaml
   provisioning: !include ../packages/provisioning.yaml
 
 external_components:
