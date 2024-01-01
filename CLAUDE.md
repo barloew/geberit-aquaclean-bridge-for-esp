@@ -111,7 +111,7 @@ themselves in the docs just as clearly as a Home Assistant user.
 ### Images and logos
 
 - **All images live in the top-level `images/`** (layout and per-file notes in `images/README.md`):
-  `overview/`, `steps/`, `badges/`, `ui/`, `illustrations/`, `brands/`. Don't put images anywhere else.
+  `overview/`, `steps/`, `badges/`, `ui/`, `illustrations/`, `user-interface/`, `brands/`. Don't put images anywhere else.
 - `images/steps/` and `images/badges/` are **generated** (`tools/steps/generate.py`,
   `tools/badges/generate.py`); change the source and regenerate, never hand-edit.
 - Third-party logos (`images/brands/`) are used **unmodified**, only to show compatibility, and are not
