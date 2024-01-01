@@ -25,14 +25,14 @@ ROOT = Path(__file__).resolve().parents[2]
 IMAGES = ROOT / "images"
 OUT = IMAGES / "badges"
 
-# Route colours follow the overview image (images/overview/).
-ROUTE_API = ("native API", "#0E7490")
-ROUTE_MQTT = ("MQTT", "#C2410C")
-ROUTE_HOMEKIT = ("optional · also stand-alone", "#BE123C")
+# Route colours: (value, background, text). Avoid red: badges read red as a warning.
+ROUTE_API = ("native API", "#0E7490", "#FFFFFF")
+ROUTE_MQTT = ("MQTT", "#111827", "#FFFFFF")
+ROUTE_HOMEKIT = ("optional · also stand-alone", "#F59E0B", "#1F2937")
 
-# file name, label, logo (relative to images/), (value, colour)
+# file name, label, logo (relative to images/), (value, colour, text colour)
 BADGES = [
-    ("esphome", "ESPHome", "brands/esphome.svg", ("2026.10+", "#1F2937")),
+    ("esphome", "ESPHome", "brands/esphome.svg", ("2026.10+", "#1F2937", "#FFFFFF")),
     ("home-assistant-api", "Home Assistant", "brands/home-assistant.svg", ROUTE_API),
     ("homey-api", "Homey", "brands/homey.svg", ROUTE_API),
     ("iobroker-api", "ioBroker", "brands/iobroker.svg", ROUTE_API),
@@ -120,7 +120,7 @@ def logo_element(rel: str, uri: str) -> str:
     )
 
 
-def badge(label: str, logo: str, value: str, colour: str) -> str:
+def badge(label: str, logo: str, value: str, colour: str, fg: str = "#FFFFFF") -> str:
     lw = text_width(label)
     vw = text_width(value)
     left = PAD + LOGO + GAP + lw + PAD
@@ -141,7 +141,7 @@ def badge(label: str, logo: str, value: str, colour: str) -> str:
 {logo}
 <g font-family="{FONT_FAMILY}" font-size="{FONT_SIZE}">
 <text x="{lx:g}" y="{ty}" fill="{LABEL_FG}" textLength="{lw:g}" lengthAdjust="spacingAndGlyphs">{escape(label)}</text>
-<text x="{vx:g}" y="{ty}" fill="#FFFFFF" textLength="{vw:g}" lengthAdjust="spacingAndGlyphs">{escape(value)}</text>
+<text x="{vx:g}" y="{ty}" fill="{fg}" textLength="{vw:g}" lengthAdjust="spacingAndGlyphs">{escape(value)}</text>
 </g>
 </svg>
 """
@@ -150,9 +150,9 @@ def badge(label: str, logo: str, value: str, colour: str) -> str:
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     cache: dict[str, str] = {}
-    for name, label, logo, (value, colour) in BADGES:
+    for name, label, logo, (value, colour, fg) in BADGES:
         uri = cache.setdefault(logo, logo_data_uri(logo))
-        (OUT / f"{name}.svg").write_text(badge(label, logo_element(logo, uri), value, colour))
+        (OUT / f"{name}.svg").write_text(badge(label, logo_element(logo, uri), value, colour, fg))
         print(f"images/badges/{name}.svg")
 
 
