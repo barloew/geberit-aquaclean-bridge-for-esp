@@ -103,7 +103,6 @@
  "HomeKit: Apple Home named the switch '%s', set back to '%s'": "HomeKit: ‏Apple Home קרא למתג '%s', הוחזר ל-'%s'",
  "HomeKit: Ed25519 self-test FAILED, pairing will not work": "HomeKit: בדיקה עצמית Ed25519 נכשלה, הצימוד לא יעבוד",
  "HomeKit: Ed25519 self-test OK": "HomeKit: בדיקה עצמית Ed25519 תקינה",
- "HomeKit: QR code sent to Home Assistant as a notification": "HomeKit: קוד ה-QR נשלח ל-Home Assistant כהתראה",
  "HomeKit: accessory changed, Apple Home reads it again": "HomeKit: האביזר השתנה, Apple Home קורא אותו מחדש",
  "HomeKit: accessory list read by the controller": "HomeKit: רשימת האביזרים נקראה על ידי מכשיר Apple",
  "HomeKit: accessory not created": "HomeKit: האביזר לא נוצר",

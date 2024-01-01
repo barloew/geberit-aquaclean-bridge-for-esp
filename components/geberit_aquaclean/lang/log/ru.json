@@ -103,7 +103,6 @@
  "HomeKit: Apple Home named the switch '%s', set back to '%s'": "HomeKit: Apple Home назвал выключатель '%s', возвращено '%s'",
  "HomeKit: Ed25519 self-test FAILED, pairing will not work": "HomeKit: самопроверка Ed25519 НЕ ПРОЙДЕНА, сопряжение не будет работать",
  "HomeKit: Ed25519 self-test OK": "HomeKit: самопроверка Ed25519 OK",
- "HomeKit: QR code sent to Home Assistant as a notification": "HomeKit: QR-код отправлен в Home Assistant как уведомление",
  "HomeKit: accessory changed, Apple Home reads it again": "HomeKit: аксессуар изменён, Apple Home считывает его заново",
  "HomeKit: accessory list read by the controller": "HomeKit: список аксессуаров считан устройством Apple",
  "HomeKit: accessory not created": "HomeKit: аксессуар не создан",

@@ -36,6 +36,10 @@ names:
   read_statistics: "Statistieken lezen"
   homekit_enable: "Apple Home"
   homekit_qr: "HomeKit-QR-code tonen"
+  homekit_code: "HomeKit-code"
+  raw_request: "Ruwe aanvraag"
+  toilet_problem: "Toiletstoring"
+  bridge_problem: "Bridgeprobleem"
   maintenance_mode: "Fysiek onderhoud"
   seated: Gebruiker gedetecteerd
   shower_active: Douche actief

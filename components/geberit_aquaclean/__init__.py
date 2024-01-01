@@ -157,6 +157,7 @@ HubSwitch = ns.class_("HubSwitch", switch.Switch)
 RemoteEvent = ns.class_("RemoteEvent", event.Event)
 OrientationLight = ns.class_("OrientationLight", light.LightOutput)
 UserText = ns.class_("UserText", text.Text)
+RawRequestText = ns.class_("RawRequestText", text.Text)
 UserSelect = ns.class_("UserSelect", select.Select)
 ThresholdNumber = ns.class_("ThresholdNumber", number.Number)
 Device = cg.esphome_ns.class_("Device")
@@ -610,6 +611,9 @@ ENTITIES: list[Ent] = [
         setting=(6,)),
     Ent("last_error_text", "status_enum", G_DEVICE, {CONF_ICON: "mdi:alert-circle-outline", CONF_ENTITY_CATEGORY: DIAG},
         setting=(6,)),  # same status id 6, rendered as a module-aware label + hex (error_map)
+    # Toilet fault as a problem alarm: status id 6 is 0 (no error) or a raw fault code; on = fault present.
+    # Published as value != 0 via the status-flag path, so controllers (Homey, ioBroker, HA) get an alarm.
+    Ent("toilet_problem", "status", G_DEVICE, {"device_class": "problem", CONF_ICON: "mdi:toilet"}, setting=(6,)),
     Ent("service_state", "status_enum", G_DEVICE, {CONF_ICON: "mdi:spray", CONF_ENTITY_CATEGORY: DIAG}, setting=(7,)),
     _cmd("arm_cleaning_start", G_DEVICE, 0x04, "mdi:spray", CONFIG),
     _cmd("arm_cleaning_next", G_DEVICE, 0x05, "mdi:skip-next", CONFIG),
@@ -654,6 +658,9 @@ ENTITIES: list[Ent] = [
     Ent("connection_uptime", "uptime", G_MAIN, {CONF_ENTITY_CATEGORY: DIAG}),
     # Health & resource watchdog (step 4): one coarse verdict (visible) plus memory diagnostics (hidden)
     Ent("bridge_health", "status_enum", G_MAIN, {CONF_ICON: "mdi:heart-pulse"}, setting=(0x101,)),  # synthetic index, not a status id
+    # Bridge problem alarm: on when the bridge decides the toilet is wedged and needs a power-cycle. The rich
+    # four-state story stays in bridge_health; this boolean maps to an alarm capability on Homey / ioBroker / HA.
+    Ent("bridge_problem", "binary_sensor", G_MAIN, {"device_class": "problem", CONF_ICON: "mdi:alert"}),
     Ent("free_heap", "gauge", G_MAIN, {CONF_ENTITY_CATEGORY: DIAG, CONF_ICON: "mdi:memory"}),
     Ent("min_free_heap", "gauge", G_MAIN, {CONF_ENTITY_CATEGORY: DIAG, CONF_ICON: "mdi:memory"}),
     Ent("largest_free_block", "gauge", G_MAIN, {CONF_ENTITY_CATEGORY: DIAG, CONF_ICON: "mdi:memory"}),
@@ -695,6 +702,10 @@ ENTITIES: list[Ent] = [
     Ent("raw_status", "text_sensor", G_MAIN, {CONF_ICON: "mdi:code-brackets", CONF_ENTITY_CATEGORY: DIAG}, discovery=True),
     Ent("last_response", "text_sensor", G_MAIN, {CONF_ICON: "mdi:message-reply-text", CONF_ENTITY_CATEGORY: DIAG},
         discovery=True),
+    # Free protocol request as a datapoint (every route): type "<context> <procedure> <args>" in hex, the answer
+    # lands in last_response. Route-neutral twin of the aquaclean_raw_request native-API action.
+    Ent("raw_request", "raw_text", G_MAIN, {CONF_ICON: "mdi:console-line", CONF_ENTITY_CATEGORY: DIAG},
+        discovery=True),
     Ent("toilet_advertisement", "text_sensor", G_MAIN, {CONF_ICON: "mdi:bluetooth", CONF_ENTITY_CATEGORY: DIAG},
         discovery=True),
     Ent("procedures_seen", "text_sensor", G_MAIN, {CONF_ICON: "mdi:format-list-numbered", CONF_ENTITY_CATEGORY: DIAG},
@@ -711,9 +722,13 @@ ENTITIES: list[Ent] = [
     # HomeKit; turning it off restarts the bridge without it. See _homekit_to_code for the gating.
     Ent("homekit_enable", "hub_switch", G_MAIN, {CONF_ICON: "mdi:apple", CONF_ENTITY_CATEGORY: CONFIG,
         "restore_mode": "RESTORE_DEFAULT_OFF"}, action=SW_HOMEKIT, homekit=True),
-    # HomeKit: show the setup QR code again (Home Assistant notification; page /homekit with the web server)
+    # HomeKit: show the setup QR code again (page /homekit with the web server; also a Home Assistant notification)
     Ent("homekit_qr", "button", G_MAIN, {CONF_ICON: "mdi:qrcode", CONF_ENTITY_CATEGORY: CONFIG},
         action=BTN_HOMEKIT_QR, homekit=True),
+    # HomeKit: the pairing code and the /homekit page URL as a sensor, so every controller (Apple Home, Homey,
+    # ioBroker, openHAB, Home Assistant) can show it without the Home Assistant-only notification
+    Ent("homekit_code", "text_sensor", G_MAIN, {CONF_ICON: "mdi:cellphone-key", CONF_ENTITY_CATEGORY: DIAG},
+        homekit=True),
     Ent("read_device_info", "button", G_MAIN, {CONF_ICON: "mdi:information-variant", CONF_ENTITY_CATEGORY: DIAG},
         action=BTN_READ_INFO, discovery=True),
     Ent("device_data", "text_sensor", G_MAIN, {CONF_ICON: "mdi:database-search", CONF_ENTITY_CATEGORY: DIAG},
@@ -828,13 +843,14 @@ ESP_ONLY = {
     "app_connected", "irk_android", "advertise", "recognized_user", "active_user",
     "search_devices", "recognition_threshold", "toilet_address", "search_toilet", "maintenance_mode", "discovery",
     "toilet_advertisement", "read_statistics", "procedures_seen", "scan_settings", "settings_scan", "read_device_info", "device_data",
-    "counters", "raw_status", "last_response", "toilet_signal", "homekit_enable", "homekit_qr",
-    "bridge_health", "free_heap", "min_free_heap", "largest_free_block",
+    "counters", "raw_status", "last_response", "raw_request", "toilet_signal", "homekit_enable", "homekit_qr",
+    "homekit_code",
+    "bridge_health", "bridge_problem", "free_heap", "min_free_heap", "largest_free_block",
 }
 TOILET_CORE = {
     "connected", "reconnects", "timeouts", "connection_uptime", "refresh_settings", "model", "functions",
     "rediscover", "firmware", "device_type", "article_number", "serial_number", "production_date",
-    "commissioning_date", "last_error", "last_error_text",
+    "commissioning_date", "last_error", "last_error_text", "toilet_problem",
 }
 for _e in ENTITIES:
     if _e.key in CAPS_OF:
@@ -972,7 +988,9 @@ def _schema_for(e: Ent):
     if d == "counter":
         return sensor.sensor_schema(accuracy_decimals=0, state_class="total_increasing")
     if d == "gauge":
-        return sensor.sensor_schema(unit_of_measurement="B", accuracy_decimals=0, state_class="measurement")
+        # data_size so Homey / ioBroker map the heap byte counts to a size capability, not a generic esphome_*
+        return sensor.sensor_schema(unit_of_measurement="B", device_class="data_size", accuracy_decimals=0,
+                                    state_class="measurement")
     if d == "timestamp":
         return sensor.sensor_schema(device_class="timestamp", accuracy_decimals=0)
     if d == "status_value":
@@ -1014,6 +1032,8 @@ def _schema_for(e: Ent):
         return text.text_schema(UserText, mode="text")
     if d == "user_irk_set":
         return text.text_schema(UserText, mode="password")
+    if d == "raw_text":
+        return text.text_schema(RawRequestText, mode="text")
     if d in ("user_device", "user_welcome"):
         return select.select_schema(UserSelect)
     if d == "user_flag":
@@ -1450,6 +1470,9 @@ async def to_code(config):
         elif d == "user_irk_set":
             var = await text.new_text(conf, max_length=64)
             cg.add(var.set_user(hub, _user_of(e), 2))
+        elif d == "raw_text":
+            var = await text.new_text(conf, max_length=64)
+            cg.add(var.set_hub(hub))
         elif d == "user_irk":
             var = await text_sensor.new_text_sensor(conf)
             cg.add(hub.set_user_irk_sensor(_user_of(e), var))

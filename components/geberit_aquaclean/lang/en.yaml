@@ -36,6 +36,10 @@ names:
   read_statistics: "Read statistics"
   homekit_enable: "Apple Home"
   homekit_qr: "Show HomeKit QR code"
+  homekit_code: "HomeKit code"
+  raw_request: "Raw request"
+  toilet_problem: "Toilet fault"
+  bridge_problem: "Bridge problem"
   maintenance_mode: "Physical maintenance"
   # Shower session (the running session; ignored while nobody is seated)
   seated: User detected

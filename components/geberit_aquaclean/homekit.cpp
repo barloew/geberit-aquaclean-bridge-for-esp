@@ -226,7 +226,7 @@ bool AquaCleanHub::homekit_notify_qr_(bool show) {
   n.key = StringRef("notification_id");
   n.value = StringRef("aquaclean_homekit");
   api::global_api_server->send_homeassistant_action(req);
-  if (show) ESP_LOGI(TAG, LT("HomeKit: QR code sent to Home Assistant as a notification"));
+  if (show) ESP_LOGI(TAG, LT("HomeKit: QR code also pushed to Home Assistant (needs the device-actions permission)"));
   return true;
 #else
   return false;
@@ -235,17 +235,24 @@ bool AquaCleanHub::homekit_notify_qr_(bool show) {
 
 void AquaCleanHub::homekit_show_qr() {
   if (!this->hk_started_) return;
-#ifdef USE_API_HOMEASSISTANT_SERVICES
-  this->hk_qr_due_ = true;
-#endif
+  // Route-neutral first: the /homekit page and the code work for every controller (Apple Home, Homey,
+  // ioBroker, openHAB, Home Assistant). The code sensor carries both so no controller depends on the
+  // Home Assistant-only notification below.
+  std::string url;
 #ifdef USE_WEBSERVER
   for (auto &ip : network::get_ip_addresses()) {
     if (ip.is_ip4()) {
       char buf[network::IP_ADDRESS_BUFFER_SIZE];
+      url = std::string("http://") + ip.str_to(buf) + "/homekit";
       ESP_LOGI(TAG, LT("HomeKit QR code: http://%s/homekit"), ip.str_to(buf));
       break;
     }
   }
+#endif
+  if (this->hk_code_sensor_ != nullptr)
+    this->hk_code_sensor_->publish_state(url.empty() ? hk_code_shown : (hk_code_shown + " \xc2\xb7 " + url));
+#ifdef USE_API_HOMEASSISTANT_SERVICES
+  this->hk_qr_due_ = true;  // Home Assistant only: additionally push the QR code as a notification (if permitted)
 #endif
 }
 
@@ -363,6 +370,8 @@ void AquaCleanHub::homekit_start_() {
   hk_acc_name = name;
   ESP_LOGI(TAG, LT("HomeKit started: %d switches, setup code %s, %u paired; QR code content: %s"), offered,
            code.c_str(), (unsigned)hap_get_paired_controller_count(), hk_payload.c_str());
+  // route-neutral; homekit_show_qr() appends the /homekit URL
+  if (this->hk_code_sensor_ != nullptr) this->hk_code_sensor_->publish_state(code);
 #ifdef USE_WEBSERVER
   if (web_server_base::global_web_server_base != nullptr)
     web_server_base::global_web_server_base->add_handler(new HomekitQrHandler());  // NOLINT

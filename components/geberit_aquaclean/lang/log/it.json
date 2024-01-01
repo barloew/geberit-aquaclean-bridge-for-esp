@@ -103,7 +103,7 @@
  "HomeKit: Apple Home named the switch '%s', set back to '%s'": "HomeKit: Apple Home ha chiamato l'interruttore '%s', riportato a '%s'",
  "HomeKit: Ed25519 self-test FAILED, pairing will not work": "HomeKit: autotest Ed25519 FALLITO, l'abbinamento non funzionerà",
  "HomeKit: Ed25519 self-test OK": "HomeKit: autotest Ed25519 OK",
- "HomeKit: QR code sent to Home Assistant as a notification": "HomeKit: codice QR inviato a Home Assistant come notifica",
+ "HomeKit: QR code also pushed to Home Assistant (needs the device-actions permission)": "HomeKit: codice QR inviato anche a Home Assistant (richiede il permesso azioni del dispositivo)",
  "HomeKit: accessory changed, Apple Home reads it again": "HomeKit: accessorio modificato, Apple Home lo rilegge",
  "HomeKit: accessory list read by the controller": "HomeKit: elenco accessori letto dal dispositivo Apple",
  "HomeKit: accessory not created": "HomeKit: accessorio non creato",

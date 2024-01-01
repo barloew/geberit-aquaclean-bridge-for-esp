@@ -261,6 +261,18 @@ class ThresholdNumber : public number::Number {
   AquaCleanHub *hub_{nullptr};
 };
 
+/// Free protocol request for exploring other models: the text "<context> <procedure> <args>" (hex, e.g.
+/// "01 53 0103") is parsed and sent with send_raw(); the answer appears in "Last response". Route-neutral
+/// equivalent of the aquaclean_raw_request native-API action, so MQTT/ioBroker controllers can use it too.
+class RawRequestText : public text::Text {
+ public:
+  void set_hub(AquaCleanHub *hub) { this->hub_ = hub; }
+
+ protected:
+  void control(const std::string &value) override;
+  AquaCleanHub *hub_{nullptr};
+};
+
 /// Button presses of the remote control
 class RemoteEvent : public event::Event {};
 

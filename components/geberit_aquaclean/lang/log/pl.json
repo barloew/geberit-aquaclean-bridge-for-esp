@@ -103,7 +103,6 @@
  "HomeKit: Apple Home named the switch '%s', set back to '%s'": "HomeKit: Apple Home nazwał przełącznik '%s', przywrócono '%s'",
  "HomeKit: Ed25519 self-test FAILED, pairing will not work": "HomeKit: autotest Ed25519 NIEUDANY, parowanie nie zadziała",
  "HomeKit: Ed25519 self-test OK": "HomeKit: autotest Ed25519 OK",
- "HomeKit: QR code sent to Home Assistant as a notification": "HomeKit: kod QR wysłany do Home Assistant jako powiadomienie",
  "HomeKit: accessory changed, Apple Home reads it again": "HomeKit: akcesorium zmienione, Apple Home odczytuje je ponownie",
  "HomeKit: accessory list read by the controller": "HomeKit: lista akcesoriów odczytana przez urządzenie Apple",
  "HomeKit: accessory not created": "HomeKit: akcesorium nie zostało utworzone",

@@ -103,7 +103,6 @@
  "HomeKit: Apple Home named the switch '%s', set back to '%s'": "HomeKit: Apple Home je stikalo poimenoval '%s', ponastavljeno na '%s'",
  "HomeKit: Ed25519 self-test FAILED, pairing will not work": "HomeKit: samopreizkus Ed25519 NI USPEL, seznanjanje ne bo delovalo",
  "HomeKit: Ed25519 self-test OK": "HomeKit: samopreizkus Ed25519 OK",
- "HomeKit: QR code sent to Home Assistant as a notification": "HomeKit: koda QR poslana v Home Assistant kot obvestilo",
  "HomeKit: accessory changed, Apple Home reads it again": "HomeKit: dodatek spremenjen, Apple Home ga znova prebere",
  "HomeKit: accessory list read by the controller": "HomeKit: naprava Apple je prebrala seznam dodatkov",
  "HomeKit: accessory not created": "HomeKit: dodatek ni ustvarjen",

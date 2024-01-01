@@ -103,7 +103,6 @@
  "HomeKit: Apple Home named the switch '%s', set back to '%s'": "HomeKit: Apple Home a numit comutatorul '%s', readus la '%s'",
  "HomeKit: Ed25519 self-test FAILED, pairing will not work": "HomeKit: autotest Ed25519 EȘUAT, asocierea nu va funcționa",
  "HomeKit: Ed25519 self-test OK": "HomeKit: autotest Ed25519 OK",
- "HomeKit: QR code sent to Home Assistant as a notification": "HomeKit: cod QR trimis la Home Assistant ca notificare",
  "HomeKit: accessory changed, Apple Home reads it again": "HomeKit: accesoriu modificat, Apple Home îl citește din nou",
  "HomeKit: accessory list read by the controller": "HomeKit: lista de accesorii citită de dispozitivul Apple",
  "HomeKit: accessory not created": "HomeKit: accesoriul nu a fost creat",

@@ -36,6 +36,10 @@ names:
   read_statistics: "Statistik lesen"
   homekit_enable: "Apple Home"
   homekit_qr: "HomeKit-QR-Code anzeigen"
+  homekit_code: "HomeKit-Code"
+  raw_request: "Rohanfrage"
+  toilet_problem: "WC-Störung"
+  bridge_problem: "Bridge-Problem"
   maintenance_mode: "Physische Wartung"
   seated: Benutzer erkannt
   shower_active: Analdusche aktiv

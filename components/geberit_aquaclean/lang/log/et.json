@@ -103,7 +103,6 @@
  "HomeKit: Apple Home named the switch '%s', set back to '%s'": "HomeKit: Apple Home nimetas lüliti '%s', taastatud '%s'",
  "HomeKit: Ed25519 self-test FAILED, pairing will not work": "HomeKit: Ed25519 enesetest EBAÕNNESTUS, sidumine ei tööta",
  "HomeKit: Ed25519 self-test OK": "HomeKit: Ed25519 enesetest OK",
- "HomeKit: QR code sent to Home Assistant as a notification": "HomeKit: QR-kood saadeti Home Assistantile teavitusena",
  "HomeKit: accessory changed, Apple Home reads it again": "HomeKit: lisaseade muutus, Apple Home loeb selle uuesti",
  "HomeKit: accessory list read by the controller": "HomeKit: Apple'i seade luges lisaseadmete loendi",
  "HomeKit: accessory not created": "HomeKit: lisaseadet ei loodud",

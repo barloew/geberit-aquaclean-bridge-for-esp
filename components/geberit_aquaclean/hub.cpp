@@ -647,6 +647,9 @@ void AquaCleanHub::publish_health_(uint32_t now) {
     ESP_LOGI(TAG, LT("Bridge health: %s"), health_name_(h));
     // The visible entity shows a localized state via the status-enum texts (options.bridge_health).
     this->publish_status_(BRIDGE_HEALTH_IDX, static_cast<int64_t>(h));
+    // Problem alarm (device_class: problem) for Homey / ioBroker / HA: on only for the actionable verdict.
+    if (this->bridge_problem_sensor_ != nullptr)
+      this->bridge_problem_sensor_->publish_state(h == Health::NEEDS_POWER_CYCLE);
   }
 }
 

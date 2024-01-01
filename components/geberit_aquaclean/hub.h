@@ -177,6 +177,7 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
   void register_select(SettingSelect *s) { this->selects_.push_back(s); }
   void set_connected_sensor(binary_sensor::BinarySensor *s) { this->connected_sensor_ = s; }
   void set_app_connected_sensor(binary_sensor::BinarySensor *s) { this->app_connected_sensor_ = s; }
+  void set_bridge_problem_sensor(binary_sensor::BinarySensor *s) { this->bridge_problem_sensor_ = s; }
   void set_reconnects_sensor(sensor::Sensor *s) { this->reconnects_sensor_ = s; }
   void set_timeouts_sensor(sensor::Sensor *s) { this->timeouts_sensor_ = s; }
   void set_free_heap_sensor(sensor::Sensor *s) { this->free_heap_sensor_ = s; }
@@ -370,6 +371,8 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
   /// runtime toggle pass false, and the SW_HOMEKIT switch sets it from its restored state.
   void set_homekit_runtime_enabled(bool on) { this->hk_runtime_enabled_ = on; }
   void set_homekit_name(uint8_t i, const char *name) { this->hk_names_[i] = name; }
+  /// Route-neutral: the pairing code and /homekit page URL as a text sensor, shown by every controller
+  void set_homekit_code_sensor(text_sensor::TextSensor *s) { this->hk_code_sensor_ = s; }
   void set_homekit_entities(binary_sensor::BinarySensor *shower, binary_sensor::BinarySensor *lady,
                             binary_sensor::BinarySensor *dryer, switch_::Switch *odor) {
     this->hk_flags_[0] = shower;
@@ -400,6 +403,7 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
   bool hk_started_{false};
   bool hk_runtime_enabled_{false};  // gates homekit_start_(); set by codegen or the SW_HOMEKIT switch
   const char *hk_names_[4]{};
+  text_sensor::TextSensor *hk_code_sensor_{nullptr};
   binary_sensor::BinarySensor *hk_flags_[3]{};
   switch_::Switch *hk_odor_{nullptr};
   void *hk_chars_[4]{};  // hap_char_t* of the On characteristic, nullptr = switch not offered
@@ -469,6 +473,7 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
   // entities
   binary_sensor::BinarySensor *connected_sensor_{nullptr};
   binary_sensor::BinarySensor *app_connected_sensor_{nullptr};
+  binary_sensor::BinarySensor *bridge_problem_sensor_{nullptr};
   sensor::Sensor *reconnects_sensor_{nullptr};
   sensor::Sensor *timeouts_sensor_{nullptr};
   text_sensor::TextSensor *uptime_sensor_{nullptr};

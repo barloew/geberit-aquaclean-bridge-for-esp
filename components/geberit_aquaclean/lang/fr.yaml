@@ -36,6 +36,10 @@ names:
   read_statistics: "Lire les statistiques"
   homekit_enable: "Apple Home"
   homekit_qr: "Afficher le code QR HomeKit"
+  homekit_code: "Code HomeKit"
+  raw_request: "Requête brute"
+  toilet_problem: "Défaut du WC"
+  bridge_problem: "Problème de la passerelle"
   maintenance_mode: "Entretien physique"
   seated: Utilisateur détecté
   shower_active: Douchette active

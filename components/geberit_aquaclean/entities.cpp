@@ -5,6 +5,9 @@
 #ifdef USE_ESP32
 
 #include <cmath>
+#include <cstdlib>
+#include <string>
+#include <vector>
 
 #include "esphome/core/log.h"
 
@@ -34,6 +37,32 @@ void SettingNumber::control(float value) {
     return;
   }
   this->request_write_(static_cast<uint16_t>(raw));
+}
+
+void RawRequestText::control(const std::string &value) {
+  if (this->hub_ == nullptr) return;
+  // Parse "<context> <procedure> <args>" as hex, e.g. "01 53 0103"; separators space/comma/colon. The first
+  // two tokens are context and procedure; any further tokens are the args, concatenated ("01 53 01 03" works).
+  std::vector<std::string> tok;
+  std::string cur;
+  for (const char c : value) {
+    if (c == ' ' || c == ',' || c == ':' || c == '\t') {
+      if (!cur.empty()) {
+        tok.push_back(cur);
+        cur.clear();
+      }
+    } else {
+      cur.push_back(c);
+    }
+  }
+  if (!cur.empty()) tok.push_back(cur);
+  this->publish_state("");  // clear the field; the answer appears in "Last response"
+  if (tok.size() < 2) return;
+  const uint8_t context = static_cast<uint8_t>(strtol(tok[0].c_str(), nullptr, 16));
+  const uint8_t procedure = static_cast<uint8_t>(strtol(tok[1].c_str(), nullptr, 16));
+  std::string args;
+  for (size_t i = 2; i < tok.size(); i++) args += tok[i];
+  this->hub_->send_raw(context, procedure, args);
 }
 
 void SettingSelect::apply_language(uint8_t lang) {

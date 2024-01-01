@@ -103,7 +103,6 @@
  "HomeKit: Apple Home named the switch '%s', set back to '%s'": "HomeKit: Apple Home pavadino jungiklį '%s', atkurta į '%s'",
  "HomeKit: Ed25519 self-test FAILED, pairing will not work": "HomeKit: Ed25519 savitikra NEPAVYKO, susiejimas neveiks",
  "HomeKit: Ed25519 self-test OK": "HomeKit: Ed25519 savitikra OK",
- "HomeKit: QR code sent to Home Assistant as a notification": "HomeKit: QR kodas išsiųstas į Home Assistant kaip pranešimas",
  "HomeKit: accessory changed, Apple Home reads it again": "HomeKit: priedas pakeistas, Apple Home jį nuskaito iš naujo",
  "HomeKit: accessory list read by the controller": "HomeKit: Apple įrenginys nuskaitė priedų sąrašą",
  "HomeKit: accessory not created": "HomeKit: priedas nesukurtas",
