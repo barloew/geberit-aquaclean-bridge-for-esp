@@ -44,13 +44,13 @@ static const uint32_t CLOCK_SYNC_INTERVAL = 24UL * 60 * 60 * 1000;  // set the t
 static const uint32_t SESSION_IDLE_REFRESH = 60000;                 // session settings while nobody is seated
 static const uint8_t MAX_KIND_TIMEOUTS = 3;
 // Recovery ladder (step 3)
-static const uint8_t MAX_RECOVERY_REBOOTS = 2;         // gated reboots per bad episode before giving up
-static const uint32_t RECOVERY_REBOOT_MS = 300000;     // 5 min continuously unhealthy before a recovery reboot
-static const uint32_t RECOVERY_FLAP_WINDOW_MS = 600000;  // 10 min reconnect-flap window
-static const uint8_t RECOVERY_FLAP_THRESHOLD = 5;      // reconnects within the window that count as flapping
+static const uint8_t MAX_RECOVERY_REBOOTS = 2;             // gated reboots per bad episode before giving up
+static const uint32_t RECOVERY_REBOOT_MS = 300000;         // 5 min continuously unhealthy before a recovery reboot
+static const uint32_t RECOVERY_FLAP_WINDOW_MS = 600000;    // 10 min reconnect-flap window
+static const uint8_t RECOVERY_FLAP_THRESHOLD = 5;          // reconnects within the window that count as flapping
 static const uint32_t RECOVERY_HEALTHY_CLEAR_MS = 600000;  // 10 min healthy clears the episode
 static const uint32_t RECOVERY_NO_CONNECT_MS = 300000;     // no connection this boot after a recovery reboot
-static const uint8_t SCAN_IDS = 0x20;  // settings scan: ids 0x00-0x1f per kind
+static const uint8_t SCAN_IDS = 0x20;                      // settings scan: ids 0x00-0x1f per kind
 // settings scan: the four setting kinds plus the active values of common settings (0a <id>, written with 0b)
 static const uint8_t SCAN_PROC[5] = {0x07, 0x53, 0x51, 0x57, 0x0A};
 static const char *const SCAN_NAMES[5] = {"session", "default", "common", "schedule", "active"};
@@ -116,8 +116,7 @@ void AquaCleanHub::setup() {
   this->profile_pref_ = global_preferences->make_preference<Profile>(fnv1_hash("geberit_aquaclean_profile"));
   // Recovery breadcrumb: how many recovery reboots have happened this bad episode (persisted across reboots)
   this->recovery_pref_ = global_preferences->make_preference<uint8_t>(fnv1_hash("geberit_aquaclean_recovery"));
-  if (!this->recovery_pref_.load(&this->recovery_reboots_))
-    this->recovery_reboots_ = 0;
+  if (!this->recovery_pref_.load(&this->recovery_reboots_)) this->recovery_reboots_ = 0;
   if (this->recovery_reboots_ != 0)
     ESP_LOGW(TAG, LT("Recovery: resumed after a recovery reboot (%u this episode)"), this->recovery_reboots_);
   this->users_setup_();
@@ -338,8 +337,8 @@ void AquaCleanHub::loop() {
   if (this->discovery_ && this->procedures_dirty_ && now - this->last_procedures_publish_ >= 10000)
     this->publish_procedures_();
 
-  this->recovery_loop_(now);   // health evaluation + escalation ladder (also runs while the link is down)
-  this->resource_loop_(now);   // memory sampling + unified health verdict (also runs while the link is down)
+  this->recovery_loop_(now);  // health evaluation + escalation ladder (also runs while the link is down)
+  this->resource_loop_(now);  // memory sampling + unified health verdict (also runs while the link is down)
 
   if (!this->is_ready()) return;
 
@@ -537,8 +536,7 @@ uint8_t AquaCleanHub::recent_reconnects_(uint32_t now, uint32_t window) const {
 }
 
 void AquaCleanHub::recovery_loop_(uint32_t now) {
-  if (!this->recovery_enabled_)
-    return;
+  if (!this->recovery_enabled_) return;
 
   // Health: connected and the toilet has produced a decoded frame within the liveness window.
   const uint32_t stale = this->liveness_timeout_ != 0 ? this->liveness_timeout_ : 90000;
@@ -557,8 +555,7 @@ void AquaCleanHub::recovery_loop_(uint32_t now) {
 
   if (healthy) {
     this->unhealthy_since_ = 0;
-    if (this->healthy_since_ == 0)
-      this->healthy_since_ = now;
+    if (this->healthy_since_ == 0) this->healthy_since_ = now;
     // A sustained healthy period ends the bad episode: clear the persisted reboot count and any alert.
     if (static_cast<int32_t>(now - this->healthy_since_) >= static_cast<int32_t>(RECOVERY_HEALTHY_CLEAR_MS)) {
       if (this->recovery_reboots_ != 0) {
@@ -577,8 +574,7 @@ void AquaCleanHub::recovery_loop_(uint32_t now) {
 
   // Unhealthy.
   this->healthy_since_ = 0;
-  if (this->unhealthy_since_ == 0)
-    this->unhealthy_since_ = now;
+  if (this->unhealthy_since_ == 0) this->unhealthy_since_ = now;
   const uint32_t bad_for = now - this->unhealthy_since_;
   const bool flapping = this->recent_reconnects_(now, RECOVERY_FLAP_WINDOW_MS) >= RECOVERY_FLAP_THRESHOLD;
   const bool stuck = bad_for >= RECOVERY_REBOOT_MS;
@@ -619,14 +615,14 @@ void AquaCleanHub::resource_loop_(uint32_t now) {
                static_cast<unsigned>(this->largest_block_));
     if (this->free_heap_sensor_ != nullptr) this->free_heap_sensor_->publish_state(this->free_heap_);
     if (this->min_free_heap_sensor_ != nullptr) this->min_free_heap_sensor_->publish_state(this->min_free_heap_);
-    if (this->largest_free_block_sensor_ != nullptr) this->largest_free_block_sensor_->publish_state(this->largest_block_);
+    if (this->largest_free_block_sensor_ != nullptr)
+      this->largest_free_block_sensor_->publish_state(this->largest_block_);
   }
   this->publish_health_(now);
 }
 
 AquaCleanHub::Health AquaCleanHub::compute_health_(uint32_t now) const {
-  if (this->needs_power_cycle_)
-    return Health::NEEDS_POWER_CYCLE;
+  if (this->needs_power_cycle_) return Health::NEEDS_POWER_CYCLE;
   const uint32_t stale = this->liveness_timeout_ != 0 ? this->liveness_timeout_ : 90000;
   const bool link_unhealthy =
       this->ever_connected_ && (!this->is_ready() || !this->last_healthy_rx_valid_ ||

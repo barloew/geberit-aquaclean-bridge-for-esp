@@ -606,7 +606,7 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
   uint32_t heap_floor_{20000};  // free heap below this -> degraded
   uint32_t block_floor_{8000};  // largest free block below this -> degraded (fragmentation)
   Health health_{Health::OK};
-  Health health_logged_{Health::NEEDS_POWER_CYCLE};  // sentinel so the first verdict is always published
+  Health health_logged_{Health::NEEDS_POWER_CYCLE};     // sentinel so the first verdict is always published
   static constexpr uint16_t BRIDGE_HEALTH_IDX = 0x101;  // synthetic status-enum index (like registration 0x100)
   sensor::Sensor *free_heap_sensor_{nullptr};
   sensor::Sensor *min_free_heap_sensor_{nullptr};

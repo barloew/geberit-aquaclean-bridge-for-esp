@@ -287,8 +287,8 @@ void RemoteLink::loop() {
   // reveal it. Re-assert advertising if that state persists past a grace window (well above the ~300 ms
   // connect gap). Pairing, IRK capture and the app-adding window drive advertising themselves and are skipped.
   constexpr uint32_t ADV_GUARD_MS = 5000;
-  const bool adv_wanted = this->advertise_ && this->adv_configured_ && !this->pairing_ && !this->irk_active_ &&
-                          this->app_pair_until_ == 0;
+  const bool adv_wanted =
+      this->advertise_ && this->adv_configured_ && !this->pairing_ && !this->irk_active_ && this->app_pair_until_ == 0;
   if (adv_wanted && !this->adv_running_ && this->adv_restart_at_ == 0) {
     if (this->adv_down_since_ == 0) {
       this->adv_down_since_ = now;
