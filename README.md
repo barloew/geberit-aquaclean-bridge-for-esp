@@ -589,7 +589,13 @@ At most 4 Apple devices can have the accessory open at the same time; see [Conne
 
 </details>
 
-## Connections
+<a name="connections"></a>
+<details>
+<summary>
+
+## Connections <sub>[↑ back to top](#contents)</sub>
+
+</summary>
 
 | Bluetooth (max. 4) | At the same time |
 |---|---|
@@ -610,6 +616,8 @@ How they work together:
 - **The remote control works as usual.** Screens and buttons pass unchanged to the toilet and back, also while the app is open.
 - **The app takes priority.** While the app is connected, the bridge pauses its own status polls so the app doesn't slow down; your home automation system reads along with what the app requests, and commands from Home Assistant, MQTT and HomeKit still work. When the app closes, polling resumes and the bridge sets the clock again.
 - **Simultaneous presses** on the remote and in the app are carried out by the toilet in the order they arrive, just like without the bridge.
+
+</details>
 
 <a name="models-and-feature-discovery"></a>
 <details>
