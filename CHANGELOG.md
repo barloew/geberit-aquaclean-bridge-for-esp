@@ -11,6 +11,20 @@ no ESPHome needed on the user's side.
 
 ## v1.36.0 (not released yet)
 
+- **Breaking: entity keys and English labels are now US English.** `odour_extraction` → `odor_extraction`,
+`light_colour` → `light_color`, `recognised_user` → `recognized_user`, `user_recognised` → `user_recognized`,
+`stat_odour` → `stat_odor` and the matching profile/default/command keys. Dashboards, automations and YAML that
+reference the old keys must be updated. Only the English spelling changed; the other 28 translations keep their
+wording, and their keys follow the new names.
+- **Web installer installs the MQTT route** (was: native API without encryption). Firmware for every board
+(AtomS3 Lite, AtomS3R, XIAO ESP32S3) and every language. After installing, the MQTT broker, port, user,
+password and time zone are entered on the bridge's web page and stored on the ESP (`packages/mqtt_setup.yaml`);
+*Connect to MQTT broker* restarts with the new settings. Without a broker MQTT stays off, and an unreachable
+broker no longer restarts the ESP. The password is never shown or published again.
+- **The MQTT device topic prefix is configurable** (default the neutral `aquaclean`, no longer Home-Assistant-
+centric). It is set on the bridge's web page; the discovery prefix stays the shared `homeassistant` convention
+that Home Assistant, openHAB, Node-RED and Domoticz all read, so discovery keeps working while the device
+topics are yours to name.
 - **Per-shower oscillation and water temperature in the bridge profiles (4–6).** The toilet keeps a single
 oscillation setting and a single water-temperature setting, shared by the shower and the Lady shower, so a
 profile stored on the toilet (1–3) cannot hold a different value for each. The bridge-only profiles 4–6 now
@@ -22,6 +36,39 @@ Spray intensity and arm position were already separate per shower. New entities
 with a Lady shower and for any native-API or MQTT controller; set the shower values with *Activate/Store
 profile* or the profile's oscillation and water-temperature entities, and the Lady values on the two new
 entities. The entity set changed, so the feature discovery runs once after the update.
+- **Self-monitoring and automatic recovery of the toilet link.** The bridge now watches its own health and
+recovers from a wedged or lost link without losing the "no timeouts, zero reboots" behaviour in normal use:
+  - *Liveness probe during an app session.* Any decoded frame from the toilet (a poll answer, an app answer or a
+  notification) refreshes a liveness timestamp. While the Geberit app is connected the hub stays silent, so a
+  toilet that wedges mid app-session would go unnoticed; after 90 s of silence it injects one status poll so the
+  existing timeout path can detect a dead toilet. A healthy app session keeps the timestamp fresh, so it never
+  fires then.
+  - *Peripheral advertising guardian.* If advertising as the toilet ever stops with nothing scheduled to bring it
+  back (a silent peripheral wedge, invisible to any request timeout), it is re-asserted after a 5 s grace — so the
+  remote and app can always reach the bridge while the toilet link stays healthy.
+  - *Recovery ladder.* Reconnect flapping (≥ 5 in 10 min) or 5 min continuously unhealthy escalates: at most two
+  gated reboots per bad episode — never while the app is connected — bounded by a persisted NVS counter so a wedge
+  can never loop reboots, then a sticky "needs power-cycle" state. A sustained healthy period (10 min) clears the
+  episode. Runs only after the first successful connection, so a missing toilet never triggers a reboot.
+  - *`bridge_health` entity* (ok / degraded / recovering / needs power-cycle), localized in all 29 languages, plus
+  `free_heap`, `min_free_heap` and `largest_free_block` diagnostics (bytes, disabled by default). Memory is
+  sampled every 30 s; a final reason line is logged before any self-reboot.
+- **LilyGo T-Dongle-S3 board** (`packages/board-lilygo-tdongle-s3.yaml`): ESP32-S3, 16 MB flash, no PSRAM; APA102 RGB status LED (GPIO40 data / GPIO39 clock) and BOOT button (GPIO0). Hardware-validated on a Sela over the MQTT route (model, firmware RS08 TS57 and settings read out). No PSRAM; the T-Dongle-S3-Plus (8 MB PSRAM) needs a `psram:` block. Offered by the web installer and ESPHome YAML. The web-installer image makes no flash-vendor assumption; self-builders can uncomment `advanced: flash_chip: winbond` in the board file to free IRAM (the tested unit's flash is Winbond).
+- **Enter IRK** per profile (password field, in Home Assistant and on the web page) and the action
+`aquaclean_set_irk` (native API): store a known IRK as 32 hex digits (as Show IRK and Private BLE Device show
+it) or base64 (iOS keychain); empty removes it. The key is never shown or published again.
+- Shower, Lady shower and dryer are refused while nobody is seated, from every source (Home Assistant, MQTT,
+HomeKit, actions), with a log line in the chosen language; the toilet blocks the arms then and used to ignore
+the command silently (Geberit's installation test also needs weight on the seat). Odor extraction stays
+possible at any time. Before, HomeKit only checked the showers.
+- README: settings don't need anyone seated (session settings are kept for the next session); the sentence that
+they are ignored was wrong.
+- XIAO ESP32S3: the welcome light now blinks twice instead of staying on for 1.6 s.
+- Tuma Comfort complete system (146.29x): automatic flush and flush (with the interface module) added, from Geberit's
+product information; feature discovery still hides them without the module.
+- `tools/gen_firmware.py` generates the firmware files, `mqtt_setup.yaml` (50 time zones from tzdata), the
+board list of the install page and the build matrix (board x language).
+- `provisioning.yaml` no longer contains `dashboard_import` (that needs the native API).
 - **The overview image is generated.** `tools/overview/generate.py` builds `images/overview/` (SVG and the 3×
 PNG the README shows) from `tools/overview/overview.yaml`, in the same way as the step cards and badges. Models,
 the language count, the recommended board and the drawn routes come from `support/matrix.yaml`, so the image
@@ -45,33 +92,8 @@ now writes to `images/steps`.
 (Home Assistant, openHAB, Node-RED, Domoticz) and Apple Home (optional, also stand-alone). Built with each
 platform's own logo by `tools/badges/generate.py`; no external badge service. The Node-RED icon is credited to
 Nick O'Leary (CC BY 3.0) in the README and `THIRD_PARTY_NOTICES.md`, which now lists every logo and its terms.
-- **Breaking: entity keys and English labels are now US English.** `odour_extraction` → `odor_extraction`,
-`light_colour` → `light_color`, `recognised_user` → `recognized_user`, `user_recognised` → `user_recognized`,
-`stat_odour` → `stat_odor` and the matching profile/default/command keys. Dashboards, automations and YAML that
-reference the old keys must be updated. Only the English spelling changed; the other 28 translations keep their
-wording, and their keys follow the new names.
-- **Web installer installs the MQTT route** (was: native API without encryption). Firmware for every board
-(AtomS3 Lite, AtomS3R, XIAO ESP32S3) and every language. After installing, the MQTT broker, port, user,
-password and time zone are entered on the bridge's web page and stored on the ESP (`packages/mqtt_setup.yaml`);
-*Connect to MQTT broker* restarts with the new settings. Without a broker MQTT stays off, and an unreachable
-broker no longer restarts the ESP. The password is never shown or published again.
-- **The MQTT device topic prefix is configurable** (default the neutral `aquaclean`, no longer Home-Assistant-
-centric). It is set on the bridge's web page; the discovery prefix stays the shared `homeassistant` convention
-that Home Assistant, openHAB, Node-RED and Domoticz all read, so discovery keeps working while the device
-topics are yours to name.
-- `tools/gen_firmware.py` generates the firmware files, `mqtt_setup.yaml` (50 time zones from tzdata), the
-board list of the install page and the build matrix (board x language).
-- `provisioning.yaml` no longer contains `dashboard_import` (that needs the native API).
-- **LilyGo T-Dongle-S3 board** (`packages/board-lilygo-tdongle-s3.yaml`): ESP32-S3, 16 MB flash, no PSRAM; APA102 RGB status LED (GPIO40 data / GPIO39 clock) and BOOT button (GPIO0). Hardware-validated on a Sela over the MQTT route (model, firmware RS08 TS57 and settings read out). No PSRAM; the T-Dongle-S3-Plus (8 MB PSRAM) needs a `psram:` block. Offered by the web installer and ESPHome YAML. The web-installer image makes no flash-vendor assumption; self-builders can uncomment `advanced: flash_chip: winbond` in the board file to free IRAM (the tested unit's flash is Winbond).
-- **Enter IRK** per profile (password field, in Home Assistant and on the web page) and the action
-`aquaclean_set_irk` (native API): store a known IRK as 32 hex digits (as Show IRK and Private BLE Device show
-it) or base64 (iOS keychain); empty removes it. The key is never shown or published again.
-- Shower, Lady shower and dryer are refused while nobody is seated, from every source (Home Assistant, MQTT,
-HomeKit, actions), with a log line in the chosen language; the toilet blocks the arms then and used to ignore
-the command silently (Geberit's installation test also needs weight on the seat). Odor extraction stays
-possible at any time. Before, HomeKit only checked the showers.
-- Tuma Comfort complete system (146.29x): automatic flush and flush (with the interface module) added, from Geberit's
-product information; feature discovery still hides them without the module.
+- New README with installation steps as cards (`tools/steps/`: `steps.json` → `docs/steps/*.svg` and the
+README section between the `steps` markers).
 - README and `docs/models.md`: light sensor sensitivity is on the Sela (not the Mera Comfort); which models have
 flush actuation and draining.
 - Docs: the model table in the README and `docs/models.md` now list every model including the AquaClean Alba
@@ -88,36 +110,14 @@ app-controlled lid or flush actuation (earlier the list wrongly included these).
 - Docs: new [`docs/privacy.md`](docs/privacy.md) — which entities expose per-person usage (recognized / active
 user, per-profile recognition, the `stat_*` counters and timers) and how to switch each off with `internal: true`
 or `disabled_by_default: true`, plus the feature-level opt-out of simply not linking a device.
+- New maintainer guide `docs/MAINTAINERS.md`: this branch's components, how they fit together, the build and
+generation pipeline, and how to reproduce each CI job locally before pushing. (The `series-250-bridge` branch is
+a separate firmware with its own `docs/MAINTAINERS.md` and its own changelog.)
 - README and the Physical maintenance notification (all languages): the service terms of your installer and/or
 service provider may be affected too.
 - Physical maintenance warning (README and notification, all languages): water, possibly hot, and hot air from the
 dryer can come out of the toilet onto people nearby or on the seat (scalding, slipping, water damage); the
 authors accept no liability for injury or damage. The legal disclaimer in the README excludes liability too.
-- README: settings don't need anyone seated (session settings are kept for the next session); the sentence that
-they are ignored was wrong.
-- XIAO ESP32S3: the welcome light now blinks twice instead of staying on for 1.6 s.
-- New README with installation steps as cards (`tools/steps/`: `steps.json` → `docs/steps/*.svg` and the
-README section between the `steps` markers).
-- **Self-monitoring and automatic recovery of the toilet link.** The bridge now watches its own health and
-recovers from a wedged or lost link without losing the "no timeouts, zero reboots" behaviour in normal use:
-  - *Liveness probe during an app session.* Any decoded frame from the toilet (a poll answer, an app answer or a
-  notification) refreshes a liveness timestamp. While the Geberit app is connected the hub stays silent, so a
-  toilet that wedges mid app-session would go unnoticed; after 90 s of silence it injects one status poll so the
-  existing timeout path can detect a dead toilet. A healthy app session keeps the timestamp fresh, so it never
-  fires then.
-  - *Peripheral advertising guardian.* If advertising as the toilet ever stops with nothing scheduled to bring it
-  back (a silent peripheral wedge, invisible to any request timeout), it is re-asserted after a 5 s grace — so the
-  remote and app can always reach the bridge while the toilet link stays healthy.
-  - *Recovery ladder.* Reconnect flapping (≥ 5 in 10 min) or 5 min continuously unhealthy escalates: at most two
-  gated reboots per bad episode — never while the app is connected — bounded by a persisted NVS counter so a wedge
-  can never loop reboots, then a sticky "needs power-cycle" state. A sustained healthy period (10 min) clears the
-  episode. Runs only after the first successful connection, so a missing toilet never triggers a reboot.
-  - *`bridge_health` entity* (ok / degraded / recovering / needs power-cycle), localized in all 29 languages, plus
-  `free_heap`, `min_free_heap` and `largest_free_block` diagnostics (bytes, disabled by default). Memory is
-  sampled every 30 s; a final reason line is logged before any self-reboot.
-- New maintainer guide `docs/MAINTAINERS.md`: this branch's components, how they fit together, the build and
-generation pipeline, and how to reproduce each CI job locally before pushing. (The `series-250-bridge` branch is
-a separate firmware with its own `docs/MAINTAINERS.md` and its own changelog.)
 
 ## v1.35.0
 
