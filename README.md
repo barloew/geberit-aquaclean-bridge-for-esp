@@ -763,6 +763,18 @@ Arabic, Hebrew, Russian, Ukrainian, Chinese and Korean use no Latin letters, whi
 
 </details>
 
+<a name="other-aquaclean-integrations"></a>
+<details>
+<summary>
+
+## Other AquaClean integrations <sub>[↑ back to top](#contents)</sub>
+
+</summary>
+
+This isn't the only way to bring a Geberit AquaClean into home automation — **jens62/geberit-aquaclean** (Python, MQTT/HACS) and **torp93/homey-geberit-aquaclean** (a Homey app) are both good, mature projects, worth a look depending on your setup. If you want to understand how this project's bridge architecture differs from a client-based integration — real-time instead of polled, and the remote, app and automation all connected at once — there's an objective write-up: [How this bridge compares](docs/comparison.md).
+
+</details>
+
 <a name="trademark--legal-disclaimer"></a>
 <details>
 <summary>
