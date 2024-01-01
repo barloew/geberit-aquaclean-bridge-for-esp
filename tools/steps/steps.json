@@ -3,6 +3,8 @@
   "heading_level": 3,
   "accent": "#2f81f7",
   "per_row": 4,
+  "collapse": true,
+  "back_link": {"text": "↑ back to Installation", "href": "#installation"},
   "steps": [
     {
       "icon": "list-checks",

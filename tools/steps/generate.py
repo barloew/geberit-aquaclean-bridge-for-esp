@@ -50,6 +50,24 @@ def slug(heading):
     return s.replace(" ", "-")
 
 
+def section(hashes, heading, details, collapse=False, back_link=None):
+    """One step section. With collapse, the heading stays visible and the body folds under it.
+
+    A heading that carries a back link gets a different GitHub anchor, so a named anchor keeps
+    the plain one (#step-1-...) working for the cards and for links from elsewhere.
+    """
+    title = heading
+    if back_link:
+        title += f' <sub>[{back_link["text"]}]({back_link["href"]})</sub>'
+    if not collapse:
+        anchor = f'<a name="{slug(heading)}"></a>\n\n' if back_link else ""
+        return f"{anchor}{hashes} {title}\n\n{details}\n"
+    return (
+        f'<a name="{slug(heading)}"></a>\n<details>\n<summary>\n\n{hashes} {title}\n\n</summary>\n\n'
+        f"{details}\n\n</details>\n"
+    )
+
+
 def card(n, step, accent):
     title_lines = wrap(step["title"], 18, W - 2 * PAD, bold=True)
     text_lines = wrap(step["text"], 13, W - 2 * PAD)
@@ -104,7 +122,7 @@ def main():
         links.append(f'  <a href="#{slug(heading)}"><img src="{cfg["output_dir"]}/step-{n}.svg" '
                      f'width="{width}" alt="{html.escape(heading)}"></a>')
         details = step.get("details", f"{step['text']}\n\n<!-- more details here -->")
-        sections.append(f"{hashes} {heading}\n\n{details}\n")
+        sections.append(section(hashes, heading, details, cfg.get("collapse", False), cfg.get("back_link")))
 
     rows = [links[i:i + per_row] for i in range(0, len(links), per_row)]
     cards = "\n\n".join('<p align="center">\n' + "\n".join(r) + "\n</p>" for r in rows)
