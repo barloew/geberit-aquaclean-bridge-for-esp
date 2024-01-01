@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="159.5" height="20" viewBox="0 0 159.5 20" role="img" aria-label="Home Assistant: MQTT">
+<title>Home Assistant: MQTT</title>
+<clipPath id="r"><rect width="159.5" height="20" rx="3"/></clipPath>
+<g clip-path="url(#r)">
+<rect width="116.1" height="20" fill="#F6F8FA"/>
+<rect x="116.1" width="43.4" height="20" fill="#C2410C"/>
+</g>
+<rect x="0.5" y="0.5" width="158.5" height="19" rx="2.5" fill="none" stroke="#D0D7DE"/>
+<image x="6" y="3" width="14" height="14" preserveAspectRatio="xMidYMid meet" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQwIiBoZWlnaHQ9IjI0MCIgdmlld0JveD0iMCAwIDI0MCAyNDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yNDAgMjE4Ljc2MkMyNDAgMjI3LjAxMiAyMzMuMjUgMjMzLjc2MiAyMjUgMjMzLjc2MkgxNUM2Ljc1IDIzMy43NjIgMCAyMjcuMDEyIDAgMjE4Ljc2MlYxMjguNzYyQzAgMTIwLjUxMiA0Ljc3IDEwOC45OTMgMTAuNjEgMTAzLjE1M0wxMDkuMzkgNC4zNzI1QzExNS4yMiAtMS40NTc1IDEyNC43NyAtMS40NTc1IDEzMC42IDQuMzcyNUwyMjkuMzkgMTAzLjE2MkMyMzUuMjIgMTA4Ljk5MyAyNDAgMTIwLjUyMiAyNDAgMTI4Ljc3MlYyMTguNzcyVjIxOC43NjJaIiBmaWxsPSIjRjJGNEY5Ii8+CjxwYXRoIGQ9Ik0yMjkuMzkgMTAzLjE1M0wxMzAuNjEgNC4zNzI1QzEyNC43OCAtMS40NTc1IDExNS4yMyAtMS40NTc1IDEwOS40IDQuMzcyNUwxMC42MSAxMDMuMTUzQzQuNzggMTA4Ljk4MyAwIDEyMC41MTIgMCAxMjguNzYyVjIxOC43NjJDMCAyMjcuMDEyIDYuNzUgMjMzLjc2MiAxNSAyMzMuNzYySDEwNy4yN0w2Ni42NCAxOTMuMTMyQzY0LjU1IDE5My44NTIgNjIuMzIgMTk0LjI2MiA2MCAxOTQuMjYyQzQ4LjcgMTk0LjI2MiAzOS41IDE4NS4wNjIgMzkuNSAxNzMuNzYyQzM5LjUgMTYyLjQ2MiA0OC43IDE1My4yNjIgNjAgMTUzLjI2MkM3MS4zIDE1My4yNjIgODAuNSAxNjIuNDYyIDgwLjUgMTczLjc2MkM4MC41IDE3Ni4wOTIgODAuMDkgMTc4LjMyMiA3OS4zNyAxODAuNDEyTDExMSAyMTIuMDQyVjk2LjE2MjVDMTA0LjIgOTIuODIyNSA5OS41IDg1Ljg0MjUgOTkuNSA3Ny43NzI1Qzk5LjUgNjYuNDcyNSAxMDguNyA1Ny4yNzI1IDEyMCA1Ny4yNzI1QzEzMS4zIDU3LjI3MjUgMTQwLjUgNjYuNDcyNSAxNDAuNSA3Ny43NzI1QzE0MC41IDg1Ljg0MjUgMTM1LjggOTIuODIyNSAxMjkgOTYuMTYyNVYxNzcuNDMyTDE2MC40NiAxNDUuOTcyQzE1OS44NCAxNDQuMDEyIDE1OS41IDE0MS45MzIgMTU5LjUgMTM5Ljc3MkMxNTkuNSAxMjguNDcyIDE2OC43IDExOS4yNzIgMTgwIDExOS4yNzJDMTkxLjMgMTE5LjI3MiAyMDAuNSAxMjguNDcyIDIwMC41IDEzOS43NzJDMjAwLjUgMTUxLjA3MiAxOTEuMyAxNjAuMjcyIDE4MCAxNjAuMjcyQzE3Ny41IDE2MC4yNzIgMTc1LjEyIDE1OS44MDMgMTcyLjkxIDE1OC45ODJMMTI5IDIwMi44OTJWMjMzLjc3MkgyMjVDMjMzLjI1IDIzMy43NzIgMjQwIDIyNy4wMjIgMjQwIDIxOC43NzJWMTI4Ljc3MkMyNDAgMTIwLjUyMiAyMzUuMjMgMTA5LjAwMyAyMjkuMzkgMTAzLjE2MlYxMDMuMTUzWiIgZmlsbD0iIzE4QkNGMiIvPgo8L3N2Zz4K"/>
+<g font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
+<text x="24" y="14" fill="#24292F" textLength="86.1" lengthAdjust="spacingAndGlyphs">Home Assistant</text>
+<text x="122.1" y="14" fill="#FFFFFF" textLength="31.4" lengthAdjust="spacingAndGlyphs">MQTT</text>
+</g>
+</svg>

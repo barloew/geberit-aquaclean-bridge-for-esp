@@ -2,6 +2,15 @@
 
 ## v1.36.0 (not released yet)
 
+- **All images in one top-level folder, `images/`** (see `images/README.md`): the overview image
+(`images/overview/`, new version, PNG plus its SVG source), the step cards (`images/steps/`, were
+`docs/steps/`), the platform badges (`images/badges/`), the project's own line icons and drawings
+(`images/ui/`, `images/illustrations/`) and the third-party logos (`images/brands/`). `tools/steps/steps.json`
+now writes to `images/steps`.
+- **README badges for every platform**, grouped by route: native API (Home Assistant, Homey, ioBroker), MQTT
+(Home Assistant, openHAB, Node-RED, Domoticz) and Apple Home (optional, also stand-alone). Built with each
+platform's own logo by `tools/badges/generate.py`; no external badge service. The Node-RED icon is credited to
+Nick O'Leary (CC BY 3.0) in the README and `THIRD_PARTY_NOTICES.md`, which now lists every logo and its terms.
 - **Breaking: entity keys and English labels are now US English.** `odour_extraction` → `odor_extraction`,
 `light_colour` → `light_color`, `recognised_user` → `recognized_user`, `user_recognised` → `user_recognized`,
 `stat_odour` → `stat_odor` and the matching profile/default/command keys. Dashboards, automations and YAML that

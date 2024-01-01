@@ -95,6 +95,20 @@ themselves in the docs just as clearly as a Home Assistant user.
 - The maintainer runs all `git`/push themselves; don't push.
 - Every entity must be classified (CAPS_OF / ESP_ONLY / TOILET_CORE) in `__init__.py` or codegen
   raises.
+- No AI attribution: never add `Co-Authored-By`, `Claude-Session` or other AI author/co-author lines
+  to commits, PRs or files. The maintainer is the author.
+
+### Images and logos
+
+- **All images live in the top-level `images/`** (layout and per-file notes in `images/README.md`):
+  `overview/`, `steps/`, `badges/`, `ui/`, `illustrations/`, `brands/`. Don't put images anywhere else.
+- `images/steps/` and `images/badges/` are **generated** (`tools/steps/generate.py`,
+  `tools/badges/generate.py`); change the source and regenerate, never hand-edit.
+- Third-party logos (`images/brands/`) are used **unmodified**, only to show compatibility, and are not
+  under this project's license; their owners and terms are in `THIRD_PARTY_NOTICES.md` → Logos. Never
+  add Bluetooth, Wi-Fi, USB, Apple or Geberit logos — use the generic icons in `images/ui/`.
+- The **Node-RED** icon is CC BY 3.0 by **Nick O'Leary**: keep his credit in the README disclaimer
+  wherever the icon is shown.
 
 ### Language requirements (non-negotiable)
 

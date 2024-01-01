@@ -1,14 +1,25 @@
 # Geberit AquaClean Bridge for ESP
 
 <p align="center">
-  <img src="docs/aquaclean-bridge-overview.png" alt="Geberit AquaClean Bridge — overview" width="100%">
+  <img src="images/overview/aquaclean-bridge-overview.png" alt="Geberit AquaClean Bridge — overview" width="100%">
 </p>
 
 <p>
   <a href="https://github.com/barloew/geberit-aquaclean-bridge-for-esp/releases"><img src="https://img.shields.io/github/v/release/barloew/geberit-aquaclean-bridge-for-esp?label=release" alt="Latest release"></a>
-  <img src="https://img.shields.io/badge/ESPHome-2026.10%2B-000000?logo=esphome&logoColor=white" alt="ESPHome 2026.10 or newer">
-  <img src="https://img.shields.io/badge/Home%20Assistant-native%20API%20%7C%20MQTT-18BCF2?logo=homeassistant&logoColor=white" alt="Home Assistant: native API or MQTT">
-  <img src="https://img.shields.io/badge/Apple%20Home-optional-000000?logo=apple&logoColor=white" alt="Apple Home optional">
+  <img src="images/badges/esphome.svg" alt="ESPHome 2026.10 or newer">
+</p>
+
+<p>
+  <a href="docs/routes.md"><img src="images/badges/home-assistant-api.svg" alt="Home Assistant over the native API"></a>
+  <a href="docs/routes.md#homey"><img src="images/badges/homey-api.svg" alt="Homey over the native API"></a>
+  <a href="docs/routes.md"><img src="images/badges/iobroker-api.svg" alt="ioBroker over the native API"></a>
+  <br>
+  <a href="#connecting-over-mqtt"><img src="images/badges/home-assistant-mqtt.svg" alt="Home Assistant over MQTT"></a>
+  <a href="#connecting-over-mqtt"><img src="images/badges/openhab-mqtt.svg" alt="openHAB over MQTT"></a>
+  <a href="#connecting-over-mqtt"><img src="images/badges/node-red-mqtt.svg" alt="Node-RED over MQTT"></a>
+  <a href="#connecting-over-mqtt"><img src="images/badges/domoticz-mqtt.svg" alt="Domoticz over MQTT"></a>
+  <br>
+  <a href="#apple-home-homekit-optional"><img src="images/badges/apple-home.svg" alt="Apple Home, optional, also stand-alone"></a>
 </p>
 
 **[Installation](#installation)** · **[Hardware](#hardware)** · **[Users](#users)** · **[Entities](#entities)** · **[Apple Home](#apple-home-homekit-optional)** · **[Languages](#languages)** · **[Disclaimer](#trademark--legal-disclaimer)**
@@ -41,17 +52,17 @@ Out of the box, the Geberit AquaClean shower toilet supports only one Bluetooth 
 
 <!-- steps:begin -->
 <p align="center">
-  <a href="#step-1-check-your-model"><img src="docs/steps/step-1.svg" width="24%" alt="Step 1: Check your model"></a>
-  <a href="#step-2-find-and-test-the-spot"><img src="docs/steps/step-2.svg" width="24%" alt="Step 2: Find and test the spot"></a>
-  <a href="#step-3-choose-your-board"><img src="docs/steps/step-3.svg" width="24%" alt="Step 3: Choose your board"></a>
-  <a href="#step-4-choose-your-route"><img src="docs/steps/step-4.svg" width="24%" alt="Step 4: Choose your route"></a>
+  <a href="#step-1-check-your-model"><img src="images/steps/step-1.svg" width="24%" alt="Step 1: Check your model"></a>
+  <a href="#step-2-find-and-test-the-spot"><img src="images/steps/step-2.svg" width="24%" alt="Step 2: Find and test the spot"></a>
+  <a href="#step-3-choose-your-board"><img src="images/steps/step-3.svg" width="24%" alt="Step 3: Choose your board"></a>
+  <a href="#step-4-choose-your-route"><img src="images/steps/step-4.svg" width="24%" alt="Step 4: Choose your route"></a>
 </p>
 
 <p align="center">
-  <a href="#step-5-install-the-firmware"><img src="docs/steps/step-5.svg" width="24%" alt="Step 5: Install the firmware"></a>
-  <a href="#step-6-pair-toilet-remote-and-app"><img src="docs/steps/step-6.svg" width="24%" alt="Step 6: Pair toilet, remote and app"></a>
-  <a href="#step-7-set-up-your-users"><img src="docs/steps/step-7.svg" width="24%" alt="Step 7: Set up your users"></a>
-  <a href="#step-8-add-apple-home"><img src="docs/steps/step-8.svg" width="24%" alt="Step 8: Add Apple Home"></a>
+  <a href="#step-5-install-the-firmware"><img src="images/steps/step-5.svg" width="24%" alt="Step 5: Install the firmware"></a>
+  <a href="#step-6-pair-toilet-remote-and-app"><img src="images/steps/step-6.svg" width="24%" alt="Step 6: Pair toilet, remote and app"></a>
+  <a href="#step-7-set-up-your-users"><img src="images/steps/step-7.svg" width="24%" alt="Step 7: Set up your users"></a>
+  <a href="#step-8-add-apple-home"><img src="images/steps/step-8.svg" width="24%" alt="Step 8: Add Apple Home"></a>
 </p>
 
 ### Step 1: Check your model
@@ -504,6 +515,10 @@ This project is an independent, unofficial open-source initiative and is **not**
 **Geberit**, **AquaClean**, and all related product names, trade names, logos, and marks are trademarks or registered trademarks of **Geberit AG** and/or its group companies.
 
 Any use of these names or marks in this repository is solely for **nominative and descriptive purposes**, such as identifying compatible hardware, models, or protocols. It does not imply any official association, partnership, or approval. All other trademarks remain the property of their respective owners.
+
+The logos of ESPHome, Home Assistant, Homey, ioBroker, openHAB, Node-RED, Domoticz, MQTT and Espressif in the overview image and the badges belong to their owners. They are used unmodified, only to show compatibility, and are not covered by this project's license; no Geberit, Apple, Bluetooth or Wi-Fi logos are used. See [Logos](THIRD_PARTY_NOTICES.md#logos).
+
+The Node-RED icon is by **Nick O'Leary** (OpenJS Foundation), licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). It is used unmodified.
 
 This software is provided "as is", without warranty of any kind. Use at your own risk. To the extent permitted by law, the authors accept no liability for any injury or damage arising from its use, including scalding, slipping, water damage or damage to the toilet. Using unofficial software with your device may affect its manufacturer warranty and the service terms of your installer and/or service provider.
 
