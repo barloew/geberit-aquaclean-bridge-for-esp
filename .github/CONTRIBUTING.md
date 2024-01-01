@@ -2,7 +2,9 @@
 
 Thanks for helping improve the Geberit AquaClean Bridge for ESP.
 
-**Working language: English.** Please write issues, pull requests and discussions in English.
+**Working language: English.** Please write issues, pull requests and discussions in English — a
+machine translation (DeepL, Google Translate, …) is perfectly fine, so don't let language stop you
+from reporting or asking.
 
 ## Reporting
 
