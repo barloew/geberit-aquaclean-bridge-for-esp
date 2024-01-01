@@ -13,6 +13,10 @@ esp32:
   framework:
     type: esp-idf
     # Same as the AtomS3 Lite: Bluetooth and Wi-Fi need internal RAM, PSRAM does not replace it
+    # Optional IRAM saving: pin this board's flash chip. Build once, read the vendor from the log line
+    # "Set flash_chip: <vendor> ... to save IRAM", then uncomment with that value (e.g. winbond, gd):
+    # advanced:
+    #   flash_chip: winbond
     sdkconfig_options:
       CONFIG_ESP_WIFI_IRAM_OPT: n
       CONFIG_ESP_WIFI_RX_IRAM_OPT: n

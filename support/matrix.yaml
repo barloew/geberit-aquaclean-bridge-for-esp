@@ -120,7 +120,7 @@ models:
 # demote any route you have not actually exercised on hardware to `supported`.
 routes_status:
   native_api: { status: validated, validation: sela-hw }   # ESPHome native API — hardware-validated
-  mqtt: { status: supported, note: "implemented; not yet hardware-validated" }
+  mqtt: { status: validated, validation: sela-hw-mqtt }       # hardware-validated (AtomS3 Lite + LilyGo)
   homekit: { status: validated, validation: sela-hw }       # hardware-validated
 
 # Hardware boards the firmware targets.
@@ -129,6 +129,7 @@ boards:
   m5stack-atoms3r: { status: builds, note: "builds, not yet tested on hardware" }
   xiao-esp32s3: { status: builds, note: "builds (also Plus), not yet tested on hardware" }
   esp32-s3-generic: { status: builds, note: "any ESP32-S3 with >=8 MB flash; builds, not yet tested on hardware" }
+  lilygo-t-dongle-s3: { status: validated, validation: sela-hw-lilygo, note: "ESP32-S3, 16 MB flash, no PSRAM. Hardware-validated on a Sela. The T-Dongle-S3-Plus (8 MB PSRAM) needs a psram: block." }
 
 # Evidence records. A `validated` status must reference one of these.
 validations:
@@ -138,7 +139,21 @@ validations:
     bridge_release: "v1.36.0"
     device_firmware: "RS08 TS57"      # main control node; BT node 10.18; remote 3.60.101.900/0001
     by: "maintainer"
-    evidence: "AquaClean Sela hardware; capture (log 8fe51613), error 0x071B reproduced"
+    evidence: "AquaClean Sela on an AtomS3 Lite (GigaDevice flash): error 0x071B reproduced (log 8fe51613); native API + HomeKit validated on hardware (HomeKit started, Ed25519 selftest OK, accessory paired) and the toilet connected with the stored pairing key, model 146.22x.xx.1 / firmware RS08 TS57 read out."
+  - id: sela-hw-lilygo
+    model: sela
+    status: validated
+    bridge_release: "v1.36.0"
+    device_firmware: "RS08 TS57"
+    by: "maintainer"
+    evidence: "AquaClean Sela on a LilyGo T-Dongle-S3 over the MQTT route (log ac96e325): paired as remote in the toilet's pairing window, Connected to the toilet, feature discovery = AquaClean Sela, model 146.22x.xx.1 / serial MB2507EU205983 read out, settings and status polled (RSSI -54..-78)."
+  - id: sela-hw-mqtt
+    model: sela
+    status: validated
+    bridge_release: "v1.36.0"
+    device_firmware: "RS08 TS57"
+    by: "maintainer"
+    evidence: "MQTT route hardware-validated on a Sela over MQTT discovery: AtomS3 Lite (connected to the toilet; model, firmware RS08 TS57 and settings read out; all entities published) and LilyGo T-Dongle-S3 (log ac96e325). All prior MQTT and native-API validation ran on the AtomS3 Lite."
 
 # Device-independent, CI-verified checks. NOT hardware validations: no device_firmware, not tied to
 # any model, and never shown as "tested on hardware". Kept separate on purpose.

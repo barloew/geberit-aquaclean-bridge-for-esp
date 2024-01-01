@@ -26,6 +26,7 @@ BOARDS = {
     "atoms3-lite": "M5Stack AtomS3 Lite",
     "atoms3r": "M5Stack AtomS3R",
     "xiao-esp32s3": "Seeed XIAO ESP32S3",
+    "lilygo-tdongle-s3": "LilyGo T-Dongle-S3",
 }
 
 # Same order as LANGUAGES in components/geberit_aquaclean/__init__.py
