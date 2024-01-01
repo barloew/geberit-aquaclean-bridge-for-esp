@@ -1,0 +1,15 @@
+firmware:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "firmware/**"
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+          - ".clang-format"

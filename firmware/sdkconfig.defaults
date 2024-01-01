@@ -1,0 +1,31 @@
+# --- BLE: NimBLE host, central + peripheral (dual-role bridge) ---
+CONFIG_BT_ENABLED=y
+CONFIG_BT_NIMBLE_ENABLED=y
+CONFIG_BT_NIMBLE_ROLE_CENTRAL=y
+CONFIG_BT_NIMBLE_ROLE_OBSERVER=y
+CONFIG_BT_NIMBLE_ROLE_PERIPHERAL=y
+CONFIG_BT_NIMBLE_ROLE_BROADCASTER=y
+CONFIG_BT_NIMBLE_MAX_CONNECTIONS=2
+
+# --- mbedTLS: Curve25519 for X25519 ECDH + CMAC + HKDF ---
+CONFIG_MBEDTLS_ECP_C=y
+CONFIG_MBEDTLS_ECDH_C=y
+CONFIG_MBEDTLS_ECP_DP_CURVE25519_ENABLED=y
+CONFIG_MBEDTLS_CMAC_C=y
+CONFIG_MBEDTLS_HKDF_C=y
+
+CONFIG_LOG_DEFAULT_LEVEL_INFO=y
+
+# Console over the ESP32-S3 native USB (the T-Dongle-S3's USB-A plug), so the
+# self-test log is visible without a separate UART bridge.
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+
+# --- Built-in setup/log portal: WiFi SoftAP alongside BLE (test convenience) ---
+# Software coexistence lets the one 2.4 GHz radio time-share WiFi and BLE — a
+# standard, stable configuration (the main bridge runs BLE alongside WiFi too).
+CONFIG_ESP_COEX_SW_COEXIST_ENABLE=y
+
+# --- 8 MB flash + custom partitions: room for BLE + WiFi + HTTP server ---
+CONFIG_ESPTOOLPY_FLASHSIZE_8MB=y
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"

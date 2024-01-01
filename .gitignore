@@ -1,0 +1,19 @@
+# Build output
+build/
+sdkconfig.old
+managed_components/
+__pycache__/
+
+# Private reverse-engineering material — never commit (see CLAUDE.md and MAINTAINERS.md §0)
+*_RE.zip
+Geberit_AquaClean_RE*
+Protocolversies_v1_v2.md
+Foutcodes.md
+errorcodes_*.csv
+/re/
+/private/
+*.pcap
+
+# Local secret: the real shared client credential. Copy aquaclean_bridge_id.example.c to this file
+# and fill in the 16 bytes before building; never commit it.
+firmware/main/aquaclean_bridge_id.c

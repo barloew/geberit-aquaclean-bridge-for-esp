@@ -1,0 +1,42 @@
+# CodeRabbit configuration for the series-250-bridge branch (ESP-IDF / NimBLE firmware).
+# CodeRabbit reads this from the PR's base branch, so this branch needs its own copy; the main
+# branch has a separate one tuned for the ESPHome component. Docs: https://docs.coderabbit.ai/guides/configure-coderabbit
+language: en
+early_access: false
+
+reviews:
+  profile: assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "!**/alba_dp_table.h" # generated datapoint table (also skipped by clang-format CI)
+    - "!**/node_modules/**"
+  path_instructions:
+    - path: "firmware/main/*.{c,h}"
+      instructions: >-
+        Dual-role ESP-IDF 5.5 / NimBLE firmware for the Series 250 Alba (encrypted "protocol v2"): central to
+        the toilet, peripheral advertising as the toilet, relaying decrypted frames. Flag blocking or
+        long-running work in NimBLE GAP/GATT callbacks, missing bounds checks when parsing incoming frames
+        (frames are reassembled on the 0x00 delimiter and can span several ATT packets), and any mishandling of
+        crypto or key material (X25519/CMAC/HKDF/AES). In the health & recovery ladder, flag that health_tick
+        runs in the esp_timer task while GAP events run in the host task, so reads of shared BLE state
+        (s_cli, s_toilet_conn) race with acli_free on disconnect, and that the rung-3 nimble_port_stop/deinit/init
+        reinit is unverified. This firmware is experimental and unverified — a change that compiles is not proven.
+    - path: "firmware/main/web_portal.{c,h}"
+      instructions: >-
+        ESP-IDF HTTP server + WiFi SoftAP (test convenience). Flag unbounded request bodies, buffer overflows in
+        the handlers, JSON built by hand without escaping, and anything that could expose secrets or write
+        unvalidated input to NVS.
+    - path: "**/*.md"
+      instructions: >-
+        Do NOT reproduce, expand on, or request documentation of the Series 250 / "Arendi" protocol internals
+        (DpIds, wire frames, keyset/trust model). That material is kept private by the author and must never land
+        in this repository or in review comments; only function names may appear in user-facing pages.
+
+chat:
+  auto_reply: true

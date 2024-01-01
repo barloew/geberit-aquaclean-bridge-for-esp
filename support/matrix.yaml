@@ -1,0 +1,97 @@
+# Single source of truth for model / feature / route status — Series 250 (Alba), series-250-bridge branch.
+# Mirror of the main branch's support/matrix.yaml, same schema (see support/SCHEMA.md), but LIMITED:
+# this firmware is EXPERIMENTAL and has never been run end-to-end against a real Alba, so NOTHING here is
+# `validated`. Same hard rules: a `validated` status would require a validation record with bridge_release
+# and device_firmware; evidence refs point to logs/captures by id/date, never reverse-engineering internals.
+
+meta:
+  branch: series-250-bridge     # Series 250 — Alba, Arendi v2 (encrypted), ESP-IDF / NimBLE
+  maturity: experimental        # unverified; not yet run end-to-end against a real Alba
+  status_vocab: [validated, supported, unsupported, planned, failed]
+  # validated   = reproduced on real hardware, with a validation record (release + device fw). NONE yet.
+  # supported   = the code implements it (relay + datapoint table); user/device supported on issues.
+  #               Not hardware-validated by us — the whole branch is experimental.
+  # unsupported = the Alba does not have this (it is a basic shower toilet).
+  # planned     = a bridge value-add on the roadmap, not implemented yet.
+  # failed      = known broken / regressed (link an issue).
+
+surfaces:
+  shower: "Shower start/stop"
+  jet_strength: "Shower jet strength (levels)"
+  arm_position: "Shower-arm position (levels)"
+  water_temperature: "Water temperature (levels)"
+  water_heating: "Water heating on/off"
+  oscillation: "Oscillating spray"
+  descaling: "Descaling + shower-head cleaning"
+  user_detection: "User detected / seated"
+  remote_passthrough: "Remote control stays connected / keys pass through"
+  composed_lady_shower: "Lady shower composed from a preset (arm position + strength + temperature + oscillation)"
+  profiles: "Bridge user profiles (up to six), applied as a settings batch"
+  irk_recognition: "Automatic user recognition via IRK"
+  last_error: "Error-code label (status index 6 -> module-aware text + hex)"
+  event_storage: "Event Storage fault-log read channel (250-specific; Phase 1 inventory/read, Phase 2 live push)"
+  # declared so unsupported Alba features are explicit:
+  lady_shower: "Native lady shower (hardware function)"
+  dryer: "Dryer"
+  odor_extraction: "Odor extraction"
+  orientation_light: "Orientation light"
+  auto_lid: "Automatic lid"
+  flush: "Pre-flush / automatic flush"
+  seat_heating: "Seat heating"
+
+routes:
+  native_api: "ESPHome native API route"
+  mqtt: "MQTT route"
+  homekit: "Apple HomeKit (optional, can run stand-alone)"
+
+models:
+  alba:
+    name: "AquaClean Alba"
+    series: 250
+    sap_prefix: []          # to confirm from the device itself (Identification 0x10000); not yet captured
+    status: supported
+    maturity: experimental  # relay + protocol implemented in code; never verified against a real Alba
+    note: "Basic shower toilet. Protocol/relay implemented; end-to-end validation pending (see TEST_PLAN.md)."
+    surfaces:
+      # implemented in code (Arendi relay + datapoint table) — unverified end-to-end
+      shower: supported
+      jet_strength: supported
+      arm_position: supported
+      water_temperature: supported
+      water_heating: supported
+      oscillation: supported
+      descaling: supported
+      user_detection: supported
+      remote_passthrough: supported
+      # bridge value-adds on the roadmap, not built yet
+      composed_lady_shower: planned
+      profiles: planned
+      irk_recognition: planned
+      last_error: planned
+      event_storage: planned
+      # the Alba is a basic device — these do not exist on it
+      lady_shower: unsupported
+      dryer: unsupported
+      odor_extraction: unsupported
+      orientation_light: unsupported
+      auto_lid: unsupported
+      flush: unsupported
+      seat_heating: unsupported
+
+# Target integration routes — the VISION aim, none implemented in this firmware yet.
+routes_status:
+  native_api: { status: planned }
+  mqtt: { status: planned }
+  homekit: { status: planned }
+
+# Hardware board. The maintainer compiles on a LilyGO T-Dongle-S3; not verified end-to-end.
+boards:
+  lilygo-t-dongle-s3: { status: builds, note: "target board (ESP32-S3, >=8 MB); firmware unverified end-to-end" }
+
+# No hardware validations yet. The first real-Alba validation comes from TEST_PLAN.md and will add a record
+# here carrying bridge_release + device_firmware (the Alba's reported firmware).
+validations: []
+
+# No Alba device firmware captured yet. The first capture adds a row; an unseen firmware is `untested`
+# (may break) until a validation covers it.
+device_firmware_seen: {}

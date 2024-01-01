@@ -1,0 +1,39 @@
+name: Validate (Alba firmware)
+
+on:
+  push:
+    branches: [series-250-bridge]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  clang-format:
+    name: clang-format (C)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check formatting
+        run: |
+          sudo apt-get update && sudo apt-get install -y clang-format
+          # Skip the generated datapoint table.
+          mapfile -t F < <(find firmware/main \( -name '*.c' -o -name '*.h' \) ! -name 'alba_dp_table.h')
+          echo "Checking ${#F[@]} files"
+          clang-format --dry-run --Werror "${F[@]}"
+
+  build:
+    name: idf.py build (esp32s3)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.5
+          target: esp32s3
+          path: firmware
