@@ -1,0 +1,9 @@
+# Scoped to the translation data files (pure YAML, no ESPHome custom tags).
+extends: relaxed
+rules:
+  line-length: disable
+  document-start: disable
+  trailing-spaces: enable
+  key-duplicates: enable
+  empty-lines:
+    max: 2

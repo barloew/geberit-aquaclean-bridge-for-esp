@@ -1,0 +1,37 @@
+# Route 2: MQTT, for Home Assistant without the ESPHome integration or for other systems (openHAB, Node-RED,
+# Domoticz, ...). With Home Assistant discovery: the devices and entities appear by themselves.
+# Use this or packages/api.yaml, not both (you would get everything twice).
+#
+# Linking a user profile to a Home Assistant device (Private BLE Device, iBeacon) works here through
+# Home Assistant's mqtt_statestream. Add to configuration.yaml of Home Assistant:
+#   mqtt_statestream:
+#     base_topic: statestream
+#     publish_attributes: true
+#     include:
+#       domains: [device_tracker]
+# The clock comes from the internet (SNTP); set your time zone with the substitution timezone.
+
+substitutions:
+  mqtt_broker: homeassistant.local
+  mqtt_port: "1883"
+  mqtt_username: ""
+  mqtt_password: ""
+  mqtt_statestream: statestream
+  timezone: Europe/Amsterdam
+
+mqtt:
+  broker: ${mqtt_broker}
+  port: ${mqtt_port}
+  username: ${mqtt_username}
+  password: ${mqtt_password}
+  discovery: true
+  discovery_unique_id_generator: mac
+  discovery_object_id_generator: device_name
+
+time:
+  - platform: sntp
+    id: aquaclean_time
+    timezone: ${timezone}
+
+geberit_aquaclean:
+  statestream_topic: ${mqtt_statestream}

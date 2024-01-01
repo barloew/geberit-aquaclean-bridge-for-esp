@@ -1,0 +1,47 @@
+# Declarative repo labels, synced by .github/workflows/labels.yml.
+- name: bug
+  color: d73a4a
+  description: Something is broken
+- name: enhancement
+  color: a2eeef
+  description: New capability or improvement
+- name: new-model
+  color: 0e8a16
+  description: Request to support another AquaClean model
+- name: needs-triage
+  color: fbca04
+  description: Awaiting first review
+- name: question
+  color: d876e3
+  description: Usage question (better suited to Discussions)
+- name: alba
+  color: 5319e7
+  description: Concerns the experimental Alba firmware (series-250-bridge branch)
+- name: field-test
+  color: 006b75
+  description: Field test report against the standard test plan
+- name: native-api
+  color: c2e0c6
+  description: Route — ESPHome native API
+- name: mqtt
+  color: c2e0c6
+  description: Route — MQTT
+# PR path labels (actions/labeler)
+- name: documentation
+  color: 0075ca
+  description: Docs / README / CHANGELOG
+- name: translations
+  color: c5def5
+  description: Language files
+- name: component
+  color: 1d76db
+  description: ESPHome C++/Python component
+- name: firmware-build
+  color: bfdadc
+  description: Firmware generation / packages / build
+- name: firmware
+  color: bfd4f2
+  description: Alba ESP-IDF firmware sources
+- name: ci
+  color: ededed
+  description: CI / tooling / workflows

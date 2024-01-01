@@ -1,0 +1,56 @@
+{
+  "output_dir": "docs/steps",
+  "heading_level": 3,
+  "accent": "#2f81f7",
+  "per_row": 4,
+  "steps": [
+    {
+      "icon": "list-checks",
+      "title": "Check your model",
+      "text": "Tested on the AquaClean Sela. Mera, Tuma and Cama are supported but untested.",
+      "details": "Find the article number on the type plate or in the Geberit Home app and look it up in [Models and feature discovery](#models-and-feature-discovery).\n\n- **Tested:** AquaClean Sela.\n- **Supported, not yet tested:** AquaClean Mera Comfort, Mera Classic (also floor-standing), Tuma Comfort and Tuma Classic (seat, complete and floor-standing), and Cama. Feature discovery shows only what your toilet supports.\n- **Not supported:**\n  - AquaClean 4000: it has no app and no remote control.\n  - AquaClean Alba and the new AquaClean Mera Comfort: they run on Geberit's newer platform (Series 250), with a protocol the bridge doesn't speak.\n\nHave a different model? See [Supporting other models](#supporting-other-models)."
+    },
+    {
+      "icon": "map-pin",
+      "title": "Find and test the spot",
+      "text": "Close to the toilet, with USB power and Wi-Fi. -60 dBm is ideal, -80 dBm the minimum.",
+      "details": "The bridge must be close to the toilet. The spot needs:\n\n- **Bluetooth signal:** around -60 dBm is ideal, -80 dBm is the minimum.\n- **Power and network:** USB power and Wi-Fi (2.4 GHz).\n\nTo test a spot before buying anything, use a Bluetooth scanner app on your phone (such as nRF Connect) and look for the toilet's signal strength. A phone antenna differs from an ESP32, so treat it as an estimate. Once installed, the toilet's **Toilet signal** diagnostic shows the real value."
+    },
+    {
+      "icon": "cpu",
+      "title": "Choose your board",
+      "text": "A dedicated ESP32-S3 with at least 8 MB flash, such as the M5Stack AtomS3 Lite.",
+      "details": "The bridge needs an ESP32-S3 with **at least 8 MB flash**, dedicated to the bridge: one bridge per toilet, and no other Bluetooth components on the same board. The firmware is about 3.3 MB and needs two update slots, so 4 MB boards don't fit.\n\n| Board | Package | Status |\n|---|---|---|\n| M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, tested |\n| M5Stack AtomS3R | `board-atoms3r.yaml` | Builds, not yet tested on hardware |\n| Seeed XIAO ESP32S3 (also Plus) | `board-xiao-esp32s3.yaml` | Builds, not yet tested on hardware. Connect the included U.FL antenna. |\n\nThe web installer has firmware for all three. In ESPHome YAML, choose the board with the `board:` line, for example `.../packages/board-atoms3r.yaml@v1.36.0`. See [Hardware](#hardware) for status indicators and buttons per board."
+    },
+    {
+      "icon": "split",
+      "title": "Choose your route",
+      "text": "Native API for Home Assistant, or MQTT for any home automation system.",
+      "details": "Both routes give the same devices and entities. Pick one; never both.\n\n| | Native API | MQTT |\n|---|---|---|\n| For | Home Assistant (ESPHome integration) | Home Assistant, openHAB, Node-RED, Domoticz, … |\n| Install | ESPHome YAML | Web installer, no ESPHome needed (or ESPHome YAML) |\n| Encryption | Noise (API key) | TLS, only when built with ESPHome YAML |\n| Web interface on the ESP | No | Yes |\n| Apple Home (HomeKit) | Optional, ESPHome YAML | Optional, ESPHome YAML only |\n\nSee [Two routes: ESPHome or MQTT](#two-routes-esphome-or-mqtt) for all differences."
+    },
+    {
+      "icon": "usb",
+      "title": "Install the firmware",
+      "text": "MQTT: web installer in your browser. Native API: build with ESPHome.",
+      "details": "#### MQTT: web installer\n\nThe web installer installs the MQTT route. No ESPHome needed.\n\n1. Open the [web installer](https://barloew.github.io/geberit-aquaclean-bridge-for-esp/) in Chrome or Edge and connect the board with USB.\n2. Choose your [board](#hardware) and [language](#languages), press **Install** and enter your Wi-Fi in the same window. If the bridge knows no Wi-Fi later on, it opens the hotspot **AquaClean Setup**.\n3. Press **Visit device**, or open `http://aquaclean-xxxxxx.local` (the last six characters are the end of the ESP's MAC address).\n4. Under **AquaClean Bridge**, enter **MQTT broker**, **MQTT port** (1883), **MQTT user** and **MQTT password**, choose your **Time zone**, and press **Connect to MQTT broker**. The bridge stores the settings and restarts. The password is never shown again; to change the broker later, edit the fields and press the button again.\n5. Connect your home automation system. See [Connecting over MQTT](#connecting-over-mqtt).\n\n> [!IMPORTANT]\n> The ready-made firmware has no password on its web page and on firmware updates, and no TLS: anyone on your network can open the page. For a password and encrypted MQTT, build the MQTT route with ESPHome YAML (`web_auth.yaml`, `mqtt_tls.yaml`, see [Packages](#packages)).\n\n#### Native API: ESPHome YAML\n\n1. Copy [`examples/atoms3-lite.yaml`](examples/atoms3-lite.yaml). It fits every board: set the `board:` line, `route: api` and your [language](#languages).\n2. Fill in `secrets.yaml`: `wifi_ssid`, `wifi_password`, `aquaclean_ota_password` and `aquaclean_api_key`. Copy a random API key from the [ESPHome API documentation](https://esphome.io/components/api/), or run `openssl rand -base64 32`.\n3. Flash it with ESPHome 2026.10 or newer.\n4. Add the bridge in Home Assistant (ESPHome integration) with the same API key.\n5. Allow it to perform Home Assistant actions: **Settings → Devices & services → ESPHome → Geberit AquaClean Bridge → Configure**. This is needed for notifications such as Show IRK and HomeKit pairing.\n\n> [!NOTE]\n> Only one bridge may run per toilet. Switch off any previous ESP first."
+    },
+    {
+      "icon": "link",
+      "title": "Pair toilet, remote and app",
+      "text": "Pair the bridge with the toilet, then the remote control, then the Geberit Home app.",
+      "details": "1. **Toilet.** Press **Pair with toilet** (Geberit AquaClean Bridge device), or hold the board button for 3 s. Switch the toilet off for about 30 s and on again. The bridge waits for the toilet's pairing window and pairs; the log shows *Toilet encrypted (newly paired as remote control)*.\n2. **Remote control.** Switch on **Pair remote control** (Geberit AquaClean Bridge device) and hold **+** on the remote for about 30 s until it shows *Pairing ok*.\n3. **Geberit Home app.** Remove the old toilet entry, then add the toilet again. When the app asks, long-press **+** on the remote. The bridge passes it on and the app connects within a second. You can add several phones (iOS and Android).\n\nA new ESP has a new Bluetooth address, so after moving to new hardware all three steps are needed once."
+    },
+    {
+      "icon": "users",
+      "title": "Set up your users",
+      "text": "Link a phone or wearable to each profile and pick a welcome light color.",
+      "details": "For each of the up to six profiles:\n\n1. **Name the user** (optional) with **User**.\n2. **Link a device.** Press **Capture IRK** in the profile and pair your phone, watch or tracker with the bridge within two minutes. Or link a device Home Assistant already knows. See [Users](#users).\n3. **Pick a welcome light color** with **Welcome light**.\n4. **Tune the range** if needed with **User recognition signal strength**: -60 dBm by default, around -80 dBm for a phone in a pocket."
+    },
+    {
+      "icon": "smartphone",
+      "title": "Add Apple Home",
+      "text": "Optional: control the toilet from the Apple Home app and with Siri, even stand-alone.",
+      "details": "HomeKit works stand-alone too, without Home Assistant or any other home automation system. It is built in only with ESPHome YAML, not in the ready-made firmware of the web installer. Add this to your YAML and flash:\n\n```yaml\ngeberit_aquaclean:\n  homekit:\n    enabled: true\n```\n\nThen add the accessory in the Home app with the setup code or QR code. The Home app warns about an uncertified accessory; that's expected. See [Apple Home](#apple-home-homekit-optional) for all options and how to find the setup code for each route."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+# route: mqtt — MQTT (Home Assistant via MQTT discovery, or openHAB, Node-RED, Domoticz, ...) plus the web
+# interface on the ESP. Chosen with the substitution "route: mqtt" in examples/atoms3-lite.yaml. Never together
+# with route_api.yaml. Broker, user, time zone: substitutions (see packages/mqtt.yaml); TLS: also include
+# packages/mqtt_tls.yaml, a password on the web interface: packages/web_auth.yaml.
+
+packages:
+  mqtt: !include mqtt.yaml
+  web: !include web.yaml

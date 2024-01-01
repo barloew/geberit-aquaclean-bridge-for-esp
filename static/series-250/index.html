@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Install — AquaClean Series 250 bridge (experimental)</title>
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; max-width: 42rem; margin: 2rem auto; padding: 0 1rem; }
+  h1 { font-size: 1.4rem; }
+  ol { padding-left: 1.2rem; }
+  li { margin: .5rem 0; }
+  .warn { background: #fff6e5; border: 1px solid #e6c260; padding: .6rem .9rem; border-radius: .4rem; }
+  code { background: #f0f0f0; padding: 0 .25rem; border-radius: .2rem; }
+  esp-web-install-button { display: inline-block; margin: 1rem 0; }
+</style>
+<!-- ESP Web Tools does the in-browser flashing. Loaded from a CDN; can be vendored
+     into this folder later for a fully offline/self-contained page. -->
+<script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+</head>
+<body>
+  <h1>AquaClean Series 250 bridge — install</h1>
+
+  <p><strong>Experimental firmware</strong> for the Geberit AquaClean Alba (Series 250). Flashing unofficial
+  firmware may affect your device's warranty and your installer's service terms. Use at your own risk.</p>
+
+  <div class="warn">
+    Use <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong> on a <strong>computer</strong>
+    (not a phone, not Safari/Firefox). Plug the ESP32-S3 board into a USB port first.
+  </div>
+
+  <h2>1. Flash</h2>
+  <p>Click the button, pick the board's serial port when asked, and let it install.</p>
+  <esp-web-install-button manifest="manifest.json"></esp-web-install-button>
+
+  <h2>2. Set up &amp; watch the log (no cable)</h2>
+  <ol>
+    <li>On your phone or laptop, join the Wi-Fi network <code>AquaClean-Setup</code> (password
+      <code>aquaclean250</code>).</li>
+    <li>Open <a href="http://192.168.4.1/">http://192.168.4.1/</a> in any browser.</li>
+    <li>Enter your toilet's BLE address and press <strong>Save</strong> (the board reboots).
+      <details><summary>How do I find my toilet's BLE address?</summary>
+        <p>It's a six-pair code like <code>e4:85:01:cd:c4:1e</code>. Install a free Bluetooth scanner app
+        (<strong>nRF Connect</strong> by Nordic Semiconductor, on iOS and Android). Stand next to the toilet,
+        move the remote a few metres away, and tap <em>Scan</em>. Your toilet is the strongest nearby device,
+        usually with an address starting <code>e4:85:01</code> (Geberit). If two share that prefix, one is the
+        remote — the toilet is the one that stays strongest by the toilet, and the one the Geberit app
+        connects to.</p>
+      </details>
+    </li>
+    <li>Re-join the network, reopen the page, and follow the
+      <a href="https://github.com/barloew/geberit-aquaclean-bridge-for-esp/blob/series-250-bridge/TEST_PLAN.md">test plan</a>.</li>
+  </ol>
+
+  <p>Questions or results go in the <em>Field testing</em> category in
+  <a href="https://github.com/barloew/geberit-aquaclean-bridge-for-esp/discussions">Discussions</a>.</p>
+</body>
+</html>

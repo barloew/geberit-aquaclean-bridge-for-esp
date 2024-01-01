@@ -1,0 +1,59 @@
+# Home Assistant script: link a Bluetooth device Home Assistant already knows to a user profile of the
+# AquaClean, or clear the profile. Two drop-downs: the user profile and the device tracker of a Private BLE
+# Device, iBeacon or Bermuda device. Leave the device empty to clear the profile (name, device, welcome light).
+#
+# scripts.yaml or a file in a folder loaded with !include_dir_merge_named: paste this file as it is.
+# Script editor (Edit in YAML): paste everything below the first line and remove two spaces of indentation.
+aquaclean_link_user:
+  alias: AquaClean – Bluetooth-apparaat aan gebruiker koppelen
+  icon: mdi:account-badge
+  mode: single
+  fields:
+    profile:
+      name: Gebruikersprofiel
+      required: true
+      default: "1"
+      selector:
+        select:
+          options:
+            - label: Gebruikersprofiel 1
+              value: "1"
+            - label: Gebruikersprofiel 2
+              value: "2"
+            - label: Gebruikersprofiel 3
+              value: "3"
+            - label: Gebruikersprofiel 4
+              value: "4"
+            - label: Gebruikersprofiel 5
+              value: "5"
+            - label: Gebruikersprofiel 6
+              value: "6"
+    device:
+      name: Bluetooth-apparaat
+      description: Leeg laten om het gebruikersprofiel te wissen
+      required: false
+      selector:
+        entity:
+          filter:
+            - integration: private_ble_device
+              domain: device_tracker
+            - integration: ibeacon
+              domain: device_tracker
+            - integration: bermuda
+              domain: device_tracker
+  sequence:
+    # The "HA device" field of profile N has max length 100 + N (independent of language and entity ids)
+    - variables:
+        field: >-
+          {{ states.text | selectattr('attributes.max', 'defined')
+             | selectattr('attributes.max', 'eq', 100 + (profile | int))
+             | map(attribute='entity_id') | first | default('') }}
+    - if: "{{ field == '' }}"
+      then:
+        - stop: Het AquaClean-gebruikersprofiel is niet gevonden (is de ESP verbonden met Home Assistant?)
+          error: true
+    - action: text.set_value
+      target:
+        entity_id: "{{ field }}"
+      data:
+        value: "{{ device if device else '-' }}"

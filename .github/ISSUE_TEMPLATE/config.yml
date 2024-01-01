@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation (README)
+    url: https://github.com/barloew/geberit-aquaclean-bridge-for-esp#readme
+    about: Setup, supported models, the web installer, HomeKit and the IRK flow are covered here first.
+  - name: 🔀 Connection routes & install methods
+    url: https://github.com/barloew/geberit-aquaclean-bridge-for-esp/blob/main/docs/routes.md
+    about: Native API vs MQTT, and the ways to install the firmware — read this before reporting a setup issue.
+  - name: 🧪 Field testing (share results in Discussions)
+    url: https://github.com/barloew/geberit-aquaclean-bridge-for-esp/discussions/categories/field-testing
+    about: Testing on your hardware? Follow the TEST_PLAN and post results in the Field testing discussion category — not as an issue.
+  - name: 💬 Questions & help
+    url: https://github.com/barloew/geberit-aquaclean-bridge-for-esp/discussions
+    about: Ask how to configure or use the bridge. Use the issue forms above only to report a bug, request a feature, or request a new model.

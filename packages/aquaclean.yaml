@@ -1,0 +1,72 @@
+# Geberit AquaClean bridge: everything except the board and the network.
+#
+# Substitutions (see examples/atoms3-lite.yaml):
+#   language     en nl de fr it es pl cs hu da sv nb fi pt ar tr et hr lv lt ro ru sk sl sr uk zh ko he
+#                (entity names; option texts can be switched at runtime)
+#   toilet_mac   optional: BLE address of the toilet. Default: the nearest Geberit toilet is found and stored
+#   remote_mac   optional: BLE address of the remote control. Default: the remote control that pairs in the
+#                pairing window ("Pairing mode" switch) is used and stored
+#   maintenance_disclaimer_accepted
+#                "true": physical maintenance (descaling, arm cleaning, calibration, ...) can be shown with a
+#                long press of the maintenance key on the remote control; see the README
+
+substitutions:
+  toilet_mac: "00:00:00:00:00:00"
+  remote_mac: "00:00:00:00:00:00"
+  language: en
+  log_obfuscate: "false"   # "true": addresses, names, serial number and keys in the log show only their last 4 signs
+  maintenance_disclaimer_accepted: "false"
+
+esphome:
+  # Home Assistant shows the entities in these devices; the component names them in the chosen language
+  devices:
+    - id: aquaclean_toilet
+      name: AquaClean Toilet
+    - id: aquaclean_session
+      name: Active session
+    - id: aquaclean_maintenance
+      name: Physical maintenance
+    - id: aquaclean_profile_1
+      name: User profile 1
+    - id: aquaclean_profile_2
+      name: User profile 2
+    - id: aquaclean_profile_3
+      name: User profile 3
+    - id: aquaclean_profile_4
+      name: User profile 4
+    - id: aquaclean_profile_5
+      name: User profile 5
+    - id: aquaclean_profile_6
+      name: User profile 6
+
+# Pairing with the toilet and the remote control: Just Works (no PIN), with bonding.
+# Connections: toilet, remote control and app at the same time.
+esp32_ble:
+  io_capability: none
+  auth_req_mode: bond
+  max_connections: 4
+
+esp32_ble_tracker:
+  scan_parameters:
+    active: false
+    interval: 320ms
+    window: 30ms
+
+ble_client:
+  - mac_address: ${toilet_mac}
+    id: aquaclean_ble
+    auto_connect: true
+
+geberit_aquaclean:
+  id: aquaclean
+  ble_client_id: aquaclean_ble
+  time_id: aquaclean_time
+  language: ${language}
+  remote_mac_address: ${remote_mac}
+  log_obfuscate: ${log_obfuscate}
+  maintenance_disclaimer_accepted: ${maintenance_disclaimer_accepted}
+
+button:
+  - platform: restart
+    name: Restart
+    entity_category: ""

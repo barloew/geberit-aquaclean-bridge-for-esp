@@ -1,0 +1,121 @@
+# M5Stack AtomS3R (ESP32-S3-PICO-1-N8R8: 8 MB flash, 8 MB octal PSRAM): 0.85" screen (GC9107) as status light,
+# button on GPIO41. The AtomS3R has no RGB LED; the screen's backlight runs through an LP5562 on I2C (G45/G0).
+#
+# Screen: green = toilet connected, blue = app connected, cyan = remote control connected,
+#         purple blinking = pairing window, red blinking = no connection to the toilet,
+#         two bright blinks in the user's color = user recognized, profile loaded (welcome light).
+# Button: hold 3 s = pair the ESP with the toilet as remote control (then switch the toilet off and on).
+
+esp32:
+  board: esp32-s3-devkitc-1
+  variant: esp32s3
+  flash_size: 8MB
+  framework:
+    type: esp-idf
+    # Same as the AtomS3 Lite: Bluetooth and Wi-Fi need internal RAM, PSRAM does not replace it
+    sdkconfig_options:
+      CONFIG_ESP_WIFI_IRAM_OPT: n
+      CONFIG_ESP_WIFI_RX_IRAM_OPT: n
+      CONFIG_ESP_WIFI_STATIC_RX_BUFFER_NUM: "6"
+
+psram:
+  mode: octal
+  speed: 80MHz
+
+i2c:
+  - id: aquaclean_sys_i2c
+    sda: GPIO45
+    scl: GPIO0
+
+# LP5562 LED driver (I2C 0x30); its W channel is the screen backlight
+i2c_device:
+  - id: aquaclean_backlight
+    i2c_id: aquaclean_sys_i2c
+    address: 0x30
+
+spi:
+  - id: aquaclean_spi
+    clk_pin: GPIO15
+    mosi_pin: GPIO21
+
+globals:
+  - id: aquaclean_screen_color
+    type: uint32_t
+    initial_value: "0"
+
+esphome:
+  on_boot:
+    - priority: 600
+      then:
+        - lambda: |-
+            auto *bl = id(aquaclean_backlight);
+            bl->write_byte(0x00, 0x40);  // ENABLE: chip on
+          # the LP5562 needs 500 µs after enabling
+        - delay: 2ms
+        - lambda: |-
+            auto *bl = id(aquaclean_backlight);
+            bl->write_byte(0x08, 0x01);  // CONFIG: internal clock
+            bl->write_byte(0x70, 0x00);  // LED_MAP: all channels from the I2C registers
+            bl->write_byte(0x0F, 0xAF);  // W current (17.5 mA, the power-on default)
+            bl->write_byte(0x0E, 0x80);  // W PWM: backlight at 50 %
+
+display:
+  - platform: mipi_spi
+    id: aquaclean_screen
+    model: M5STACK-ATOMS3R-GC9107
+    spi_id: aquaclean_spi
+    update_interval: never
+    lambda: |-
+      const uint32_t c = id(aquaclean_screen_color);
+      it.fill(Color((c >> 16) & 0xFF, (c >> 8) & 0xFF, c & 0xFF));
+
+binary_sensor:
+  - platform: gpio
+    id: aquaclean_board_button
+    internal: true
+    pin:
+      number: GPIO41
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    on_multi_click:
+      - timing:
+          - ON for at least 3s
+        then:
+          - lambda: id(aquaclean).button_action(esphome::geberit_aquaclean::BTN_PAIR_AS_REMOTE);
+
+interval:
+  - interval: 100ms
+    then:
+      - lambda: |-
+          static uint32_t tick = 0;
+          tick++;
+          const bool blink = (tick / 5) % 2 == 0;
+          auto *hub = id(aquaclean);
+          auto *link = hub->link();
+          float r = 0, g = 0, b = 0;
+          float wr, wg, wb;
+          const bool welcome = hub->welcome_led(wr, wg, wb);
+          float brightness = 0.25;
+          if (welcome) {
+            r = wr; g = wg; b = wb;
+            brightness = 1.0;
+          } else if (link != nullptr && link->is_pairing()) {
+            if (blink) { r = 0.6; b = 1.0; }
+          } else if (!hub->is_ready()) {
+            if (blink) { r = 1.0; }
+          } else if (hub->app_connected()) {
+            b = 1.0;
+          } else if (link != nullptr && link->remote_connected()) {
+            g = 0.8; b = 0.8;
+          } else {
+            g = 1.0;
+          }
+          auto px = [&](float v) { return static_cast<uint32_t>(v * brightness * 255.0f + 0.5f) & 0xFF; };
+          const uint32_t c = (px(r) << 16) | (px(g) << 8) | px(b);
+          // only redraw on a change
+          if (c == id(aquaclean_screen_color) && tick > 1)
+            return;
+          id(aquaclean_screen_color) = c;
+          id(aquaclean_screen).update();

@@ -1,0 +1,59 @@
+# Web interface on the ESP (http://<name>.local or the IP address): all entities grouped like the devices
+# in Home Assistant, the log, and firmware updates (OTA) from the browser. Works without Home Assistant.
+#
+# Group names follow the language of the component (substitution language) by themselves. To choose your own
+# names, set these substitutions in your own YAML, e.g.
+#   web_toilet: Mijn toilet
+#   web_session: Sessie
+#   web_maintenance: Onderhoud
+#   web_profile: Profiel        (the number is added)
+# Password: also include packages/web_auth.yaml (see there).
+
+substitutions:
+  web_toilet: auto
+  web_session: auto
+  web_maintenance: auto
+  web_profile: auto
+
+web_server:
+  port: 80
+  version: 3
+  local: true          # the page is served by the ESP itself, no internet needed
+  log: true
+  sorting_groups:
+    - id: aquaclean_web_bridge
+      name: AquaClean Bridge
+      sorting_weight: 1
+    - id: aquaclean_web_toilet
+      name: ${web_toilet}
+      sorting_weight: 2
+    - id: aquaclean_web_session
+      name: ${web_session}
+      sorting_weight: 3
+    - id: aquaclean_web_profile_1
+      name: ${web_profile} 1
+      sorting_weight: 4
+    - id: aquaclean_web_profile_2
+      name: ${web_profile} 2
+      sorting_weight: 5
+    - id: aquaclean_web_profile_3
+      name: ${web_profile} 3
+      sorting_weight: 6
+    - id: aquaclean_web_profile_4
+      name: ${web_profile} 4
+      sorting_weight: 7
+    - id: aquaclean_web_profile_5
+      name: ${web_profile} 5
+      sorting_weight: 8
+    - id: aquaclean_web_profile_6
+      name: ${web_profile} 6
+      sorting_weight: 9
+    - id: aquaclean_web_maintenance
+      name: ${web_maintenance}
+      sorting_weight: 10
+
+ota:
+  - platform: web_server
+
+geberit_aquaclean:
+  web_server_groups: true

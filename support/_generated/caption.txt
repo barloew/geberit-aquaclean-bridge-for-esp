@@ -1,0 +1,1 @@
+Tested on AquaClean Sela (device firmware RS08 TS57, bridge v1.36.0) · Mera Comfort, Mera Classic, Tuma Comfort, Tuma Classic, Cama supported via feature discovery · 29 languages · routes: native_api, homekit validated; mqtt supported · Independent open-source project, not affiliated with Geberit AG
