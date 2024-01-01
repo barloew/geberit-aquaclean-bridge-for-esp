@@ -9,7 +9,7 @@ merged/released) will let MQTT do the same. When it ships, set `sub_device_topic
 `packages/mqtt.yaml` and rebuild the web-installer firmware so MQTT installs get the device split too, with
 no ESPHome needed on the user's side.
 
-## v1.36.0 (not released yet)
+## v1.36.0 — 2026-11-23
 
 - **Breaking: entity keys and English labels are now US English.** `odour_extraction` → `odor_extraction`,
 `light_colour` → `light_color`, `recognised_user` → `recognized_user`, `user_recognised` → `user_recognized`,
