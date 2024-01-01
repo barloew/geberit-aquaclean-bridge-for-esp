@@ -173,7 +173,7 @@ The bridge needs a **dedicated ESP32-S3 with at least 8 MB flash**: one bridge p
 | M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, validated; longest BLE range of these boards |
 | M5Stack AtomS3R | `board-atoms3r.yaml` | Builds, not yet tested on hardware |
 | Seeed XIAO ESP32S3 (also Plus) | `board-xiao-esp32s3.yaml` | Builds, not yet tested on hardware |
-| LilyGo T-Dongle-S3 | `board-lilygo-tdongle-s3.yaml` | Tested on hardware (Sela). No PSRAM; the Plus needs a `psram:` block. |
+| LilyGo T-Dongle-S3 | `board-lilygo-tdongle-s3.yaml` | Validated on hardware (Sela). No PSRAM; the Plus needs a `psram:` block. |
 
 Other ESP32-S3 boards with at least 8 MB flash build too, but haven't been tested on hardware.
 

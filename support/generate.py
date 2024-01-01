@@ -50,7 +50,7 @@ def tested_sentence(m) -> str:
             if v:
                 label += f" (device firmware {v['device_firmware']}, bridge {v['bridge_release']})"
             bits.append(label)
-        parts.append("Tested on " + "; ".join(bits))
+        parts.append("Validated on " + "; ".join(bits))
     if sup:
         clause = ", ".join(_names(m, sup)) + " supported"
         clause += "" if maturity else " via feature discovery"
