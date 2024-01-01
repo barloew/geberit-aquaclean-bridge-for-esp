@@ -55,6 +55,10 @@ wording, and their keys follow the new names.
 password and time zone are entered on the bridge's web page and stored on the ESP (`packages/mqtt_setup.yaml`);
 *Connect to MQTT broker* restarts with the new settings. Without a broker MQTT stays off, and an unreachable
 broker no longer restarts the ESP. The password is never shown or published again.
+- **The MQTT device topic prefix is configurable** (default the neutral `aquaclean`, no longer Home-Assistant-
+centric). It is set on the bridge's web page; the discovery prefix stays the shared `homeassistant` convention
+that Home Assistant, openHAB, Node-RED and Domoticz all read, so discovery keeps working while the device
+topics are yours to name.
 - `tools/gen_firmware.py` generates the firmware files, `mqtt_setup.yaml` (50 time zones from tzdata), the
 board list of the install page and the build matrix (board x language).
 - `provisioning.yaml` no longer contains `dashboard_import` (that needs the native API).
