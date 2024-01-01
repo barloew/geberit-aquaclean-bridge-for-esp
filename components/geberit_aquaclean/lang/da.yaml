@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Douchearmens position"
   lady_spray_intensity: "Douchestrålens styrke ladydouche"
   lady_spray_arm_position: "Douchearmens position ladydouche"
+  lady_oscillating_spray: "Pulserende stråle ladydouche"
+  lady_water_temperature: "Vandtemperatur ladydouche"
   water_temperature: "Vandtemperatur"
   oscillating_spray: "Pulserende stråle"
   default_spray_intensity: "Standard douchestrålens styrke"

@@ -50,6 +50,8 @@ names:
   spray_arm_position: Duscharmposition
   lady_spray_intensity: Duschstrahlstärke Lady
   lady_spray_arm_position: Duscharmposition Lady
+  lady_oscillating_spray: "Oszillierdusche Lady"
+  lady_water_temperature: "Wassertemperatur Lady"
   water_temperature: Wassertemperatur
   oscillating_spray: Oszillierdusche
   default_spray_intensity: "Standard Duschstrahlstärke"

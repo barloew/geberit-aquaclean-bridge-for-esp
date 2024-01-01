@@ -50,6 +50,8 @@ names:
   spray_arm_position: Douchearmpositie
   lady_spray_intensity: Douchestraalsterkte ladydouche
   lady_spray_arm_position: Douchearmpositie ladydouche
+  lady_oscillating_spray: "Oscillerende douche ladydouche"
+  lady_water_temperature: "Watertemperatuur ladydouche"
   water_temperature: Watertemperatuur
   oscillating_spray: Oscillerende douche
   default_spray_intensity: "Standaard douchestraalsterkte"

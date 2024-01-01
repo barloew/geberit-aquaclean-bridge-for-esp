@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Položaj pršne ročice"
   lady_spray_intensity: "Jakost curka damske prhe"
   lady_spray_arm_position: "Položaj ročice damske prhe"
+  lady_oscillating_spray: "Oscilacija (Damska prha)"
+  lady_water_temperature: "Temperatura vode (Damska prha)"
   water_temperature: "Temperatura vode"
   oscillating_spray: "Oscilacija"
   default_spray_intensity: "Privzeta jakost pršnega curka"

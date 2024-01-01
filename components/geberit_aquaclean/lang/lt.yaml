@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Dušo laikiklio padėtis"
   lady_spray_intensity: "Moterų dušo srovės stiprumas"
   lady_spray_arm_position: "Moterų dušo laikiklio padėtis"
+  lady_oscillating_spray: "Osciliacija (Moterų dušas)"
+  lady_water_temperature: "Vandens temperatūra (Moterų dušas)"
   water_temperature: "Vandens temperatūra"
   oscillating_spray: "Osciliacija"
   default_spray_intensity: "Numatytasis dušo srovės stiprumas"

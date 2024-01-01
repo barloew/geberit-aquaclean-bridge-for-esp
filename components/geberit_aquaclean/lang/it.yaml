@@ -50,6 +50,8 @@ names:
   spray_arm_position: Posizione dell'astina
   lady_spray_intensity: Intensità del getto Lady
   lady_spray_arm_position: Posizione dell'astina Lady
+  lady_oscillating_spray: "Movimento oscillante Lady"
+  lady_water_temperature: "Temperatura dell'acqua Lady"
   water_temperature: Temperatura dell'acqua
   oscillating_spray: Movimento oscillante
   default_spray_intensity: "Intensità del getto predefinita"

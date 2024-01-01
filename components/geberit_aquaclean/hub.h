@@ -80,10 +80,24 @@ static constexpr uint8_t MAX_USERS = 6;
 static constexpr uint8_t USER_VALUES = 10;   // profile setting ids 00-09 (in UserData, layout kept)
 static constexpr uint8_t USER_VALUES_X = 4;  // profile setting ids 0a-0d (separate store since v1.24.0)
 static constexpr uint8_t USER_VALUE_IDS = USER_VALUES + USER_VALUES_X;
+// Home Assistant profiles (4-6) only: the shower (anal) oscillation and water temperature are the ordinary
+// stored ids 01 and 06; the toilet keeps a single slot for each, shared by both showers, so the Lady shower
+// variant cannot live on the toilet. These two ids exist only on the bridge (separate store) and are applied
+// to the active session just before the Lady shower starts (see apply_lady_split_).
+static constexpr uint8_t USER_VALUES_L = 2;
+static constexpr uint8_t LOCAL_LADY_OSCILLATION = USER_VALUE_IDS;          // 0x0e, bridge-only
+static constexpr uint8_t LOCAL_LADY_WATER_TEMPERATURE = USER_VALUE_IDS + 1;  // 0x0f, bridge-only
+static constexpr uint8_t SESSION_OSCILLATION = 0x01;
+static constexpr uint8_t SESSION_WATER_TEMPERATURE = 0x06;
 
 struct UserValuesX {
   uint32_t magic;
   int16_t values[USER_VALUES_X];
+};
+
+struct UserValuesL {
+  uint32_t magic;
+  int16_t values[USER_VALUES_L];
 };
 
 /// A Bluetooth device a user carries: fixed address (tracker) or iBeacon (Home Assistant Companion app)
@@ -333,6 +347,10 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
   void activate_profile(uint8_t profile);
   /// Store the session settings in user profile 1-4
   void store_profile(uint8_t profile);
+  /// Just before a shower starts for the recognized user: if a Home Assistant profile (4-6) is active, write
+  /// its oscillation + water temperature for this shower (Lady or not) into the session. The toilet keeps only
+  /// one slot for each, shared by both showers; this is where the per-shower split kept on the bridge is applied.
+  void apply_lady_split_(bool lady);
 
   // --- app via the ESP (RemoteLink) ---
   void app_frame_in(uint8_t write_index, const uint8_t *data, uint16_t len);
@@ -696,11 +714,14 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
   std::array<ESPPreferenceObject, MAX_USERS> user_prefs_{};
   std::array<ESPPreferenceObject, MAX_USERS> user_x_prefs_{};
   std::array<UserValuesX, MAX_USERS> users_x_{};
+  std::array<ESPPreferenceObject, MAX_USERS> user_l_prefs_{};
+  std::array<UserValuesL, MAX_USERS> users_l_{};
   /// stored value of setting <id> in Home Assistant profile u (0-based), nullptr when the id is not stored
   int16_t *user_value_(uint8_t u, uint8_t id) {
     if (u >= MAX_USERS) return nullptr;
     if (id < USER_VALUES) return &this->users_[u].values[id];
     if (id < USER_VALUE_IDS) return &this->users_x_[u].values[id - USER_VALUES];
+    if (id < USER_VALUE_IDS + USER_VALUES_L) return &this->users_l_[u].values[id - USER_VALUE_IDS];
     return nullptr;
   }
   std::array<UserText *, MAX_USERS> name_texts_{};

@@ -11,6 +11,17 @@ no ESPHome needed on the user's side.
 
 ## v1.36.0 (not released yet)
 
+- **Per-shower oscillation and water temperature in the bridge profiles (4–6).** The toilet keeps a single
+oscillation setting and a single water-temperature setting, shared by the shower and the Lady shower, so a
+profile stored on the toilet (1–3) cannot hold a different value for each. The bridge-only profiles 4–6 now
+keep their own oscillation and water temperature for the Lady shower, separate from the shower; when the
+recognized user of such a profile starts a shower, the bridge writes that shower's values to the active
+session just before it starts — the shower's own values for the shower, the Lady values for the Lady shower.
+Spray intensity and arm position were already separate per shower. New entities
+`profile_{4,5,6}_lady_oscillating_spray` and `profile_{4,5,6}_lady_water_temperature`, shown only on models
+with a Lady shower and for any native-API or MQTT controller; set the shower values with *Activate/Store
+profile* or the profile's oscillation and water-temperature entities, and the Lady values on the two new
+entities. The entity set changed, so the feature discovery runs once after the update.
 - **The overview image is generated.** `tools/overview/generate.py` builds `images/overview/` (SVG and the 3×
 PNG the README shows) from `tools/overview/overview.yaml`, in the same way as the step cards and badges. Models,
 the language count, the recommended board and the drawn routes come from `support/matrix.yaml`, so the image

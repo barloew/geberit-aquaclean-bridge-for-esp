@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Dušihaara positsioon"
   lady_spray_intensity: "Naisteduši joa tugevus"
   lady_spray_arm_position: "Naisteduši haara positsioon"
+  lady_oscillating_spray: "Ostsilleerimisliikumine (Naistedušš)"
+  lady_water_temperature: "Veetemperatuur (Naistedušš)"
   water_temperature: "Veetemperatuur"
   oscillating_spray: "Ostsilleerimisliikumine"
   default_spray_intensity: "Vaikimisi dušijoa tugevus"

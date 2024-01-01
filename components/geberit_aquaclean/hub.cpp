@@ -1314,6 +1314,27 @@ void AquaCleanHub::store_profile(uint8_t profile) {
   ESP_LOGI(TAG, LT("Session settings stored in profile %u (%u settings)"), profile, n);
 }
 
+void AquaCleanHub::apply_lady_split_(bool lady) {
+  // Option B: the shower is being started for the recognized, seated user. Only Home Assistant profiles (4-6)
+  // keep a per-shower oscillation and water temperature; toilet profiles (1-3) share the single toilet slot.
+  if (this->active_user_ < 0) return;
+  const uint8_t profile = static_cast<uint8_t>(this->active_user_) + 1;
+  if (profile <= TOILET_PROFILES || profile > MAX_USERS) return;
+  const uint8_t u = profile - 1;
+  // The Lady shower reads the bridge-only ids; the shower (anal) reads this profile's ordinary stored 01/06.
+  const uint8_t src_osc = lady ? LOCAL_LADY_OSCILLATION : SESSION_OSCILLATION;
+  const uint8_t src_temp = lady ? LOCAL_LADY_WATER_TEMPERATURE : SESSION_WATER_TEMPERATURE;
+  const uint8_t srcs[2] = {src_osc, src_temp};
+  const uint8_t sessions[2] = {SESSION_OSCILLATION, SESSION_WATER_TEMPERATURE};
+  for (uint8_t i = 0; i < 2; i++) {
+    const int16_t *slot = this->user_value_(u, srcs[i]);
+    if (slot == nullptr || *slot < 0) continue;  // not set for this profile: leave the session as it is
+    SettingEntity *s = this->find_setting(KIND_SESSION, sessions[i]);
+    if (s == nullptr || s->hidden) continue;
+    this->write_setting(s, static_cast<uint16_t>(*slot));
+  }
+}
+
 void AquaCleanHub::read_device_info() {
   if (!this->is_ready()) {
     ESP_LOGW(TAG, LT("Not connected"));
@@ -1886,9 +1907,11 @@ void AquaCleanHub::remote_button(uint8_t code) {
   const bool lady = this->status_[2] == 1;  // while the Lady shower runs, spray and position apply to it
   switch (code) {
     case 0x01:
+      if (this->status_[1] != 1) this->apply_lady_split_(false);
       this->send_command(0x00);
       break;
     case 0x06:
+      if (this->status_[2] != 1) this->apply_lady_split_(true);
       this->send_command(0x01);
       break;
     case 0x13:
@@ -1935,9 +1958,11 @@ void AquaCleanHub::button_action(uint8_t action) {
   }
   switch (action) {
     case BTN_SHOWER:
+      if (this->status_[1] != 1) this->apply_lady_split_(false);
       this->send_command(0x00);
       break;
     case BTN_LADY_SHOWER:
+      if (this->status_[2] != 1) this->apply_lady_split_(true);
       this->send_command(0x01);
       break;
     case BTN_FILTER_RESET:

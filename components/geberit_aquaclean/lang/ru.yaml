@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Положение штуцера"
   lady_spray_intensity: "Напор струи дамского душа"
   lady_spray_arm_position: "Положение штуцера дамского душа"
+  lady_oscillating_spray: "Маятниковый режим движения штуцера (Дамский душ)"
+  lady_water_temperature: "Температура воды (Дамский душ)"
   water_temperature: "Температура воды"
   oscillating_spray: "Маятниковый режим движения штуцера"
   default_spray_intensity: "Напор омывающей струи по умолчанию"

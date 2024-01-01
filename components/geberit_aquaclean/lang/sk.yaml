@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Poloha ramena sprchy"
   lady_spray_intensity: "Intenzita prúdu dámskej sprchy"
   lady_spray_arm_position: "Poloha ramena dámskej sprchy"
+  lady_oscillating_spray: "Oscilačná sprcha (Dámska sprcha)"
+  lady_water_temperature: "Teplota vody (Dámska sprcha)"
   water_temperature: "Teplota vody"
   oscillating_spray: "Oscilačná sprcha"
   default_spray_intensity: "Predvolená intenzita sprchového prúdu"

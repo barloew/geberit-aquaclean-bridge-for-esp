@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Zuhanykar pozíciója"
   lady_spray_intensity: "Női zuhany vízsugár erőssége"
   lady_spray_arm_position: "Női zuhany zuhanykar pozíciója"
+  lady_oscillating_spray: "Pulzáló vízsugár (Női zuhany)"
+  lady_water_temperature: "Vízhőmérséklet (Női zuhany)"
   water_temperature: "Vízhőmérséklet"
   oscillating_spray: "Pulzáló vízsugár"
   default_spray_intensity: "Alapértelmezett vízsugár-erősség"

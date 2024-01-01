@@ -50,6 +50,8 @@ names:
   spray_arm_position: "冲洗臂位置"
   lady_spray_intensity: "女士洗净水柱强度"
   lady_spray_arm_position: "女士洗净冲洗臂位置"
+  lady_oscillating_spray: "摆动喷淋 (女士洗净)"
+  lady_water_temperature: "水温 (女士洗净)"
   water_temperature: "水温"
   oscillating_spray: "摆动喷淋"
   default_spray_intensity: "默认冲洗水柱强度"

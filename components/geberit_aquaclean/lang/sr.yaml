@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Položaj ručice tuša"
   lady_spray_intensity: "Jačina mlaza tuša za dame"
   lady_spray_arm_position: "Položaj ručice tuša za dame"
+  lady_oscillating_spray: "Oscilujući mlaz tuša za dame"
+  lady_water_temperature: "Temperatura vode tuša za dame"
   water_temperature: "Temperatura vode"
   oscillating_spray: "Oscilujući mlaz"
   default_spray_intensity: "Podrazumevana jačina mlaza"

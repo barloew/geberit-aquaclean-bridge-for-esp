@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Skalotāja pozīcija"
   lady_spray_intensity: "Sieviešu skalošanas strūklas spiediens"
   lady_spray_arm_position: "Sieviešu skalotāja pozīcija"
+  lady_oscillating_spray: "Svārstības (Sieviešu intīmās zonas skalošana)"
+  lady_water_temperature: "Ūdens temperatūra (Sieviešu intīmās zonas skalošana)"
   water_temperature: "Ūdens temperatūra"
   oscillating_spray: "Svārstības"
   default_spray_intensity: "Noklusējuma strūklas spiediens"

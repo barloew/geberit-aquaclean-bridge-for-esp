@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Положення штуцера для омивання"
   lady_spray_intensity: "Напір струменя дамського душу"
   lady_spray_arm_position: "Положення штуцера дамського душу"
+  lady_oscillating_spray: "Маятниковий режим (Дамський душ)"
+  lady_water_temperature: "Температура води (Дамський душ)"
   water_temperature: "Температура води"
   oscillating_spray: "Маятниковий режим"
   default_spray_intensity: "Напір струменя за замовчуванням"

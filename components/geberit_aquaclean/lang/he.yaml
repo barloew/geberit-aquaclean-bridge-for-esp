@@ -50,6 +50,8 @@ names:
   spray_arm_position: "מיקום זרוע השטיפה"
   lady_spray_intensity: "עוצמת סילון השטיפה לנשים"
   lady_spray_arm_position: "מיקום זרוע השטיפה לנשים"
+  lady_oscillating_spray: "סילון מתנודד (שטיפה לנשים)"
+  lady_water_temperature: "טמפרטורת המים (שטיפה לנשים)"
   water_temperature: "טמפרטורת המים"
   oscillating_spray: "סילון מתנודד"
   default_spray_intensity: "עוצמת סילון ברירת מחדל"

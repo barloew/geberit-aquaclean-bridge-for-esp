@@ -215,6 +215,10 @@ PROBE_COUNTER = 4  # discovery probe: id in the counter list (59)
 PROBE_MODULE = 6  # discovery probe: bit of status 64 (connected modules; bit 0 = flush trigger)
 PROBE_SLOT = 5  # discovery probe: Home Assistant profile <id> has been created
 KIND_LOCAL = 6  # setting kept on the ESP (Home Assistant profiles), not on the toilet
+# Bridge-only setting ids for a Home Assistant profile's Lady shower (the toilet keeps a single shared slot for
+# oscillation and water temperature; the Lady variant lives only on the bridge). Must match hub.h.
+LOCAL_LADY_OSCILLATION = 0x0E
+LOCAL_LADY_WATER_TEMPERATURE = 0x0F
 
 # Remote control button codes, in the order of the C++ table (remote_link.cpp) and lang "buttons"
 BUTTON_KEYS = [
@@ -884,6 +888,22 @@ for _p, _g in zip(USERS, G_PROFILES):
                 name_key=_e.key.removeprefix("default_"),
                 probe=(_e.probe if _e.probe is not None else None) if _toilet else _probe,
             )
+        )
+    if not _toilet:
+        # Home Assistant profiles (4-6) only: a Lady shower oscillation and water temperature of their own,
+        # kept on the bridge. The toilet has one shared slot for each, so this per-shower split cannot live on
+        # the toilet; hub.cpp writes it into the session when the Lady shower starts for the recognized user.
+        _profile_ents.append(
+            Ent(f"{_g}_lady_oscillating_spray", "setting_switch", _g,
+                {CONF_ICON: "mdi:sine-wave", CONF_ENTITY_CATEGORY: CONFIG},
+                setting=(KIND_LOCAL, LOCAL_LADY_OSCILLATION, 1, 0, _p),
+                caps=("oscillation", "lady_shower"), name_key="lady_oscillating_spray", probe=_probe)
+        )
+        _profile_ents.append(
+            Ent(f"{_g}_lady_water_temperature", "number", _g,
+                {CONF_ICON: "mdi:thermometer-water", CONF_ENTITY_CATEGORY: CONFIG},
+                setting=(KIND_LOCAL, LOCAL_LADY_WATER_TEMPERATURE, 5, 0, _p),
+                caps=("water_temperature", "lady_shower"), name_key="lady_water_temperature", probe=_probe)
         )
     # Activate = copy the profile into the session settings, as a profile key of the remote control does.
     # Store = session settings into the profile, as a long press of the profile key does.

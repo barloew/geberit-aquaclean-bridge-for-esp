@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Taharet mekanizması pozisyonu"
   lady_spray_intensity: "Bayan tahareti duş spreyi ayarı"
   lady_spray_arm_position: "Bayan tahareti mekanizma pozisyonu"
+  lady_oscillating_spray: "Dalgalı duş (Bayan tahareti)"
+  lady_water_temperature: "Su sıcaklığı (Bayan tahareti)"
   water_temperature: "Su sıcaklığı"
   oscillating_spray: "Dalgalı duş"
   default_spray_intensity: "Varsayılan duş spreyi ayarı"

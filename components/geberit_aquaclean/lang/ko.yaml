@@ -50,6 +50,8 @@ names:
   spray_arm_position: "비데 암 위치"
   lady_spray_intensity: "여성 세정 강도"
   lady_spray_arm_position: "여성 세정 암 위치"
+  lady_oscillating_spray: "이동 스프레이 (여성 세정)"
+  lady_water_temperature: "수온 (여성 세정)"
   water_temperature: "수온"
   oscillating_spray: "이동 스프레이"
   default_spray_intensity: "기본 비데 강도"

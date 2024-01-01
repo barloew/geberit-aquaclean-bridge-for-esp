@@ -51,6 +51,8 @@ names:
   spray_arm_position: Spray arm position
   lady_spray_intensity: Spray intensity Lady
   lady_spray_arm_position: Spray arm position Lady
+  lady_oscillating_spray: "Oscillating spray Lady"
+  lady_water_temperature: "Water temperature Lady"
   water_temperature: Water temperature
   oscillating_spray: Oscillating spray
   # Default settings (what every new session starts with)

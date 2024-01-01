@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Pozycja ramienia natryskowego"
   lady_spray_intensity: "Intensywność strumienia natrysku damskiego"
   lady_spray_arm_position: "Pozycja ramienia natrysku damskiego"
+  lady_oscillating_spray: "Natrysk oscylacyjny natrysku damskiego"
+  lady_water_temperature: "Temperatura wody natrysku damskiego"
   water_temperature: "Temperatura wody"
   oscillating_spray: "Natrysk oscylacyjny"
   default_spray_intensity: "Domyślna intensywność strumienia"

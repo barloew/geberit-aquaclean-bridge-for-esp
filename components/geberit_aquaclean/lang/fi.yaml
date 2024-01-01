@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Suihkuvarren asento"
   lady_spray_intensity: "Lady-suihkun suihkumäärä"
   lady_spray_arm_position: "Lady-suihkun suihkuvarren asento"
+  lady_oscillating_spray: "Oskilloiva suihku (Lady-suihku)"
+  lady_water_temperature: "Veden lämpötila (Lady-suihku)"
   water_temperature: "Veden lämpötila"
   oscillating_spray: "Oskilloiva suihku"
   default_spray_intensity: "Oletussuihkumäärä"

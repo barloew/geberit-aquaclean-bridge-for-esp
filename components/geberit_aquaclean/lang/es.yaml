@@ -50,6 +50,8 @@ names:
   spray_arm_position: Posición brazo-ducha
   lady_spray_intensity: Intensidad del agua femenina
   lady_spray_arm_position: Posición brazo-ducha femenina
+  lady_oscillating_spray: "Ducha oscilante femenina"
+  lady_water_temperature: "Temperatura del agua femenina"
   water_temperature: Temperatura del agua
   oscillating_spray: Ducha oscilante
   default_spray_intensity: "Intensidad del agua predeterminada"

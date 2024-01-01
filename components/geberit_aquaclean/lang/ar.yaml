@@ -50,6 +50,8 @@ names:
   spray_arm_position: "موضع ذراع الرش"
   lady_spray_intensity: "قوة رذاذ دش السيدات"
   lady_spray_arm_position: "موضع ذراع رش السيدات"
+  lady_oscillating_spray: "رذاذ متذبذب (دش السيدات)"
+  lady_water_temperature: "درجة حرارة الماء (دش السيدات)"
   water_temperature: "درجة حرارة الماء"
   oscillating_spray: "رذاذ متذبذب"
   default_spray_intensity: "قوة الرذاذ الافتراضية"

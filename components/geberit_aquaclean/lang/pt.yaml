@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Posição do braço telescópico com chuveiro"
   lady_spray_intensity: "Intensidade do jato para senhoras"
   lady_spray_arm_position: "Posição do braço telescópico jato para senhoras"
+  lady_oscillating_spray: "Jato oscilante para senhoras"
+  lady_water_temperature: "Temperatura da água para senhoras"
   water_temperature: "Temperatura da água"
   oscillating_spray: "Jato oscilante"
   default_spray_intensity: "Intensidade do jato predefinida"

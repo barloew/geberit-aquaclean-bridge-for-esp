@@ -50,6 +50,8 @@ names:
   spray_arm_position: "Poziția brațului dușului"
   lady_spray_intensity: "Intensitatea jetului pentru doamne"
   lady_spray_arm_position: "Poziția brațului pentru doamne"
+  lady_oscillating_spray: "Oscilarea jetului de apă (Funcția de spălare pentru doamne)"
+  lady_water_temperature: "Temperatura apei (Funcția de spălare pentru doamne)"
   water_temperature: "Temperatura apei"
   oscillating_spray: "Oscilarea jetului de apă"
   default_spray_intensity: "Intensitate implicită a jetului de apă"

@@ -192,6 +192,14 @@ void AquaCleanHub::users_setup_() {
       this->users_x_[u].magic = USER_MAGIC;
       for (auto &v : this->users_x_[u].values) v = -1;
     }
+    // Lady shower oscillation + water temperature of a Home Assistant profile (ids 0e-0f): bridge-only, its own
+    // store so UserData and UserValuesX keep their layout. Absent in older installs: starts unknown (-1).
+    this->user_l_prefs_[u] =
+        global_preferences->make_preference<UserValuesL>(fnv1_hash(str_sprintf("geberit_aquaclean_userl_%u", u + 1)));
+    if (!this->user_l_prefs_[u].load(&this->users_l_[u]) || this->users_l_[u].magic != USER_MAGIC) {
+      this->users_l_[u].magic = USER_MAGIC;
+      for (auto &v : this->users_l_[u].values) v = -1;
+    }
     d.created = 1;  // all six profiles exist (toilet ones hidden by the discovery when the toilet lacks them)
     d.name[sizeof(d.name) - 1] = 0;
     d.entity[sizeof(d.entity) - 1] = 0;
@@ -345,6 +353,8 @@ void AquaCleanHub::save_user_(uint8_t u) {
   this->user_prefs_[u].save(&this->users_[u]);
   this->users_x_[u].magic = USER_MAGIC;
   this->user_x_prefs_[u].save(&this->users_x_[u]);
+  this->users_l_[u].magic = USER_MAGIC;
+  this->user_l_prefs_[u].save(&this->users_l_[u]);
   global_preferences->sync();
 }
 
@@ -626,6 +636,7 @@ void AquaCleanHub::delete_user_profile(uint8_t user) {
   if (user > TOILET_PROFILES) {
     for (auto &v : d.values) v = -1;
     for (auto &v : this->users_x_[user - 1].values) v = -1;
+    for (auto &v : this->users_l_[user - 1].values) v = -1;
     for (auto *s : this->settings_) {
       int16_t *slot = this->user_value_(user - 1, s->setting_id());
       if (s->kind() == KIND_DEFAULT && s->profile() == 0 && slot != nullptr && s->value() >= 0)

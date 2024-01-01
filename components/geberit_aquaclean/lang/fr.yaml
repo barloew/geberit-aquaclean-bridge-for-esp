@@ -50,6 +50,8 @@ names:
   spray_arm_position: Position du bras de douchette
   lady_spray_intensity: Intensité du jet dame
   lady_spray_arm_position: Position du bras dame
+  lady_oscillating_spray: "Jet oscillant dame"
+  lady_water_temperature: "Température de l'eau dame"
   water_temperature: Température de l'eau
   oscillating_spray: Jet oscillant
   default_spray_intensity: "Intensité du jet par défaut"
