@@ -21,6 +21,10 @@ the output is identical on every machine; CI checks it with `--check`.
 native API and MQTT rows now read the same way: both install from the web installer with no ESPHome build, and
 the native API key is set on the bridge. HomeKit reads *built in · off until turned on*. The highlights follow
 the order a user meets them: installation, feature discovery, six profiles, recognition, welcome light.
+- **Translated overview images.** Dutch, German, French and Polish versions of the overview in
+`images/overview/translations/`, as source material for articles (not used in the README). Texts are in
+`tools/overview/i18n/<lang>.yaml`; the generator fails on a missing or stale translation and on text that doesn't
+fit its box, and `--check` covers every language.
 - **All images in one top-level folder, `images/`** (see `images/README.md`): the overview image
 (`images/overview/`, new version, PNG plus its SVG source), the step cards (`images/steps/`, were
 `docs/steps/`), the platform badges (`images/badges/`), the project's own line icons and drawings

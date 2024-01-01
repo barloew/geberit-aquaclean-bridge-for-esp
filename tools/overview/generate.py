@@ -5,10 +5,16 @@ Usage (from the repository root):
     python3 tools/overview/generate.py            write the SVG, the PNG and the README snippet
     python3 tools/overview/generate.py --no-png   write the SVG and the README snippet only
     python3 tools/overview/generate.py --check    write nothing; exit 1 if the SVG or README is stale
+    python3 tools/overview/generate.py --lang nl  only the Dutch version (en = the README image)
 
 Reads tools/overview/overview.yaml (layout and wording) and support/matrix.yaml (every support claim),
 writes images/overview/aquaclean-bridge-overview.svg, renders the PNG the README shows at 3x, and puts
 the <img> snippet between <!-- overview:begin --> and <!-- overview:end --> in README.md.
+
+Translated versions (source material for articles, not shown in the README) come from
+tools/overview/i18n/<lang>.yaml: every English string of overview.yaml maps to its translation, or is listed
+under `same:` when it stays as it is (product and brand names). A missing or unused entry fails the run, so a
+change to the English text can't leave a translation silently stale; text that doesn't fit its box fails too.
 
 Same pattern as tools/steps/generate.py: paths relative to the repository root, icons embedded straight
 into the SVG (images/ui, or Lucide from tools/steps/node_modules), nothing loaded from the web. Brand logos
@@ -62,7 +68,7 @@ FONT_FILES = {
 
 # Repository rules (CLAUDE.md) the image must follow; checked on every run.
 BANNED_LOGOS = re.compile(r"bluetooth|wi-?fi|usb|apple|geberit", re.I)
-BANNED_WORDS = re.compile(r"\b(proxy|anal)\b", re.I)
+BANNED_WORDS = re.compile(r"\b(prox[a-z]*|anal|anale|anaal|analny|analna|analne)\b", re.I)
 # Reverse-engineering internals never go into a published image (CLAUDE.md, secrecy guardrails).
 INTERNALS = re.compile(r"\b0x[0-9a-f]{2,}\b|\bdp-?id\b|\bpsk\b|\bcrc\b|\bgatt\b", re.I)
 MATRIX_OK = {"validated", "supported"}
@@ -245,13 +251,17 @@ def check_routes(cfg: dict, matrix: dict) -> None:
 class Ctx:
     """Resolves colours, placeholders and assets, and collects <defs>."""
 
-    def __init__(self, cfg: dict, fact: dict):
+    def __init__(self, cfg: dict, fact: dict, i18n: dict | None = None):
         self.cfg = cfg
         self.fact = fact
         self.font = cfg["font"]
         self.colors = cfg["colors"]
         self.symbols: dict[str, str] = {}
         self.texts: list[str] = []
+        self.i18n = i18n
+        self.strings = (i18n or {}).get("strings") or {}
+        self.same = set((i18n or {}).get("same") or [])
+        self.used: set[str] = set()
 
     def c(self, name: str) -> str:
         if name.startswith("#"):
@@ -260,13 +270,46 @@ class Ctx:
             raise GenError(f"unknown colour '{name}'")
         return self.colors[name]
 
-    def t(self, text: str) -> str:
+    def _tr(self, key: str):
+        """The translation of an English string (unchanged when no translation is active)."""
+        if self.i18n is None or key in self.same:
+            self.used.add(key)
+            return key
+        if key not in self.strings:
+            raise GenError(f"[{self.i18n['lang']}] no translation for {key!r}; add it to strings: (or same:)")
+        self.used.add(key)
+        val = self.strings[key]
+        flat = " ".join(val) if isinstance(val, list) else val
+        if set(re.findall(r"{\w+}", key)) != set(re.findall(r"{\w+}", flat)):
+            raise GenError(f"[{self.i18n['lang']}] {flat!r} must keep the placeholders of {key!r}")
+        return val
+
+    def _fmt(self, text: str) -> str:
         try:
             out = text.format_map(self.fact)
         except KeyError as e:
             raise GenError(f"unknown placeholder {e} in {text!r}") from None
         self.texts.append(out)
         return out
+
+    def t(self, text: str) -> str:
+        val = self._tr(text)
+        if isinstance(val, list):
+            raise GenError(f"{text!r} is a single line; translate it as a string, not a list")
+        return self._fmt(val)
+
+    def tl(self, value):
+        """A text that may be explicit lines (a list) or a string to wrap; translated as a whole."""
+        val = self._tr(" ".join(value) if isinstance(value, list) else value)
+        if self.i18n is None and isinstance(value, list):
+            val = value
+        return [self._fmt(v) for v in val] if isinstance(val, list) else self._fmt(val)
+
+    def fit(self, s: str, size: float, weight: int, room: float, where: str, spacing: float = 0.0) -> str:
+        if text_width(s, size, weight, spacing) > room + 0.05:
+            lang = f"[{self.i18n['lang']}] " if self.i18n else ""
+            raise GenError(f"{lang}{s!r} ({where}) is wider than its {room:.0f}px; shorten it")
+        return s
 
     # ----- icons and logos
 
@@ -359,6 +402,8 @@ def tag(cx: Ctx, t: dict, x: float, y: float) -> list[str]:
     """Coloured label sitting on the top edge of a panel."""
     label = cx.t(t["text"])
     w = text_width(label, 14, 700, 1.2) + 28
+    if w > t.get("max_w", 1e9):
+        raise GenError(f"tag {label!r} is wider than its panel; shorten it")
     return [
         f'<rect x="{n(x)}" y="{n(y - 15)}" width="{n(w)}" height="30" rx="8" fill="{cx.c(t["color"])}"/>',
         cx.text(x + w / 2, y + 5, label, 14, 700, "white", "middle", 1.2),
@@ -376,12 +421,16 @@ def header(cx: Ctx, cfg: dict) -> list[str]:
         out.append(cx.text(x, ti["y"], s, ti["size"], 700, col))
         x += w
     st = cfg["subtitle"]
-    out.append(cx.text(W / 2, st["y"], cx.t(st["text"]), st["size"], 400, st["color"], "middle"))
+    sub = cx.fit(cx.t(st["text"]), st["size"], 400, W - 80, "subtitle")
+    out.append(cx.text(W / 2, st["y"], sub, st["size"], 400, st["color"], "middle"))
 
     pl = cfg["pills"]
     items = [(it, cx.t(it["text"])) for it in pl["items"]]
     widths = [76 + text_width(s, 18, 500) for _, s in items]
-    x = (W - sum(widths) - pl["gap"] * (len(items) - 1)) / 2
+    row = sum(widths) + pl["gap"] * (len(items) - 1)
+    if row > W - 80:
+        raise GenError(f"the pills are {row:.0f}px wide, more than the {W - 80}px available; shorten them")
+    x = (W - row) / 2
     for (it, s), w in zip(items, widths):
         out.append(
             f'<rect x="{n(x)}" y="{pl["y"]}" width="{n(w)}" height="50" rx="12" fill="{cx.c("white")}" '
@@ -397,7 +446,7 @@ def toilet(cx: Ctx, cfg: dict) -> list[str]:
     d = cfg["toilet"]
     p = d["panel"]
     mid = p["x"] + p["w"] / 2
-    out = [panel(cx, p), *tag(cx, d["tag"], p["x"] + 22, p["y"])]
+    out = [panel(cx, p), *tag(cx, {**d["tag"], "max_w": p["w"] - 44}, p["x"] + 22, p["y"])]
     il = d["illustration"]
     out.append(illustration(il))
     out.append("")
@@ -411,8 +460,11 @@ def toilet(cx: Ctx, cfg: dict) -> list[str]:
     )
     out.append(cx.icon(nt["icon"], bx + 14, by + 14, 22, nt["color"], "2.00"))
     tx = bx + 46
-    for i, ln in enumerate(lines_of(cx.t(nt["text"]), 15, bx + bw - tx - 12, 500)):
-        out.append(cx.text(tx, by + 29 + 20 * i, ln, 15, 500))
+    note = lines_of(cx.tl(nt["text"]), 15, bx + bw - tx - 12, 500)
+    if len(note) > 3:
+        raise GenError(f"the toilet note needs {len(note)} lines, 3 fit: {note}")
+    for i, ln in enumerate(note):
+        out.append(cx.text(tx, by + 29 + 20 * i, cx.fit(ln, 15, 500, bx + bw - tx - 8, "toilet note"), 15, 500))
     return out
 
 
@@ -423,8 +475,11 @@ def link(cx: Ctx, cfg: dict) -> list[str]:
         f'<line x1="{n(lk["x1"])}" y1="{n(lk["y"])}" x2="{n(lk["x2"])}" y2="{n(lk["y"])}" stroke="{col}" '
         f'stroke-width="4" stroke-linecap="round"/>',
         f'<circle cx="{n(lk["x1"])}" cy="{n(lk["y"])}" r="6" fill="{col}"/>',
-        cx.text(lk["label_x"], lk["y"] - 18, cx.t(lk["label"]), 15, 700, lk["color"], "middle"),
-        cx.text(lk["label_x"], lk["y"] + 23, cx.t(lk["sublabel"]), 12.5, 500, "muted", "middle"),
+        cx.text(lk["label_x"], lk["y"] - 18, cx.fit(cx.t(lk["label"]), 15, 700, lk["max_w"], "link"), 15, 700,
+                lk["color"], "middle"),
+    ] + [
+        cx.text(lk["label_x"], lk["y"] + 23 + 16 * i, ln, 12.5, 500, "muted", "middle")
+        for i, ln in enumerate(wrap(cx.t(lk["sublabel"]), 12.5, lk["max_w"], 500))
     ]
 
 
@@ -434,7 +489,7 @@ def bridge(cx: Ctx, cfg: dict) -> list[str]:
     mid = p["x"] + p["w"] / 2
     lk = cfg["link"]
     out = [panel(cx, p), f'<circle cx="{n(lk["x2"])}" cy="{n(lk["y"])}" r="6" fill="{cx.c(lk["color"])}"/>']
-    out += tag(cx, d["tag"], p["x"] + 22, p["y"])
+    out += tag(cx, {**d["tag"], "max_w": p["w"] - 44 - 160}, p["x"] + 22, p["y"])
 
     bd = d["badge"]
     label = cx.t(bd["text"])
@@ -458,7 +513,8 @@ def bridge(cx: Ctx, cfg: dict) -> list[str]:
                 f'stroke="{col}" stroke-width="2.5" stroke-linecap="round" opacity="{op}"/>'
             )
     out.append(cx.text(mid, d["name"]["y"], cx.t(d["name"]["text"]), 26, 700, "ink", "middle"))
-    out.append(cx.text(mid, d["sub"]["y"], cx.t(d["sub"]["text"]), 15, 400, "muted", "middle"))
+    out.append(cx.text(mid, d["sub"]["y"], cx.fit(cx.t(d["sub"]["text"]), 15, 400, p["w"] - 32, "bridge"), 15, 400,
+                       "muted", "middle"))
 
     cl = d["checklist"]
     for i, item in enumerate(cl["items"]):
@@ -466,7 +522,7 @@ def bridge(cx: Ctx, cfg: dict) -> list[str]:
         ccx, ccy = p["x"] + 42, y - 5
         out.append(f'<circle cx="{n(ccx)}" cy="{n(ccy)}" r="12" fill="{cx.c(cl["color"] + "_tint")}"/>')
         out.append(cx.icon("ui:check", ccx - 9, ccy - 9, 18, cl["color"], "2.60"))
-        out.append(cx.text(p["x"] + 66, y, cx.t(item), 16, 500))
+        out.append(cx.text(p["x"] + 66, y, cx.fit(cx.t(item), 16, 500, p["w"] - 66 - 14, "checklist"), 16, 500))
     return out
 
 
@@ -552,9 +608,10 @@ def routes(cx: Ctx, cfg: dict) -> list[str]:
             x += 26 + text_width(label, 14.25, 600) + 16
         if x - 16 > pn["x"] + pn["w"] - 16:
             raise GenError(f"clients of '{it['title']}' don't fit their panel; shorten or widen it")
-        out.append(cx.text(pn["x"] + 24, top + it.get("caption_dy", 76), cx.t(it["caption"]), 14, 400, "body"))
+        cap = cx.fit(cx.t(it["caption"]), 14, 400, pn["w"] - 40, "client panel caption")
+        out.append(cx.text(pn["x"] + 24, top + it.get("caption_dy", 76), cap, 14, 400, "body"))
 
-    out += tag(cx, R["tag"], pn["x"] + 22, tops[0])
+    out += tag(cx, {**R["tag"], "max_w": pn["w"] - 44}, pn["x"] + 22, tops[0])
     bk = R["bracket"]
     y1, y2 = tops[0] + 8, tops[-1] + pn["h"] - 8
     out.append(
@@ -563,7 +620,8 @@ def routes(cx: Ctx, cfg: dict) -> list[str]:
     )
     lx, ly = bk["x"] + 30, (y1 + y2) / 2
     out.append(
-        cx.text(lx, ly, cx.t(bk["label"]), 15, 700, bk["color"], "middle", 0.5, f' transform="rotate(90 {n(lx)} {n(ly)})"')
+        cx.text(lx, ly, cx.fit(cx.t(bk["label"]), 15, 700, y2 - y1 - 40, "bracket", 0.5), 15, 700, bk["color"], "middle",
+                0.5, f' transform="rotate(90 {n(lx)} {n(ly)})"')
     )
     return out
 
@@ -588,9 +646,13 @@ def highlights(cx: Ctx, cfg: dict) -> list[str]:
             f'fill="{cx.c(it["color"])}" opacity="0.1"/>'
         )
         out.append(cx.icon(it["icon"], x0 + 38, b["y"] + 38, 24, it["color"]))
-        out.append(cx.text(x0 + 90, b["y"] + 46, cx.t(it["title"]), 17, 700))
-        text = [cx.t(s) for s in it["text"]] if isinstance(it["text"], list) else cx.t(it["text"])
-        for j, ln in enumerate(lines_of(text, 14.5, colw - 90 - 16)):
+        room = colw - 90 - 12
+        out.append(cx.text(x0 + 90, b["y"] + 46, cx.fit(cx.t(it["title"]), 17, 700, room, "highlight title"), 17, 700))
+        lines = lines_of(cx.tl(it["text"]), 14.5, colw - 90 - 16)
+        if len(lines) > 2:
+            raise GenError(f"highlight text needs {len(lines)} lines, 2 fit: {lines}")
+        for j, ln in enumerate(lines):
+            cx.fit(ln, 14.5, 400, room, "highlight text")
             out.append(cx.text(x0 + 90, b["y"] + 72 + 21 * j, ln, 14.5, 400, "body"))
     return out
 
@@ -599,6 +661,8 @@ def caption_lines(cx: Ctx, cfg: dict) -> list[str]:
     cp = cfg.get("caption") or {}
     if not cp.get("enabled"):
         return []
+    if cx.i18n is not None:
+        raise GenError("the matrix caption exists in English only; disable it for translations")
     spec = importlib.util.spec_from_file_location("support_generate", ROOT / "support" / "generate.py")
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
@@ -613,7 +677,7 @@ def caption_lines(cx: Ctx, cfg: dict) -> list[str]:
 def lint(cx: Ctx) -> None:
     for s in cx.texts:
         m = BANNED_WORDS.search(s)
-        if m and m.group(1).lower() == "proxy":
+        if m and m.group(1).lower().startswith("prox"):
             raise GenError(f"{s!r}: our product is a bridge, never a proxy (CLAUDE.md)")
         if m:
             raise GenError(f"{s!r}: use 'shower', keep 'anal' out of the documentation (CLAUDE.md)")
@@ -621,9 +685,9 @@ def lint(cx: Ctx) -> None:
             raise GenError(f"{s!r} looks like a protocol internal; images name functions, never internals")
 
 
-def build(cfg: dict, matrix: dict) -> str:
+def build(cfg: dict, matrix: dict, i18n: dict | None = None) -> str:
     check_routes(cfg, matrix)
-    cx = Ctx(cfg, facts(cfg, matrix))
+    cx = Ctx(cfg, facts(cfg, matrix), i18n)
     W, H = cfg["canvas"]["width"], cfg["canvas"]["height"]
 
     body = header(cx, cfg) + toilet(cx, cfg) + link(cx, cfg) + bridge(cx, cfg) + routes(cx, cfg)
@@ -636,7 +700,12 @@ def build(cfg: dict, matrix: dict) -> str:
             body.append(cx.text(W / 2, y, ln, cp.get("size", 14), 400, cp.get("color", "muted"), "middle"))
             y += 20
         H = int(y + 5)
+    alt = cx.t(cfg.get("alt", "overview"))
     lint(cx)
+    if i18n is not None:
+        unused = sorted((set(cx.strings) | cx.same) - cx.used)
+        if unused:
+            raise GenError(f"[{i18n['lang']}] entries no longer in overview.yaml: {unused}")
 
     defs = [
         '<filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">',
@@ -647,12 +716,13 @@ def build(cfg: dict, matrix: dict) -> str:
         "</linearGradient>",
         *(cx.symbols[k] for k in sorted(cx.symbols)),
     ]
-    alt = esc(cfg.get("alt", "overview"))
+    lang = i18n["lang"] if i18n else "en"
     head = (
         f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{W}" '
-        f'height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{alt}">'
+        f'height="{H}" viewBox="0 0 {W} {H}" role="img" aria-label="{esc(alt)}" xml:lang="{lang}">'
     )
-    note = "<!-- Generated by tools/overview/generate.py from tools/overview/overview.yaml. Do not edit by hand. -->"
+    src = f"tools/overview/i18n/{lang}.yaml and " if i18n else ""
+    note = f"<!-- Generated by tools/overview/generate.py from {src}tools/overview/overview.yaml. Do not edit by hand. -->"
     return "\n".join(
         [head, note, "<defs>", *defs, "</defs>", f'<rect width="{W}" height="{H}" fill="url(#bg)"/>', *body, "</svg>"]
     ) + "\n"
@@ -688,42 +758,67 @@ def render_png(svg_path: Path, png_path: Path, scale: float) -> None:
         subprocess.run([exe, "-z", str(scale), "-o", str(png_path), str(svg_path)], check=True, env=env)
 
 
+def variants(cfg: dict, only: str | None) -> list[tuple[str, dict | None, str, str | None]]:
+    """(lang, i18n, svg path, png path) for English and every translation in overview.yaml."""
+    png = cfg.get("png") or {}
+    out = [("en", None, cfg["output"], png.get("path"))]
+    tr = cfg.get("translations") or {}
+    stem = Path(cfg["output"]).stem
+    for lang in tr.get("languages", []):
+        if only and only != lang:
+            continue
+        src = HERE / "i18n" / f"{lang}.yaml"
+        if not src.exists():
+            raise GenError(f"translation '{lang}' is listed but {src.relative_to(ROOT)} is missing")
+        i18n = {"lang": lang, **(yaml.safe_load(src.read_text(encoding="utf-8")) or {})}
+        base = f"{tr['dir']}/{stem}-{lang}"
+        out.append((lang, i18n, f"{base}.svg", f"{base}.png" if png else None))
+    if only:
+        out = [v for v in out if v[0] == only]
+        if not out:
+            raise GenError(f"no language '{only}' in overview.yaml translations")
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("config", nargs="?", default=str(HERE / "overview.yaml"))
     ap.add_argument("--check", action="store_true", help="write nothing; exit 1 if the outputs are stale")
-    ap.add_argument("--no-png", action="store_true", help="skip the PNG")
+    ap.add_argument("--no-png", action="store_true", help="skip the PNGs")
+    ap.add_argument("--lang", help="only this language (en, or one of the translations)")
     args = ap.parse_args()
 
     cfg = yaml.safe_load(Path(args.config).read_text(encoding="utf-8"))
-    svg = build(cfg, load_matrix())
-    out = ROOT / cfg["output"]
+    matrix = load_matrix()
+    built = [(lang, build(cfg, matrix, i18n), svg, png) for lang, i18n, svg, png in variants(cfg, args.lang)]
     snippet = readme_snippet(cfg)
     readme = spliced_readme(snippet)
+    with_readme = args.lang in (None, "en")
 
     if args.check:
-        stale = []
-        if not out.exists() or out.read_text(encoding="utf-8") != svg:
-            stale.append(cfg["output"])
-        if readme is None:
-            stale.append(f"README.md (missing {BEGIN} / {END})")
-        elif readme != README.read_text(encoding="utf-8"):
-            stale.append("README.md")
+        stale = [svg for _, text, svg, _ in built if not (ROOT / svg).exists() or (ROOT / svg).read_text(encoding="utf-8") != text]
+        if with_readme:
+            if readme is None:
+                stale.append(f"README.md (missing {BEGIN} / {END})")
+            elif readme != README.read_text(encoding="utf-8"):
+                stale.append("README.md")
         if stale:
             print("Out of date: " + ", ".join(stale) + ". Run: python3 tools/overview/generate.py", file=sys.stderr)
             return 1
-        print("overview: up to date")
+        print(f"overview: up to date ({', '.join(lang for lang, *_ in built)})")
         return 0
 
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(svg, encoding="utf-8")
-    print(f"wrote {cfg['output']}")
-    if cfg.get("png") and not args.no_png:
-        render_png(out, ROOT / cfg["png"]["path"], cfg["png"].get("scale", 3))
-        print(f"wrote {cfg['png']['path']}")
-    if readme is not None:
+    for _, text, svg, png in built:
+        out = ROOT / svg
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(text, encoding="utf-8")
+        print(f"wrote {svg}")
+        if png and not args.no_png:
+            render_png(out, ROOT / png, cfg["png"].get("scale", 3))
+            print(f"wrote {png}")
+    if with_readme and readme is not None:
         README.write_text(readme, encoding="utf-8")
-    print(snippet, end="")
+        print(snippet, end="")
     return 0
 
 

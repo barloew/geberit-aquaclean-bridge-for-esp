@@ -92,7 +92,8 @@ toilet:
     text: "On its own it accepts only one Bluetooth connection at a time"
 
 # The single permanent Bluetooth link between toilet and bridge.
-link: { x1: 283, x2: 440, y: 480, color: blue, label_x: 380, label: "Bluetooth LE", sublabel: "1 permanent link" }
+# max_w: room for the labels between the toilet drawing and the bridge; a longer sublabel wraps.
+link: { x1: 283, x2: 440, y: 480, color: blue, label_x: 380, max_w: 112, label: "Bluetooth LE", sublabel: "1 permanent link" }
 
 # Middle column: the bridge.
 bridge:
@@ -192,6 +193,12 @@ highlights:
     - { icon: "ui:users", color: blue, title: "Up to six user profiles", text: ["Twice as many profiles", "as the remote supports"] }
     - { icon: "ui:user", color: purple, title: "Automatic recognition", text: ["Your profile is loaded", "before you sit down"] }
     - { icon: "ui:bulb", color: orange, title: "Personal welcome light", text: ["The orientation light greets", "you in your own color"] }
+
+# Translated versions, as source material for articles (not used in the README). Strings live in
+# tools/overview/i18n/<lang>.yaml; the images go to <dir>/aquaclean-bridge-overview-<lang>.svg/.png.
+translations:
+  dir: images/overview/translations
+  languages: [nl, de, fr, pl]
 
 # Optional line under the image with the matrix's own "tested" sentence (support/generate.py).
 # When enabled, the canvas grows to fit it.
