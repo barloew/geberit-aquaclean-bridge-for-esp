@@ -25,7 +25,9 @@ CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
 # standard, stable configuration (the main bridge runs BLE alongside WiFi too).
 CONFIG_ESP_COEX_SW_COEXIST_ENABLE=y
 
-# --- 8 MB flash + custom partitions: room for BLE + WiFi + HTTP server ---
-CONFIG_ESPTOOLPY_FLASHSIZE_8MB=y
+# --- 16 MB flash + custom partitions: room for BLE + WiFi + HTTP server ---
+# The T-Dongle-S3 has 16 MB flash (confirmed on hardware: bootloader reports "SPI Flash Size : 16MB").
+# The partition table uses ~3 MB, so this only corrects the declared size to match the chip.
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
 CONFIG_PARTITION_TABLE_CUSTOM=y
 CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
