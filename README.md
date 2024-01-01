@@ -225,7 +225,7 @@ For each of the up to six profiles:
 
 </summary>
 
-Apple HomeKit is compiled into every image and works stand-alone too, without Home Assistant or any other home automation system. It stays off until you turn on the **Apple Home** switch on the bridge — from its web page, or from whichever home automation system you use. With ESPHome YAML you can instead build it always-on:
+Apple HomeKit is compiled into every image and works stand-alone too, without any home automation system connected via native API or MQTT. It stays off until you turn on the **Apple Home** switch on the bridge — from its web page, or from whichever home automation system you use. With ESPHome YAML you can instead build it always-on:
 
 ```yaml
 geberit_aquaclean:
