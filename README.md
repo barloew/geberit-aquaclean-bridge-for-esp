@@ -144,6 +144,8 @@ Both routes give the same devices and entities. Pick one; never both.
 | Web interface on the ESP | Installer image: yes (`/setup`, `/homekit`); YAML: add `web.yaml` | Yes |
 | Apple Home (HomeKit) | In every image; start with the Apple Home switch | In every image; start with the Apple Home switch |
 
+**Only Apple Home?** HomeKit needs no route. Flash either image, skip the route setup in [Step 5](#step-5-install-the-firmware), and turn on the **Apple Home** switch ([Step 8](#step-8-add-apple-home)).
+
 See [Two routes: ESPHome or MQTT](#two-routes-esphome-or-mqtt) for all differences.
 
 </details>
@@ -169,6 +171,10 @@ Open the [web installer](https://barloew.github.io/geberit-aquaclean-bridge-for-
 1. Open the bridge's web page (**Visit device**, or `http://aquaclean-xxxxxx.local`).
 2. Under **AquaClean Bridge**, enter **MQTT broker**, **MQTT port** (1883), **MQTT user** and **MQTT password**, choose your **Time zone**, and press **Connect to MQTT broker**. The bridge stores the settings and restarts. The password is never shown again; to change the broker later, edit the fields and press the button again.
 3. Connect your home automation system. See [Connecting over MQTT](#connecting-over-mqtt).
+
+#### HomeKit only (stand-alone)
+
+No home automation system? Flash either image and skip the route setup above. Open the bridge's web page (`http://aquaclean-xxxxxx.local`), turn on the **Apple Home** switch, and add the accessory in the Home app — see [Step 8](#step-8-add-apple-home). For the toilet to recognize you and load your profile, also capture your IRK ([Step 7](#step-7-set-up-your-users)).
 
 > [!IMPORTANT]
 > The ready-made firmware has no password on its web page and on firmware updates, and no TLS: anyone on your network can open the page. For a web-page password, encrypted MQTT (`web_auth.yaml`, `mqtt_tls.yaml`), or a compile-time API key, build with ESPHome YAML instead: copy [`examples/atoms3-lite.yaml`](examples/atoms3-lite.yaml) — it fits every board: set the `board:` line, `route:` and your [language](#languages) — fill in `secrets.yaml`, and flash with ESPHome 2026.10 or newer. On the native API route, HA's *Allow the device to perform Home Assistant actions* enables the Show IRK notification.
