@@ -22,7 +22,7 @@ jobs:
         board: [atoms3-lite, atoms3r, xiao-esp32s3]
         language: [en, nl, de, fr, it, es, pl, cs, hu, da, sv, nb, fi, pt, ar, tr, et, hr, lv, lt, ro, ru, sk, sl, sr, uk, zh, ko, he]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: esphome/build-action@v7
         id: esphome
         with:
@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir -p out/${{ matrix.board }}/${{ matrix.language }}
           cp -r "${{ steps.esphome.outputs.name }}"/* out/${{ matrix.board }}/${{ matrix.language }}/
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: firmware-${{ matrix.board }}-${{ matrix.language }}
           path: out
@@ -45,8 +45,8 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with:
           path: artifacts
       - name: Assemble site
@@ -55,8 +55,8 @@ jobs:
           cp static/index.html static/boards.json site/
           cp -r static/series-250 site/series-250
           for d in artifacts/firmware-*; do cp -r "$d"/* site/firmware/; done
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: site
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
