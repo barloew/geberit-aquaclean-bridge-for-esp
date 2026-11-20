@@ -238,6 +238,57 @@ The MQTT route is installed with the web installer or with ESPHome YAML, the nat
 > [!WARNING]
 > Never use both routes at once: your home automation system would show everything twice. The component refuses a configuration with both `api:` and `mqtt:`.
 
+### What it looks like
+
+Both routes expose the same entities; the route decides how they are grouped. The pages below are examples from Home Assistant: openHAB, Domoticz, Homey or ioBroker show the same entities in their own interface. Serial number, addresses, firmware versions and keys are masked as `xxx`.
+
+<details>
+<summary><b>Native API: separate devices</b> (example: Home Assistant, ESPHome integration)</summary>
+
+The bridge appears as one ESPHome device with its sub-devices:
+
+<img src="images/user-interface/native-api-integration.png" width="100%" alt="Native API: the bridge and its devices in the ESPHome integration">
+
+**AquaClean Bridge**
+
+<img src="images/user-interface/native-api-aquaclean-bridge.png" width="100%" alt="Native API: device AquaClean Bridge">
+
+**AquaClean Toilet**
+
+<img src="images/user-interface/native-api-aquaclean-toilet.png" width="100%" alt="Native API: device AquaClean Toilet">
+
+**Active session**
+
+<img src="images/user-interface/native-api-active-session.png" width="100%" alt="Native API: device Active session">
+
+**User profile 1** (profiles 2–6 look the same)
+
+<img src="images/user-interface/native-api-user-profile-1.png" width="100%" alt="Native API: device User profile 1">
+
+**Physical maintenance** (only while it is unlocked, see [Physical maintenance](#physical-maintenance))
+
+<img src="images/user-interface/native-api-physical-maintenance.png" width="100%" alt="Native API: device Physical maintenance">
+
+</details>
+
+<details>
+<summary><b>MQTT: one device</b> (example: Home Assistant, MQTT discovery)</summary>
+
+All entities under one device, until per-sub-device MQTT discovery is available:
+
+<img src="images/user-interface/mqtt-device.png" width="100%" alt="MQTT: all entities under one device">
+
+</details>
+
+<details>
+<summary><b>MQTT: web interface on the ESP</b> (in any browser, whatever system you use)</summary>
+
+The bridge's own page at `http://<name>.local` (shown here with user profile 1 only):
+
+<img src="images/user-interface/mqtt-web-interface.png" width="60%" alt="MQTT: the web interface on the ESP">
+
+</details>
+
 ### Connecting over MQTT
 
 The bridge announces itself with MQTT discovery (prefix `homeassistant`), so most platforms find all devices and entities by themselves. Homey is the exception (see below).

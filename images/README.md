@@ -10,6 +10,7 @@ images/
 ├── badges/          the README platform badges (generated)
 ├── ui/              our own line icons (24 × 24)
 ├── illustrations/   our own drawings
+├── user-interface/  the bridge as shown in home automation and on its own web page
 └── brands/          third-party logos (not covered by this project's license)
 ```
 
@@ -74,6 +75,26 @@ These are part of this project and fall under its license.
 |---|---|
 | `aquaclean-toilet.svg` | Wall-hung shower toilet with flush plate, drawn from the proportions of the AquaClean Sela. Generic drawing; no Geberit logo or artwork. |
 | `esp32-s3-chip.svg` | ESP32-S3 chip package (top and underside). The mark on the chip is the Espressif symbol from `brands/espressif-symbol-white.svg`, so the Espressif trademark notice applies to this file. |
+
+## `user-interface/` — what the bridge looks like
+
+Full-page captures of the bridge's entities, shown in the README under **Two routes → What it looks like**.
+Each image is stitched together from consecutive screen captures of one page. Serial number, addresses,
+firmware versions and keys are replaced by `xxx`.
+
+| File | Shows |
+|---|---|
+| `native-api-integration.png` | Native API: the ESPHome integration with the bridge's devices (example: Home Assistant) |
+| `native-api-aquaclean-bridge.png` | Native API: device **AquaClean Bridge** |
+| `native-api-aquaclean-toilet.png` | Native API: device **AquaClean Toilet** |
+| `native-api-active-session.png` | Native API: device **Active session** |
+| `native-api-user-profile-1.png` | Native API: device **User profile 1** (profiles 2–6 look the same) |
+| `native-api-physical-maintenance.png` | Native API: device **Physical maintenance** (only while it is unlocked) |
+| `mqtt-device.png` | MQTT: all entities under one device (example: Home Assistant with MQTT discovery) |
+| `mqtt-web-interface.png` | MQTT: the web interface on the ESP (`packages/web.yaml`), with user profile 1 only |
+
+The Home Assistant pages show the ESPHome and MQTT logos as Home Assistant displays them; they are part of the
+captured interface, not logos added by this project.
 
 ## `brands/` — third-party logos
 
