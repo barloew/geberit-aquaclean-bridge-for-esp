@@ -188,6 +188,9 @@ Other ESP32-S3 boards with at least 8 MB flash build too, but haven't been teste
 
 The RGB LED shows the status.
 
+<details>
+<summary>Status LED</summary>
+
 | LED | Meaning |
 |---|---|
 | green | toilet connected |
@@ -197,6 +200,8 @@ The RGB LED shows the status.
 | red, blinking | no connection to the toilet |
 | two bright blinks in the profile's color | user recognized, profile loaded (welcome light) |
 | two blinks green / red | IRK captured / nothing received |
+
+</details>
 
 ### M5Stack AtomS3R
 
@@ -209,6 +214,9 @@ There is no RGB LED, so the whole screen shows the status, in the same colors as
 
 A single orange LED shows the status as a pattern. The button is BOOT (GPIO0). The package enables the 8 MB octal PSRAM.
 
+<details>
+<summary>Status LED</summary>
+
 | LED | Meaning |
 |---|---|
 | dim, steady | toilet connected |
@@ -216,6 +224,8 @@ A single orange LED shows the status as a pattern. The button is BOOT (GPIO0). T
 | fast blinking | pairing window open |
 | slow blinking | no connection to the toilet |
 | two bright flashes | user recognized (welcome light), or IRK capture finished. Without colors, success and failure look the same: check the log. |
+
+</details>
 
 ## Two routes: ESPHome or MQTT
 
@@ -361,7 +371,12 @@ Recognized and seated makes them the **Active user**. Each profile shows **Recog
 
 **You don't need to pick a profile.** Because the bridge has already loaded the recognized user's profile, a shower started with the remote control, from Home Assistant or another home automation system, or from Apple Home runs with that user's settings. A profile key on the remote control always wins: the toilet loads that profile, and if someone is seated, that profile's user becomes the active user. The Geberit Home app is the exception: it writes the settings of its own user profile when it starts a function.
 
+<details>
+<summary>How the bridge listens</summary>
+
 Normally the bridge listens 30 ms of every 320 ms, so a phone is heard every few seconds. When a linked device is within 20 dB of the threshold, it listens 160 ms of every 320 ms for 20 s, so crossing the threshold is noticed within about a second (at most 60 s, then a 2-minute pause). A recognized user stays recognized while seated or while their device stays within 15 dB below the threshold, and is lost 30 s after that.
+
+</details>
 
 ## Entities
 
@@ -430,6 +445,9 @@ The bridge itself can be an Apple Home accessory. It works alongside Home Assist
 
 A started shower runs with the settings of the profile that is loaded, so with those of the recognized user. It uses Espressif's esp-homekit-sdk (non-commercial HomeKit Accessory Protocol, no MFi), so the Home app warns about an uncertified accessory. HomeKit is built in only with ESPHome YAML; the web installer firmware doesn't include it.
 
+<details>
+<summary>HomeKit options (<code>setup_code</code>, <code>port</code>, <code>reset_pairings</code>)</summary>
+
 ```yaml
 geberit_aquaclean:
   homekit:
@@ -438,6 +456,8 @@ geberit_aquaclean:
     # port: 32042
     # reset_pairings: true     # forget all Apple Home pairings once after flashing; set back to false afterwards
 ```
+
+</details>
 
 `mdns` must stay enabled. To pair, get the setup code or QR code:
 
@@ -450,7 +470,12 @@ A switch that did nothing returns to the real state after about 6 s (20 s after 
 
 At most 4 Apple devices can have the accessory open at the same time; see [Connections](#connections).
 
+<details>
+<summary>Memory cost</summary>
+
 **Cost:** about 130 KB more flash and 4 KB static RAM, plus the HomeKit tasks and sessions at runtime. On the AtomS3 Lite with the native API route, about 95 KB of RAM stays free, and at least 55 KB at the busiest moment. Without a `homekit:` block, or with `enabled: false`, nothing of it is built in.
+
+</details>
 
 ## Connections
 
@@ -506,6 +531,9 @@ The Sela is validated on a toilet. The other Series 248 models are supported: th
 
 Newer or other AquaClean models may advertise and answer differently. The discovery entities (disabled by default; Discovery mode under the bridge, the rest under the toilet) help you find out what a model supports, without a sniffer:
 
+<details>
+<summary>Discovery tools and steps</summary>
+
 | Entity | Shows |
 |---|---|
 | Discovery mode | Logs every message (also the app's) and collects the following |
@@ -524,11 +552,16 @@ A practical route for a new model:
 3. Change a setting in the app or on the remote control and look for the matching write in the log.
 4. Add the new setting to `ENTITIES` (kind, id, maximum) and a name in every language file.
 
+</details>
+
 Please [open an issue](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/issues) with the discovery output of your model.
 
 ## Languages
 
 Entity names come from `lang/<language>.yaml` and follow the terms of Geberit's own user manuals. The language is set only by `language:` in the YAML, or by the choice in the web installer: entity names, option texts (colors, activation, water hardness, button names), status texts, the log and the HomeKit names all follow it. To change it, change the YAML and build again, or install the firmware in the other language. Automations that compare option texts must use the texts of that language.
+
+<details>
+<summary>All language codes</summary>
 
 | Code | Language | Code | Language | Code | Language |
 |---|---|---|---|---|---|
@@ -543,6 +576,8 @@ Entity names come from `lang/<language>.yaml` and follow the terms of Geberit's 
 | `hu` | Hungarian | `lv` | Latvian | `he` | Hebrew (also `iw`) |
 | `da` | Danish | `lt` | Lithuanian |  |  |
 
+</details>
+
 > [!NOTE]
 > Write `"no"` in quotes: YAML reads a bare `no` as false (which is accepted too).
 
@@ -550,7 +585,12 @@ The terms of the newer languages come from the translations Geberit ships in the
 
 Arabic, Hebrew, Russian, Ukrainian, Chinese and Korean use no Latin letters, while ESPHome builds the entity key from the name. Their entities therefore keep the key of the English name and show the translated name, so entity ids stay readable and unique. With MQTT, topics are built from the name at runtime, so entity names stay English for these languages; option texts and the log are still translated.
 
+<details>
+<summary>Adding a language</summary>
+
 **Adding a language:** copy `lang/en.yaml` (and optionally `lang/log/nl.json` for the log texts), translate it, add the code at the end of `LANGUAGES` in `__init__.py` and raise `LANGUAGE_COUNT` in `entities.h`.
+
+</details>
 
 ## Notes and troubleshooting
 
