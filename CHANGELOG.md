@@ -9,6 +9,17 @@ merged/released) will let MQTT do the same. When it ships, set `sub_device_topic
 `packages/mqtt.yaml` and rebuild the web-installer firmware so MQTT installs get the device split too, with
 no ESPHome needed on the user's side.
 
+## ioBroker adapter v0.1.0 — 2026-11-24
+
+- **New: AquaClean Bridge adapter for ioBroker** (`iobroker/`, category *household*). Talks to the bridge
+over the native API (locally, encrypted) and turns every standard entity into an ioBroker state with a fixed,
+language-independent id, a proper role, unit and range, and names in all 11 ioBroker languages; selections
+are numbers with labels, the remote control buttons arrive as a state, and written values are confirmed by
+the bridge. States, roles and the entity reference in its README (English and German) are generated from the
+component (`iobroker/tools/generate.py`). Tested against a real js-controller with a simulated bridge; not yet
+validated on hardware. For the list on iobroker.com it is published from its own repository
+`ioBroker.aquaclean-bridge`; `iobroker/` here stays the source, and `tools/sync_iobroker.sh` copies it over.
+
 ## Homey app v1.0.0 — 2026-11-24
 
 - **New: AquaClean Bridge app for Homey** (`homey/`). Talks to the bridge over the native API (locally,

@@ -388,6 +388,7 @@ The bridge announces itself with MQTT discovery (prefix `homeassistant`), so mos
 - **openHAB:** install the MQTT binding and add your broker as a Bridge Thing. The bridge's devices show up in the inbox through Home Assistant discovery.
 - **Domoticz:** add the hardware *MQTT Auto Discovery Client Gateway with LAN interface* with your broker and auto-discovery prefix `homeassistant`.
 - **Node-RED:** use `mqtt in` and `mqtt out` nodes on the bridge's topics. States are published under `<name>/<component>/<entity>/state`, commands go to `.../command`.
+- **ioBroker:** the native API route with the AquaClean Bridge adapter (in [`iobroker/`](iobroker)) is the easiest: every standard entity becomes a state with a fixed id, role and names in 11 languages. Over MQTT, use ioBroker's MQTT adapter. See [docs/routes.md](docs/routes.md#iobroker).
 - **Homey:** the native API route is the easiest. On a Homey Pro, the AquaClean Bridge app (in [`homey/`](homey), installed with the Homey CLI from the [release zip](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/releases?q=homey&expanded=true)) gives every standard entity its own flow cards; a Homey ESPHome app works too. Over MQTT, Homey does not ingest Home Assistant discovery, so map the bridge's topics to Homey devices/flows by hand with the MQTT Client app. See [docs/routes.md](docs/routes.md#homey) and [Install the Homey app](docs/routes.md#install-the-homey-app).
 
 ### Packages

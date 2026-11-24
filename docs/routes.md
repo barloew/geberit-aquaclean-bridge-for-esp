@@ -79,6 +79,23 @@ An app installed this way gets **no automatic updates**: for a new version, down
 `homey app install` again — your device and flows stay. If the install stops with "Homey seems to be
 offline", make sure the computer and the Homey are on the same network.
 
+## ioBroker
+
+The bridge needs no ioBroker-specific firmware. Two ways in:
+
+- **Native API with the AquaClean Bridge adapter (most complete).** A dedicated ioBroker adapter
+  ([`iobroker/`](../iobroker), category *household*) that talks to the bridge over the native API — locally,
+  encrypted, no cloud — and turns every standard entity into a state with a fixed, language-independent id, the
+  right role and unit, and names in all 11 ioBroker languages. Selections are numbers with labels, the remote
+  control buttons arrive as a state, and the instance settings find bridges on the network. Not yet in the
+  ioBroker repository and not yet validated on hardware; install it from GitHub until then (see its
+  [README](../iobroker/README.md#installation)).
+- **MQTT.** Point the bridge's MQTT route at your broker and use ioBroker's MQTT adapter; the states then follow
+  the bridge's topics and firmware language.
+
+Connect one native-API client to the bridge, not several (for example not also the generic ESPHome adapter):
+every client costs the ESP memory.
+
 ## What to expect
 
 - Series 248 (Sela, Mera Comfort classic family, …): fully supported.
