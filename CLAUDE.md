@@ -117,6 +117,9 @@ themselves in the docs just as clearly as a Home Assistant user.
   a changelog entry to `iobroker/README.md`, sync, then tag `vX.Y.Z` in the adapter repository. GitHub
   Actions publishes to npm with trusted publishing (provenance). Don't use `npm run release` there: it would
   change the copy, not the source.
+- Issues and discussions about the adapter belong in this repository, not in the adapter repository: its
+  issue form only links here, Discussions are off there, and Dependabot for `iobroker/` runs here
+  (`.github/dependabot.yml`), not in the copy.
 - The adapter docs (`iobroker/README.md`, `iobroker/docs/de/README.md`) follow ioBroker's rules: English
   README, changelog in it, no install-from-GitHub instructions. Check with
   `npx @iobroker/repochecker https://github.com/barloew/ioBroker.aquaclean-bridge`.

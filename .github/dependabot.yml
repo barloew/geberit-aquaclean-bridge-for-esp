@@ -16,3 +16,25 @@ updates:
       interval: monthly
     commit-message:
       prefix: deps
+
+  # The ioBroker adapter: iobroker/ is its source (the adapter repository is a copy, see CLAUDE.md), so its
+  # updates are proposed here and reach the adapter repository with tools/sync_iobroker.sh.
+  - package-ecosystem: npm
+    directory: "/iobroker"
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: deps(iobroker)
+    # only versions that have been public for a week: less exposure to a compromised release
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 15
+    ignore:
+      # pinned on purpose: iobroker/lib/bridge.js uses the library's internal message table
+      - dependency-name: "@2colors/esphome-native-api"
+      # follows the lowest supported Node.js version (engines), not the newest
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+    groups:
+      iobroker-dev:
+        dependency-type: development

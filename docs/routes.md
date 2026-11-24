@@ -120,8 +120,10 @@ Needs Node.js 22 or newer and js-controller 6.0.11 or newer.
 
 The adapter's [README](https://github.com/barloew/ioBroker.aquaclean-bridge#readme) describes every state, with
 examples for scripts and the remote control buttons ([German](https://github.com/barloew/ioBroker.aquaclean-bridge/blob/main/docs/de/README.md)).
-Report adapter problems in the [adapter's issues](https://github.com/barloew/ioBroker.aquaclean-bridge/issues);
-problems with the bridge itself belong here. One instance per bridge; for a second toilet, add a second
+Report problems with the adapter here, in this repository's [issues](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/issues/new/choose)
+(pick *ioBroker* as home automation system), and ask questions in
+[Discussions](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/discussions) — not in the adapter
+repository, which only holds the published copy. One instance per bridge; for a second toilet, add a second
 instance.
 
 ## What to expect
