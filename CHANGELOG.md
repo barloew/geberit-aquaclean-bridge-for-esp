@@ -9,6 +9,15 @@ merged/released) will let MQTT do the same. When it ships, set `sub_device_topic
 `packages/mqtt.yaml` and rebuild the web-installer firmware so MQTT installs get the device split too, with
 no ESPHome needed on the user's side.
 
+## Homey app v1.0.0 — 2026-11-24
+
+- **New: AquaClean Bridge app for Homey** (`homey/`). Talks to the bridge over the native API (locally,
+encrypted) and gives every standard entity its own flow cards — 461 triggers, conditions and actions, with a
+profile picker for user-profile settings and the remote control buttons as triggers — in all 13 Homey
+languages. The cards are generated from the component (`homey/tools/generate.py`), so they follow the
+entities. Homey Pro only; installed with the Homey CLI from the release zip (see `docs/routes.md`, *Install
+the Homey app*). Not yet validated on hardware.
+
 ## v1.36.0 — 2026-11-23
 
 - **Breaking: entity keys and English labels are now US English.** `odour_extraction` → `odor_extraction`,

@@ -1,0 +1,21 @@
+{
+  "pair": {
+    "title": "Połącz AquaClean Bridge",
+    "intro": "Użyj klucza zapisanego na stronie /setup mostka (trasa native API).",
+    "found": "Znalezione w sieci",
+    "manual": "Wprowadź ręcznie",
+    "key_hint": "44 znaki, kończy się na „=”. Zostaw puste tylko dla mostka bez klucza.",
+    "connect": "Połącz",
+    "error_host": "Wpisz nazwę hosta lub adres IP.",
+    "error_key": "Mostek odrzucił klucz szyfrowania.",
+    "error_connect": "Brak połączenia: __error__",
+    "error_not_bridge": "To urządzenie ESPHome nie jest AquaClean Bridge.",
+    "host": "Nazwa hosta lub adres IP",
+    "port": "Port",
+    "key": "Klucz szyfrowania API"
+  },
+  "device": {
+    "connecting": "Łączenie z mostkiem…",
+    "disconnected": "Mostek nieosiągalny"
+  }
+}

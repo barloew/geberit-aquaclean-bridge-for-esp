@@ -1,0 +1,21 @@
+{
+  "pair": {
+    "title": "Forbind AquaClean Bridge",
+    "intro": "Brug nøglen, du gemte på bridgens /setup-side (native API-ruten).",
+    "found": "Fundet på netværket",
+    "manual": "Indtast manuelt",
+    "key_hint": "44 tegn, slutter med '='. Lad kun feltet stå tomt for en bridge uden nøgle.",
+    "connect": "Forbind",
+    "error_host": "Indtast et værtsnavn eller en IP-adresse.",
+    "error_key": "Bridgen afviser krypteringsnøglen.",
+    "error_connect": "Ingen forbindelse: __error__",
+    "error_not_bridge": "Denne ESPHome-enhed er ikke en AquaClean Bridge.",
+    "host": "Værtsnavn eller IP-adresse",
+    "port": "Port",
+    "key": "API-krypteringsnøgle"
+  },
+  "device": {
+    "connecting": "Forbinder til bridgen…",
+    "disconnected": "Bridgen kan ikke nås"
+  }
+}

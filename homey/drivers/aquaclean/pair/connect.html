@@ -1,0 +1,73 @@
+<header class="homey-header">
+  <h1 class="homey-title" data-i18n="pair.title"></h1>
+  <p class="homey-subtitle" data-i18n="pair.intro"></p>
+</header>
+
+<form id="form" class="homey-form" onsubmit="return false">
+  <fieldset class="homey-form-fieldset">
+    <div class="homey-form-group">
+      <label class="homey-form-label" for="found" data-i18n="pair.found"></label>
+      <select class="homey-form-select" id="found"></select>
+    </div>
+    <div class="homey-form-group">
+      <label class="homey-form-label" for="host" data-i18n="pair.host"></label>
+      <input class="homey-form-input" id="host" type="text" placeholder="aquaclean-xxxxxx.local" autocomplete="off">
+    </div>
+    <div class="homey-form-group">
+      <label class="homey-form-label" for="port" data-i18n="pair.port"></label>
+      <input class="homey-form-input" id="port" type="number" value="6053" min="1" max="65535">
+    </div>
+    <div class="homey-form-group">
+      <label class="homey-form-label" for="key" data-i18n="pair.key"></label>
+      <input class="homey-form-input" id="key" type="password" autocomplete="off" spellcheck="false">
+      <p class="homey-form-helper" data-i18n="pair.key_hint"></p>
+    </div>
+  </fieldset>
+  <p id="error" class="homey-text-small" style="color: var(--homey-color-danger, #c00)"></p>
+  <button id="connect" class="homey-button-primary-full" data-i18n="pair.connect"></button>
+</form>
+
+<script type="application/javascript">
+  const $ = (id) => document.getElementById(id);
+  let found = [];
+
+  function choose() {
+    const d = found[Number($('found').value)];
+    if (d) {
+      $('host').value = d.address;
+      $('port').value = d.port;
+    }
+  }
+
+  Homey.emit('discover').then((list) => {
+    found = list || [];
+    const sel = $('found');
+    const manual = document.createElement('option');
+    manual.value = '';
+    manual.textContent = Homey.__('pair.manual');
+    sel.appendChild(manual);
+    found.forEach((d, i) => {
+      const o = document.createElement('option');
+      o.value = String(i);
+      o.textContent = `${d.name} (${d.address})${d.bridge ? '' : ' – ESPHome'}`;
+      sel.appendChild(o);
+    });
+    if (found.length && found[0].bridge) {
+      sel.value = '0';
+      choose();
+    }
+    sel.addEventListener('change', choose);
+  }).catch(() => {});
+
+  $('connect').addEventListener('click', () => {
+    $('error').textContent = '';
+    $('connect').classList.add('is-loading');
+    Homey.emit('connect', { host: $('host').value, port: $('port').value, key: $('key').value })
+      .then((device) => Homey.createDevice(device))
+      .then(() => Homey.done())
+      .catch((err) => {
+        $('connect').classList.remove('is-loading');
+        $('error').textContent = (err && err.message) || String(err);
+      });
+  });
+</script>

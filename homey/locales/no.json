@@ -1,0 +1,21 @@
+{
+  "pair": {
+    "title": "Koble til AquaClean Bridge",
+    "intro": "Bruk nøkkelen du lagret på bridgens /setup-side (native API-ruten).",
+    "found": "Funnet i nettverket",
+    "manual": "Angi manuelt",
+    "key_hint": "44 tegn, slutter med '='. La stå tomt bare for en bridge uten nøkkel.",
+    "connect": "Koble til",
+    "error_host": "Angi et vertsnavn eller en IP-adresse.",
+    "error_key": "Bridgen avviser krypteringsnøkkelen.",
+    "error_connect": "Ingen tilkobling: __error__",
+    "error_not_bridge": "Denne ESPHome-enheten er ikke en AquaClean Bridge.",
+    "host": "Vertsnavn eller IP-adresse",
+    "port": "Port",
+    "key": "API-krypteringsnøkkel"
+  },
+  "device": {
+    "connecting": "Kobler til bridgen…",
+    "disconnected": "Bridgen kan ikke nås"
+  }
+}

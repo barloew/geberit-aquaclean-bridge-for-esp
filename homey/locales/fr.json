@@ -1,0 +1,21 @@
+{
+  "pair": {
+    "title": "Connecter l'AquaClean Bridge",
+    "intro": "Utilisez la clé enregistrée sur la page /setup du bridge (route API native).",
+    "found": "Trouvé sur le réseau",
+    "manual": "Saisir manuellement",
+    "key_hint": "44 caractères, se termine par « = ». Laisser vide seulement pour un bridge sans clé.",
+    "connect": "Connecter",
+    "error_host": "Saisissez un nom d'hôte ou une adresse IP.",
+    "error_key": "Le bridge refuse la clé de chiffrement.",
+    "error_connect": "Pas de connexion : __error__",
+    "error_not_bridge": "Cet appareil ESPHome n'est pas un AquaClean Bridge.",
+    "host": "Nom d'hôte ou adresse IP",
+    "port": "Port",
+    "key": "Clé de chiffrement de l'API"
+  },
+  "device": {
+    "connecting": "Connexion au bridge…",
+    "disconnected": "Bridge injoignable"
+  }
+}

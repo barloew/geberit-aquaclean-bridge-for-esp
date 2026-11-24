@@ -1,0 +1,21 @@
+{
+  "pair": {
+    "title": "توصيل AquaClean Bridge",
+    "intro": "استخدم المفتاح الذي حفظته في صفحة ‎/setup الخاصة بالجسر (مسار native API).",
+    "found": "تم العثور عليه في الشبكة",
+    "manual": "إدخال يدوي",
+    "key_hint": "44 حرفًا وينتهي بـ '='. اتركه فارغًا فقط لجسر بدون مفتاح.",
+    "connect": "اتصال",
+    "error_host": "أدخل اسم مضيف أو عنوان IP.",
+    "error_key": "رفض الجسر مفتاح التشفير.",
+    "error_connect": "لا يوجد اتصال: __error__",
+    "error_not_bridge": "جهاز ESPHome هذا ليس AquaClean Bridge.",
+    "host": "اسم المضيف أو عنوان IP",
+    "port": "المنفذ",
+    "key": "مفتاح تشفير API"
+  },
+  "device": {
+    "connecting": "جارٍ الاتصال بالجسر…",
+    "disconnected": "تعذر الوصول إلى الجسر"
+  }
+}

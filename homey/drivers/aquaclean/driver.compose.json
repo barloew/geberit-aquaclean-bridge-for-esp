@@ -1,0 +1,182 @@
+{
+  "name": {
+    "en": "AquaClean Bridge",
+    "nl": "AquaClean Bridge",
+    "de": "AquaClean Bridge",
+    "fr": "AquaClean Bridge",
+    "it": "AquaClean Bridge",
+    "sv": "AquaClean Bridge",
+    "no": "AquaClean Bridge",
+    "es": "AquaClean Bridge",
+    "da": "AquaClean Bridge",
+    "ru": "AquaClean Bridge",
+    "pl": "AquaClean Bridge",
+    "ko": "AquaClean Bridge",
+    "ar": "AquaClean Bridge"
+  },
+  "class": "other",
+  "capabilities": [
+    "alarm_problem"
+  ],
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "lan"
+  ],
+  "discovery": "esphome",
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png",
+    "xlarge": "{{driverAssetsPath}}/images/xlarge.png"
+  },
+  "pair": [
+    {
+      "id": "connect"
+    }
+  ],
+  "settings": [
+    {
+      "type": "group",
+      "label": {
+        "en": "Connection",
+        "nl": "Verbinding",
+        "de": "Verbindung",
+        "fr": "Connexion",
+        "it": "Connessione",
+        "sv": "Anslutning",
+        "no": "Tilkobling",
+        "es": "Conexión",
+        "da": "Forbindelse",
+        "ru": "Подключение",
+        "pl": "Połączenie",
+        "ko": "연결",
+        "ar": "الاتصال"
+      },
+      "children": [
+        {
+          "id": "host",
+          "type": "text",
+          "label": {
+            "en": "Host name or IP address",
+            "nl": "Hostnaam of IP-adres",
+            "de": "Hostname oder IP-Adresse",
+            "fr": "Nom d'hôte ou adresse IP",
+            "it": "Nome host o indirizzo IP",
+            "sv": "Värdnamn eller IP-adress",
+            "no": "Vertsnavn eller IP-adresse",
+            "es": "Nombre de host o dirección IP",
+            "da": "Værtsnavn eller IP-adresse",
+            "ru": "Имя хоста или IP-адрес",
+            "pl": "Nazwa hosta lub adres IP",
+            "ko": "호스트 이름 또는 IP 주소",
+            "ar": "اسم المضيف أو عنوان IP"
+          },
+          "value": ""
+        },
+        {
+          "id": "port",
+          "type": "number",
+          "label": {
+            "en": "Port",
+            "nl": "Poort",
+            "de": "Port",
+            "fr": "Port",
+            "it": "Porta",
+            "sv": "Port",
+            "no": "Port",
+            "es": "Puerto",
+            "da": "Port",
+            "ru": "Порт",
+            "pl": "Port",
+            "ko": "포트",
+            "ar": "المنفذ"
+          },
+          "value": 6053,
+          "min": 1,
+          "max": 65535
+        },
+        {
+          "id": "encryption_key",
+          "type": "password",
+          "label": {
+            "en": "API encryption key",
+            "nl": "API-encryptiesleutel",
+            "de": "API-Verschlüsselungsschlüssel",
+            "fr": "Clé de chiffrement de l'API",
+            "it": "Chiave di crittografia API",
+            "sv": "API-krypteringsnyckel",
+            "no": "API-krypteringsnøkkel",
+            "es": "Clave de cifrado de la API",
+            "da": "API-krypteringsnøgle",
+            "ru": "Ключ шифрования API",
+            "pl": "Klucz szyfrowania API",
+            "ko": "API 암호화 키",
+            "ar": "مفتاح تشفير API"
+          },
+          "value": ""
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "label": {
+        "en": "Bridge",
+        "nl": "Bridge",
+        "de": "Bridge",
+        "fr": "Bridge",
+        "it": "Bridge",
+        "sv": "Bridge",
+        "no": "Bridge",
+        "es": "Bridge",
+        "da": "Bridge",
+        "ru": "Bridge",
+        "pl": "Bridge",
+        "ko": "브리지",
+        "ar": "الجسر"
+      },
+      "children": [
+        {
+          "id": "firmware",
+          "type": "label",
+          "label": {
+            "en": "Firmware",
+            "nl": "Firmware",
+            "de": "Firmware",
+            "fr": "Firmware",
+            "it": "Firmware",
+            "sv": "Firmware",
+            "no": "Fastvare",
+            "es": "Firmware",
+            "da": "Firmware",
+            "ru": "Прошивка",
+            "pl": "Oprogramowanie",
+            "ko": "펌웨어",
+            "ar": "البرنامج الثابت"
+          },
+          "value": ""
+        },
+        {
+          "id": "entities",
+          "type": "label",
+          "label": {
+            "en": "Recognised entities",
+            "nl": "Herkende entiteiten",
+            "de": "Erkannte Entitäten",
+            "fr": "Entités reconnues",
+            "it": "Entità riconosciute",
+            "sv": "Igenkända entiteter",
+            "no": "Gjenkjente entiteter",
+            "es": "Entidades reconocidas",
+            "da": "Genkendte entiteter",
+            "ru": "Распознанные сущности",
+            "pl": "Rozpoznane encje",
+            "ko": "인식된 엔티티",
+            "ar": "الكيانات المعروفة"
+          },
+          "value": ""
+        }
+      ]
+    }
+  ]
+}

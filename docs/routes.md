@@ -38,18 +38,46 @@ bridge can do.
 The bridge needs no Homey-specific firmware — you integrate it from the Homey side via one of the two
 routes:
 
-- **Native API (easiest).** Use a Homey ESPHome app to talk to the bridge directly over the native API,
-  locally, no cloud, with the native API enabled (`api:` with an encryption key) and both on the same
-  network. The current **ESPHome Controller** app needs **Homey OS 13+** on a Homey Pro (2023) or newer,
-  Pro mini, or self-hosted server; for an older Homey Pro (2016–2019) the older **ESPHome** app works too
-  (Homey OS 5+, less actively maintained). Entities map to Homey capabilities; anything without a match
-  becomes a generic `esphome_*` capability. These are community apps, so maturity varies.
+- **Native API with the AquaClean Bridge app (most complete, Homey Pro).** A dedicated Homey app
+  ([`homey/`](../homey)) that talks to the bridge over the native API — locally, encrypted, no cloud — and
+  gives every standard entity its own flow cards (triggers, conditions and actions; user-profile settings
+  have a profile picker), in all 13 Homey languages. Not in the Homey App Store yet and not yet validated on
+  hardware; feedback is welcome. Install it yourself, see [Install the Homey app](#install-the-homey-app).
+- **Native API with a generic ESPHome app.** Homey's ESPHome apps also talk to the bridge over the native
+  API. The current **ESPHome Controller** app needs **Homey OS 13+** on a Homey Pro (2023) or newer, Pro
+  mini, or self-hosted server; for an older Homey Pro (2016–2019) the older **ESPHome** app works too (Homey
+  OS 5+, less actively maintained). Entities map to Homey capabilities; anything without a match becomes a
+  generic `esphome_*` capability. These are community apps, so maturity varies.
 - **MQTT (platform-neutral, more manual).** Point the bridge's MQTT route at your broker and subscribe with
   Homey's **MQTT Client** app, mapping topics to Homey devices/flows by hand. Note: Homey's "Home Assistant
   Discovery" (in the MQTT Hub app) publishes Homey's *own* devices outward — it does **not** ingest the
   bridge's HA-style discovery topics, so there is no auto-discovery in this direction.
 
-Rule of thumb: Homey Pro → native API via the ESPHome app; otherwise → MQTT Client with manual mapping.
+Rule of thumb: Homey Pro → native API via the AquaClean Bridge app (or an ESPHome app); otherwise → MQTT
+Client with manual mapping. Connect one Homey app to the bridge, not several: every native-API client costs
+the ESP memory.
+
+### Install the Homey app
+
+Homey Pro only (2016–2019, 2023 or newer, Pro mini, self-hosted server); Homey (cloud) cannot install apps
+from outside the App Store. You need a computer on the same network as the Homey.
+
+1. **Bridge on the native API route.** Install the native-API firmware and save an API encryption key on the
+   bridge's `/setup` page — or, in your own YAML, set `api:` with an `encryption: key:`. Keep the key at hand.
+2. **Download the app.** Get `aquaclean-homey-app-<version>.zip` from the
+   [Homey app releases](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/releases?q=homey&expanded=true)
+   and unzip it.
+3. **Install the Homey CLI.** Install [Node.js](https://nodejs.org) (LTS), then in a terminal:
+   `npm install -g homey` and `homey login` (sign in with your Homey account).
+4. **Install the app.** In the unzipped folder run `homey app install` and pick your Homey. The app then
+   stays on the Homey, also when the computer is off.
+5. **Add the bridge.** In the Homey app: *Devices* → *+* → *AquaClean Bridge*. A bridge found on the network
+   is pre-selected (otherwise enter its host name or IP address); paste the encryption key and tap
+   *Connect*. The flow cards are then under the AquaClean Bridge device.
+
+An app installed this way gets **no automatic updates**: for a new version, download the new zip and run
+`homey app install` again — your device and flows stay. If the install stops with "Homey seems to be
+offline", make sure the computer and the Homey are on the same network.
 
 ## What to expect
 

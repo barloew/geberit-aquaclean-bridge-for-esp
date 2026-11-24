@@ -1,0 +1,81 @@
+{
+  "id": "com.github.barloew.aquaclean",
+  "version": "1.0.0",
+  "compatibility": ">=12.2.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "brandColor": "#1F5F8B",
+  "tags": {
+    "en": [
+      "aquaclean",
+      "geberit",
+      "shower toilet",
+      "esphome",
+      "bridge"
+    ],
+    "nl": [
+      "aquaclean",
+      "geberit",
+      "douchetoilet",
+      "esphome",
+      "bridge"
+    ],
+    "de": [
+      "aquaclean",
+      "geberit",
+      "dusch-wc",
+      "esphome",
+      "bridge"
+    ]
+  },
+  "category": [
+    "appliances"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "barloew"
+  },
+  "homepage": "https://github.com/barloew/geberit-aquaclean-bridge-for-esp",
+  "support": "https://github.com/barloew/geberit-aquaclean-bridge-for-esp/issues",
+  "bugs": {
+    "url": "https://github.com/barloew/geberit-aquaclean-bridge-for-esp/issues"
+  },
+  "source": "https://github.com/barloew/geberit-aquaclean-bridge-for-esp",
+  "name": {
+    "en": "AquaClean Bridge",
+    "nl": "AquaClean Bridge",
+    "de": "AquaClean Bridge",
+    "fr": "AquaClean Bridge",
+    "it": "AquaClean Bridge",
+    "sv": "AquaClean Bridge",
+    "no": "AquaClean Bridge",
+    "es": "AquaClean Bridge",
+    "da": "AquaClean Bridge",
+    "ru": "AquaClean Bridge",
+    "pl": "AquaClean Bridge",
+    "ko": "AquaClean Bridge",
+    "ar": "AquaClean Bridge"
+  },
+  "description": {
+    "en": "Flows for your Geberit AquaClean shower toilet through the AquaClean Bridge for ESP",
+    "nl": "Flows voor je Geberit AquaClean douchetoilet via de AquaClean Bridge voor ESP",
+    "de": "Flows für dein Geberit AquaClean Dusch-WC über die AquaClean Bridge für ESP",
+    "fr": "Des flows pour votre WC lavant Geberit AquaClean via l'AquaClean Bridge pour ESP",
+    "it": "Flow per il tuo vaso bidet Geberit AquaClean tramite l'AquaClean Bridge per ESP",
+    "sv": "Flöden för din Geberit AquaClean duschtoalett via AquaClean Bridge för ESP",
+    "no": "Flows for ditt Geberit AquaClean dusjtoalett via AquaClean Bridge for ESP",
+    "es": "Flujos para tu inodoro bidé Geberit AquaClean a través de AquaClean Bridge para ESP",
+    "da": "Flows til dit Geberit AquaClean douchetoilet via AquaClean Bridge til ESP",
+    "ru": "Сценарии для унитаза-биде Geberit AquaClean через AquaClean Bridge для ESP",
+    "pl": "Flow dla toalety myjącej Geberit AquaClean przez AquaClean Bridge dla ESP",
+    "ko": "AquaClean Bridge for ESP를 통한 Geberit AquaClean 비데 플로우",
+    "ar": "تدفقات لمرحاض الشطف Geberit AquaClean عبر AquaClean Bridge لـ ESP"
+  }
+}

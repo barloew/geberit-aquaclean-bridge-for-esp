@@ -1,0 +1,21 @@
+{
+  "pair": {
+    "title": "AquaClean Bridge 연결",
+    "intro": "브리지의 /setup 페이지에 저장한 키를 사용하세요(네이티브 API 경로).",
+    "found": "네트워크에서 찾음",
+    "manual": "직접 입력",
+    "key_hint": "44자, '='로 끝남. 키가 없는 브리지에만 비워 두세요.",
+    "connect": "연결",
+    "error_host": "호스트 이름 또는 IP 주소를 입력하세요.",
+    "error_key": "브리지가 암호화 키를 거부했습니다.",
+    "error_connect": "연결 안 됨: __error__",
+    "error_not_bridge": "이 ESPHome 장치는 AquaClean Bridge가 아닙니다.",
+    "host": "호스트 이름 또는 IP 주소",
+    "port": "포트",
+    "key": "API 암호화 키"
+  },
+  "device": {
+    "connecting": "브리지에 연결 중…",
+    "disconnected": "브리지에 연결할 수 없음"
+  }
+}
