@@ -11,3 +11,4 @@ errorcodes_*.csv
 /re/
 /private/
 *.pcap
+.DS_Store
