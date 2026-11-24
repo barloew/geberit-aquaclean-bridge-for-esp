@@ -104,11 +104,15 @@ themselves in the docs just as clearly as a Home Assistant user.
 - No AI attribution: never add `Co-Authored-By`, `Claude-Session` or other AI author/co-author lines
   to commits, PRs or files. The maintainer is the author.
 
-### Controller apps: Homey (`homey/`) and ioBroker (`iobroker/`)
+### Controller apps: Homey (`homey/`), ioBroker (`iobroker/`) and the Node-RED flow (`nodered/`)
 
-- Both are generated from the component: after any change to `ENTITIES`, `CAPS_OF` or `lang/*.yaml`, run
-  `homey/tools/generate.py` and `iobroker/tools/generate.py` (a Python with ESPHome installed) and commit the
-  output with the change. Only names, kinds, units and ranges may be exported — never protocol internals.
+- All three are generated from the component: after any change to `ENTITIES`, `CAPS_OF` or `lang/*.yaml`, run
+  `homey/tools/generate.py`, `iobroker/tools/generate.py` and `nodered/tools/generate.py` (a Python with ESPHome
+  installed) and commit the output with the change. Only names, kinds, units and ranges may be exported — never
+  protocol internals.
+- `nodered/flow.json` and the entity reference in `nodered/README.md` are generated: change `nodered/src/*.js`,
+  `nodered/tools/ui_strings.py` or the generator, never the output. The README is also the flow's description on
+  flows.nodered.org (category Home Automation).
 - **`iobroker/` is the source of the ioBroker adapter.** ioBroker requires it in its own repository,
   `barloew/ioBroker.aquaclean-bridge`, which is a copy: never edit that repository directly. Change
   `iobroker/` here, then `tools/sync_iobroker.sh` copies it over; the maintainer commits and pushes there.
