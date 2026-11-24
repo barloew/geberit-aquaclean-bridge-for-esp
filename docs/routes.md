@@ -90,8 +90,9 @@ routes:
   cloud — and turns every standard entity into a state with a fixed, language-independent id, the right role,
   unit and range, and names in all 11 ioBroker languages. Selections are numbers with labels, the remote
   control buttons arrive as a state, written values are confirmed by the bridge, and the instance settings find
-  bridges on the network. Not in the ioBroker repository yet and not yet validated on hardware; feedback is
-  welcome. Install it from GitHub, see [Install the ioBroker adapter](#install-the-iobroker-adapter).
+  bridges on the network. Published on npm as `iobroker.aquaclean-bridge` and on its way into ioBroker's
+  *latest* repository; not yet validated on hardware, feedback is welcome. See
+  [Install the ioBroker adapter](#install-the-iobroker-adapter).
 - **Native API with the generic ESPHome adapter.** ioBroker's ESPHome adapter also talks to the native API. It
   doesn't know the bridge, so state ids, roles and names follow what the firmware sends, in the firmware's
   language.
@@ -109,15 +110,18 @@ Needs Node.js 22 or newer and js-controller 6.0.11 or newer.
 
 1. **Bridge on the native API route.** Install the native-API firmware and save an API encryption key on the
    bridge's `/setup` page — or, in your own YAML, set `api:` with an `encryption: key:`. Keep the key at hand.
-2. **Install the adapter.** In ioBroker Admin: *Adapters* → the GitHub icon (*Install from custom URL*) →
-   `https://github.com/barloew/ioBroker.aquaclean-bridge`. Once the adapter is in the ioBroker repository,
-   search for *AquaClean Bridge* in the adapter list instead.
+2. **Install the adapter.** In ioBroker Admin: *Adapters* → search for *AquaClean Bridge* → install. The
+   adapter list shows it once it is in ioBroker's *latest* repository (switch Admin to the *latest/beta*
+   repository under *System settings* to see it before it reaches *stable*). Until then, use the GitHub icon
+   (*Install from custom URL*) → `https://github.com/barloew/ioBroker.aquaclean-bridge`.
 3. **Configure the instance.** Pick the bridge from the list (or enter its host name or IP address), paste the
    encryption key and save. The instance turns green once it is connected; the states are under
    `aquaclean-bridge.0`.
 
 The adapter's [README](https://github.com/barloew/ioBroker.aquaclean-bridge#readme) describes every state, with
-examples for scripts and the remote control buttons. One instance per bridge; for a second toilet, add a second
+examples for scripts and the remote control buttons ([German](https://github.com/barloew/ioBroker.aquaclean-bridge/blob/main/docs/de/README.md)).
+Report adapter problems in the [adapter's issues](https://github.com/barloew/ioBroker.aquaclean-bridge/issues);
+problems with the bridge itself belong here. One instance per bridge; for a second toilet, add a second
 instance.
 
 ## What to expect

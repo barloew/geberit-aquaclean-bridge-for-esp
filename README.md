@@ -14,7 +14,7 @@
 <p>
   <a href="docs/routes.md"><img src="images/badges/home-assistant-api.svg" alt="Home Assistant over the native API"></a>
   <a href="docs/routes.md#homey"><img src="images/badges/homey-api.svg" alt="Homey over the native API"></a>
-  <a href="docs/routes.md"><img src="images/badges/iobroker-api.svg" alt="ioBroker over the native API"></a>
+  <a href="docs/routes.md#iobroker"><img src="images/badges/iobroker-api.svg" alt="ioBroker over the native API"></a>
   <br>
   <a href="#connecting-over-mqtt"><img src="images/badges/home-assistant-mqtt.svg" alt="Home Assistant over MQTT"></a>
   <a href="#connecting-over-mqtt"><img src="images/badges/openhab-mqtt.svg" alt="openHAB over MQTT"></a>
@@ -29,7 +29,7 @@
 
 **Geberit AquaClean Bridge for ESP** makes your **Geberit AquaClean shower toilet** personal and brings it into your smart home. It recognizes who is approaching and loads their personal profile automatically. No need to press a user key on the remote.
 
-Out of the box, the Geberit AquaClean shower toilet supports only one Bluetooth connection at a time. Running on an ESP32, the Geberit AquaClean Bridge keeps one persistent, fully local connection to the toilet. It bridges it to Home Assistant over the ESPHome native API — also usable by other systems that speak it, such as Homey (via its ESPHome app) and ioBroker — or to any home automation system via MQTT, such as openHAB, Node-RED or Domoticz. It can also add Apple HomeKit support. Meanwhile, the AquaClean remote control and one Geberit Home app stay connected alongside it.
+Out of the box, the Geberit AquaClean shower toilet supports only one Bluetooth connection at a time. Running on an ESP32, the Geberit AquaClean Bridge keeps one persistent, fully local connection to the toilet. It bridges it to Home Assistant over the ESPHome native API — also usable by other systems that speak it, such as Homey and ioBroker (each with its own AquaClean Bridge app or adapter) — or to any home automation system via MQTT, such as openHAB, Node-RED or Domoticz. It can also add Apple HomeKit support. Meanwhile, the AquaClean remote control and one Geberit Home app stay connected alongside it.
 
 > [!IMPORTANT]
 > The Geberit AquaClean Bridge requires a **dedicated ESP32-S3 with at least 8 MB flash** (see [Hardware](#hardware)), installed close to the Geberit AquaClean shower toilet. A Bluetooth signal strength of around -60 dBm is ideal; -80 dBm is the minimum. The spot also needs USB power and Wi-Fi (2.4 GHz). Check that this is possible at your location before you start.
@@ -388,7 +388,7 @@ The bridge announces itself with MQTT discovery (prefix `homeassistant`), so mos
 - **openHAB:** install the MQTT binding and add your broker as a Bridge Thing. The bridge's devices show up in the inbox through Home Assistant discovery.
 - **Domoticz:** add the hardware *MQTT Auto Discovery Client Gateway with LAN interface* with your broker and auto-discovery prefix `homeassistant`.
 - **Node-RED:** use `mqtt in` and `mqtt out` nodes on the bridge's topics. States are published under `<name>/<component>/<entity>/state`, commands go to `.../command`.
-- **ioBroker:** the native API route with the AquaClean Bridge adapter (in [`iobroker/`](iobroker)) is the easiest: every standard entity becomes a state with a fixed id, role and names in 11 languages. Over MQTT, use ioBroker's MQTT adapter. See [docs/routes.md](docs/routes.md#iobroker).
+- **ioBroker:** the native API route with the [AquaClean Bridge adapter](https://github.com/barloew/ioBroker.aquaclean-bridge) (`iobroker.aquaclean-bridge`, category *household*) is the easiest: every standard entity becomes a state with a fixed id, role and names in 11 languages. Over MQTT, use ioBroker's MQTT adapter. See [docs/routes.md](docs/routes.md#iobroker).
 - **Homey:** the native API route is the easiest. On a Homey Pro, the AquaClean Bridge app (in [`homey/`](homey), installed with the Homey CLI from the [release zip](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/releases?q=homey&expanded=true)) gives every standard entity its own flow cards; a Homey ESPHome app works too. Over MQTT, Homey does not ingest Home Assistant discovery, so map the bridge's topics to Homey devices/flows by hand with the MQTT Client app. See [docs/routes.md](docs/routes.md#homey) and [Install the Homey app](docs/routes.md#install-the-homey-app).
 
 ### Packages

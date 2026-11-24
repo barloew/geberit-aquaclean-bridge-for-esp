@@ -104,6 +104,23 @@ themselves in the docs just as clearly as a Home Assistant user.
 - No AI attribution: never add `Co-Authored-By`, `Claude-Session` or other AI author/co-author lines
   to commits, PRs or files. The maintainer is the author.
 
+### Controller apps: Homey (`homey/`) and ioBroker (`iobroker/`)
+
+- Both are generated from the component: after any change to `ENTITIES`, `CAPS_OF` or `lang/*.yaml`, run
+  `homey/tools/generate.py` and `iobroker/tools/generate.py` (a Python with ESPHome installed) and commit the
+  output with the change. Only names, kinds, units and ranges may be exported — never protocol internals.
+- **`iobroker/` is the source of the ioBroker adapter.** ioBroker requires it in its own repository,
+  `barloew/ioBroker.aquaclean-bridge`, which is a copy: never edit that repository directly. Change
+  `iobroker/` here, then `tools/sync_iobroker.sh` copies it over; the maintainer commits and pushes there.
+- **Releasing the adapter:** raise the version in `iobroker/package.json`, `iobroker/package-lock.json` and
+  `iobroker/io-package.json` (`common.version` plus a `common.news` entry in all 11 ioBroker languages), add
+  a changelog entry to `iobroker/README.md`, sync, then tag `vX.Y.Z` in the adapter repository. GitHub
+  Actions publishes to npm with trusted publishing (provenance). Don't use `npm run release` there: it would
+  change the copy, not the source.
+- The adapter docs (`iobroker/README.md`, `iobroker/docs/de/README.md`) follow ioBroker's rules: English
+  README, changelog in it, no install-from-GitHub instructions. Check with
+  `npx @iobroker/repochecker https://github.com/barloew/ioBroker.aquaclean-bridge`.
+
 ### Support claims follow the matrix
 
 - `support/matrix.yaml` is the single source of truth for what is validated, supported, builds or is
