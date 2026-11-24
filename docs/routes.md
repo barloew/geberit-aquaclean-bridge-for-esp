@@ -6,8 +6,8 @@ suits you.
 ## Connection route (how it talks to your controller)
 
 - **Native API (ESPHome).** The native API connects directly, encrypted, with auto-discovery — to Home
-  Assistant (the ESPHome integration) and to other controllers that speak it, such as Homey (its ESPHome app)
-  and ioBroker. The Noise key is set on the bridge's `/setup` page (web installer) or in YAML.
+  Assistant (the ESPHome integration) and to other controllers that speak it, such as Homey (see [Homey](#homey))
+  and ioBroker (see [ioBroker](#iobroker)). The Noise key is set on the bridge's `/setup` page (web installer) or in YAML.
 - **MQTT.** The bridge publishes to an MQTT broker — Home Assistant, openHAB, Node-RED, Domoticz and others.
   Best when you don't use the native API or prefer a broker-based setup. The broker and time zone are entered
   on the device's own web page.
@@ -81,20 +81,44 @@ offline", make sure the computer and the Homey are on the same network.
 
 ## ioBroker
 
-The bridge needs no ioBroker-specific firmware. Two ways in:
+The bridge needs no ioBroker-specific firmware — you integrate it from the ioBroker side via one of the two
+routes:
 
-- **Native API with the AquaClean Bridge adapter (most complete).** A dedicated ioBroker adapter
-  ([`iobroker/`](../iobroker), category *household*) that talks to the bridge over the native API — locally,
-  encrypted, no cloud — and turns every standard entity into a state with a fixed, language-independent id, the
-  right role and unit, and names in all 11 ioBroker languages. Selections are numbers with labels, the remote
-  control buttons arrive as a state, and the instance settings find bridges on the network. Not yet in the
-  ioBroker repository and not yet validated on hardware; install it from GitHub until then (see its
-  [README](../iobroker/README.md#installation)).
-- **MQTT.** Point the bridge's MQTT route at your broker and use ioBroker's MQTT adapter; the states then follow
-  the bridge's topics and firmware language.
+- **Native API with the AquaClean Bridge adapter (most complete).** A dedicated ioBroker adapter,
+  [ioBroker.aquaclean-bridge](https://github.com/barloew/ioBroker.aquaclean-bridge) (category *household*;
+  source in [`iobroker/`](../iobroker)), that talks to the bridge over the native API — locally, encrypted, no
+  cloud — and turns every standard entity into a state with a fixed, language-independent id, the right role,
+  unit and range, and names in all 11 ioBroker languages. Selections are numbers with labels, the remote
+  control buttons arrive as a state, written values are confirmed by the bridge, and the instance settings find
+  bridges on the network. Not in the ioBroker repository yet and not yet validated on hardware; feedback is
+  welcome. Install it from GitHub, see [Install the ioBroker adapter](#install-the-iobroker-adapter).
+- **Native API with the generic ESPHome adapter.** ioBroker's ESPHome adapter also talks to the native API. It
+  doesn't know the bridge, so state ids, roles and names follow what the firmware sends, in the firmware's
+  language.
+- **MQTT (platform-neutral).** Point the bridge's MQTT route at your broker and use ioBroker's **MQTT** adapter
+  (as broker or client). The states follow the bridge's topics, named after the entities in the firmware
+  language; there is no discovery-based device model as in the adapter above.
 
-Connect one native-API client to the bridge, not several (for example not also the generic ESPHome adapter):
-every client costs the ESP memory.
+Rule of thumb: native API via the AquaClean Bridge adapter; MQTT if you already run everything through a
+broker. Connect one native-API client to the bridge, not several (not the AquaClean Bridge adapter and the
+ESPHome adapter at the same time): every client costs the ESP memory.
+
+### Install the ioBroker adapter
+
+Needs Node.js 22 or newer and js-controller 6.0.11 or newer.
+
+1. **Bridge on the native API route.** Install the native-API firmware and save an API encryption key on the
+   bridge's `/setup` page — or, in your own YAML, set `api:` with an `encryption: key:`. Keep the key at hand.
+2. **Install the adapter.** In ioBroker Admin: *Adapters* → the GitHub icon (*Install from custom URL*) →
+   `https://github.com/barloew/ioBroker.aquaclean-bridge`. Once the adapter is in the ioBroker repository,
+   search for *AquaClean Bridge* in the adapter list instead.
+3. **Configure the instance.** Pick the bridge from the list (or enter its host name or IP address), paste the
+   encryption key and save. The instance turns green once it is connected; the states are under
+   `aquaclean-bridge.0`.
+
+The adapter's [README](https://github.com/barloew/ioBroker.aquaclean-bridge#readme) describes every state, with
+examples for scripts and the remote control buttons. One instance per bridge; for a second toilet, add a second
+instance.
 
 ## What to expect
 
