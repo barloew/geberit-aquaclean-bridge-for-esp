@@ -3,17 +3,22 @@
 
 Usage:  python3 tools/readme_anchors.py [--check] [README.md]
 
-GitHub renders an anchor `<a id="x">` as `id="user-content-x"`. A browser opens a closed
-<details> by itself when the link's fragment is the exact id of an element hidden inside it, so:
+A browser opens a closed <details> by itself when the link's fragment is the exact id of an element
+hidden inside it. GitHub renders `<a id="x">` as `id="user-content-x"`, so for every collapsed
+section whose <summary> holds a Markdown heading:
 
-1. A section anchor that stands just before `<details>` is moved to right after `</summary>`
-   (inside the collapsed body, as `<a id="...">`), so it is hidden while the section is closed.
-2. Every in-page link to an anchor or heading inside a collapsed body is rewritten from
-   `#x` to `#user-content-x`.
+1. The heading stays plain (`## Hardware`), so GitHub's outline (the list icon above the README)
+   shows clean titles. A back link (`<sub>[↑ back to top](#contents)</sub>`) goes on its own line
+   under the heading, still inside the <summary>.
+2. A hidden anchor `<a id="open-<heading slug>">` sits right after `</summary>`. It can't share
+   the heading's own id, or the browser would target the always-visible heading and not open
+   anything.
+3. In-page links to a collapsed section point to `#user-content-open-<slug>`; links to an anchor
+   or heading inside a collapsed body point to `#user-content-<name>`.
 
-Links from elsewhere that still use the plain `#x` keep working: GitHub scrolls to the section,
-it just stays closed. Back links (`#installation`, `#contents`) point outside any <details> and are
-left alone. Idempotent; tools/steps/generate.py runs it after splicing the step sections.
+Plain links from elsewhere (`#hardware`) still land on the heading, just with the section closed.
+Back links (`#installation`, `#contents`) point outside any <details> and are left alone.
+Idempotent; tools/steps/generate.py runs it after splicing the step sections, CI runs --check.
 """
 import re
 import sys
@@ -21,39 +26,58 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-ANCHOR = re.compile(r'^<a (?:name|id)="([^"]+)"></a>\s*$')
-HEADING = re.compile(r"^#{1,6}\s+(.*?)\s*$")
+LONE_ANCHOR = re.compile(r'^<a (?:name|id)="([^"]+)"></a>\s*$')
+HEADING = re.compile(r"^(#{1,6})\s+(.*?)\s*$")
+HEADING_WITH_BACK = re.compile(r"^(#{1,6}\s+.*?)\s*(<sub>\[[^\]]*\]\(#[^)]+\)</sub>)\s*$")
+ANCHOR_IN = re.compile(r'<a (?:name|id)="([^"]+)"></a>')
+PREFIX = "open-"
 
 
 def slug(heading):
-    """GitHub's heading id: lowercase, drop punctuation, spaces -> '-'."""
+    """GitHub's heading id: lowercase, drop tags and punctuation, spaces -> '-'."""
     s = re.sub(r"<[^>]+>", "", heading).strip().lower()
     s = re.sub(r"[^\w\- ]", "", s)
     return s.replace(" ", "-")
 
 
-def move_anchors(lines):
-    """Move `<a name>` before `<details>` to just after its `</summary>`."""
-    out, i = [], 0
+def restructure(lines):
+    """Rebuild each collapsed section: plain heading, back link below it, hidden open- anchor."""
+    out, i, sections = [], 0, set()
     while i < len(lines):
-        m = ANCHOR.match(lines[i])
-        if m and i + 1 < len(lines) and lines[i + 1].strip() == "<details>":
-            name = m.group(1)
-            j = i + 1
+        line = lines[i]
+        # A section anchor in front of <details> is replaced by the heading's own id.
+        if LONE_ANCHOR.match(line) and i + 1 < len(lines) and lines[i + 1].strip() == "<details>":
+            i += 1
+            continue
+        if line.strip() == "<details>" and i + 1 < len(lines) and lines[i + 1].strip() == "<summary>":
+            j = i + 2
             while j < len(lines) and not lines[j].lstrip().startswith("</summary>"):
                 j += 1
             if j < len(lines):
-                out.extend(lines[i + 1:j])
-                out.append(f'</summary><a id="{name}"></a>')
-                i = j + 1
-                continue
-        out.append(lines[i])
+                summary, title = [], None
+                for s in lines[i + 2:j]:
+                    m = HEADING_WITH_BACK.match(s)
+                    if m:
+                        summary += [m.group(1), "", m.group(2)]
+                        s = m.group(1)
+                    else:
+                        summary.append(s)
+                    h = HEADING.match(s)
+                    if h and title is None:
+                        title = h.group(2)
+                if title is not None:
+                    sl = slug(title)
+                    sections.add(sl)
+                    out += ["<details>", "<summary>", *summary, f'</summary><a id="{PREFIX}{sl}"></a>']
+                    i = j + 1
+                    continue
+        out.append(line)
         i += 1
-    return out
+    return out, sections
 
 
 def hidden_targets(lines):
-    """Anchors and headings that sit in the body of a <details> (hidden while it is closed)."""
+    """Anchors and headings in the body of a <details> (hidden while it is closed)."""
     targets, depth, in_summary, fence = set(), 0, False, False
     for line in lines:
         s = line.strip()
@@ -67,32 +91,33 @@ def hidden_targets(lines):
             in_summary = True
         if "</summary>" in s:
             in_summary = False
-            for name in re.findall(r'<a (?:name|id)="([^"]+)"></a>', s.split("</summary>", 1)[1]):
-                targets.add(name)
+            targets.update(ANCHOR_IN.findall(s.split("</summary>", 1)[1]))
             continue
         if depth > 0 and not in_summary:
-            for name in re.findall(r'<a (?:name|id)="([^"]+)"></a>', s):
-                targets.add(name)
+            targets.update(ANCHOR_IN.findall(s))
             h = HEADING.match(s)
             if h:
-                targets.add(slug(h.group(1)))
+                targets.add(slug(h.group(2)))
     return targets
 
 
-def rewrite_links(text, targets):
-    def md(m):
-        return f"](#user-content-{m.group(1)})" if m.group(1) in targets else m.group(0)
-
-    def html(m):
-        return f'href="#user-content-{m.group(1)}"' if m.group(1) in targets else m.group(0)
-
-    text = re.sub(r"\]\(#([^)\s]+)\)", md, text)
-    return re.sub(r'href="#([^"]+)"', html, text)
+def retarget(frag, sections, hidden):
+    base = frag.removeprefix("user-content-")
+    if base.startswith(PREFIX) and base[len(PREFIX):] in sections:
+        base = base[len(PREFIX):]
+    if base in sections:
+        return f"user-content-{PREFIX}{base}"
+    if base in hidden:
+        return f"user-content-{base}"
+    return frag
 
 
 def fix(text):
-    lines = move_anchors(text.split("\n"))
-    return rewrite_links("\n".join(lines), hidden_targets(lines))
+    lines, sections = restructure(text.split("\n"))
+    hidden = hidden_targets(lines)
+    text = "\n".join(lines)
+    text = re.sub(r"\]\(#([^)\s]+)\)", lambda m: f"](#{retarget(m.group(1), sections, hidden)})", text)
+    return re.sub(r'href="#([^"]+)"', lambda m: f'href="#{retarget(m.group(1), sections, hidden)}"', text)
 
 
 def main():

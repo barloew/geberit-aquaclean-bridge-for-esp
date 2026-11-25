@@ -129,7 +129,7 @@ integrations). Their use does not imply any affiliation, endorsement or sponsors
 
 - **Geberit**, **AquaClean**, **Sela**, **Mera**, **Tuma**, **Cama**, **Alba** — trademarks of **Geberit AG**
   and/or its group companies. This project is independent and **not** affiliated with Geberit AG (see the
-  full disclaimer in the [README](README.md#user-content-trademark--legal-disclaimer)).
+  full disclaimer in the [README](README.md#user-content-open-trademark--legal-disclaimer)).
 - **Apple**, **Apple Home**, **HomeKit**, **Siri** — trademarks of **Apple Inc.**
 - **Bluetooth** — trademark of **Bluetooth SIG, Inc.**
 - **Wi-Fi** — trademark of the **Wi-Fi Alliance**.

@@ -57,18 +57,19 @@ def section(hashes, heading, details, collapse=False, back_link=None):
     """One step section. With collapse, the heading stays visible and the body folds under it.
 
     A heading that carries a back link gets a different GitHub anchor, so a named anchor keeps
-    the plain one (#step-1-...) working for the cards and for links from elsewhere. In a collapsed
-    step the anchor sits inside the body, right after </summary>: a link to #user-content-step-1-...
-    then opens the step on arrival (see tools/readme_anchors.py).
+    the plain one (#step-1-...) working for the cards and for links from elsewhere. A collapsed
+    step keeps a plain heading (clean in GitHub's outline) with the back link on its own line, and a
+    hidden anchor right after </summary>: a link to #user-content-open-step-1-... opens the step on
+    arrival (see tools/readme_anchors.py).
     """
-    title = heading
-    if back_link:
-        title += f' <sub>[{back_link["text"]}]({back_link["href"]})</sub>'
+    back = f'<sub>[{back_link["text"]}]({back_link["href"]})</sub>' if back_link else ""
     if not collapse:
+        title = f"{heading} {back}".rstrip()
         anchor = f'<a name="{slug(heading)}"></a>\n\n' if back_link else ""
         return f"{anchor}{hashes} {title}\n\n{details}\n"
+    back = f"\n\n{back}" if back else ""
     return (
-        f'<details>\n<summary>\n\n{hashes} {title}\n\n</summary><a id="{slug(heading)}"></a>\n\n'
+        f'<details>\n<summary>\n\n{hashes} {heading}{back}\n\n</summary><a id="open-{slug(heading)}"></a>\n\n'
         f"{details}\n\n</details>\n"
     )
 
@@ -124,7 +125,7 @@ def main():
     for n, step in enumerate(cfg["steps"], 1):
         (out / f"step-{n}.svg").write_text(card(n, step, cfg.get("accent", "#2f81f7")))
         heading = f"Step {n}: {step['title']}"
-        target = f"user-content-{slug(heading)}" if cfg.get("collapse", False) else slug(heading)
+        target = f"user-content-open-{slug(heading)}" if cfg.get("collapse", False) else slug(heading)
         links.append(f'  <a href="#{target}"><img src="{cfg["output_dir"]}/step-{n}.svg" '
                      f'width="{width}" alt="{html.escape(heading)}"></a>')
         details = step.get("details", f"{step['text']}\n\n<!-- more details here -->")
