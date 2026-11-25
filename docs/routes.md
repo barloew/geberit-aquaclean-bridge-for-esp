@@ -41,7 +41,9 @@ not yet merged). Until then, pick the native API route if the separate-devices l
   no local checkout is needed.
 
 The install method is a matter of preference and of the system you connect to; it does not change what the
-bridge can do.
+bridge can do, with one exception: **physical maintenance** (descaling, arm cleaning, calibration, filter
+replacement) can only be enabled in an own YAML build — the `maintenance_disclaimer_accepted` opt-in is
+build-time only, and the web-installer firmware is built with it off and has no page to turn it on.
 
 ## Homey
 

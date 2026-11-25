@@ -546,7 +546,7 @@ Procedures that need someone at the toilet are in a separate device, **Physical 
 
 To use it:
 
-1. Read the warning and set `maintenance_disclaimer_accepted: "true"` (as a substitution, or directly under `geberit_aquaclean:`), then install. Without it the device can't be shown at all.
+1. In an ESPHome YAML build, read the warning and set `maintenance_disclaimer_accepted: "true"` (as a substitution, or directly under `geberit_aquaclean:`), then install. Without it the device can't be shown at all. This opt-in is build-time only: the **web-installer firmware is built with it off and has no page to turn it on**, so physical maintenance needs an own YAML build.
 2. At the toilet, long-press the maintenance key on the remote control. The device appears, with the warning as a notification (otherwise in the log). Your home automation system briefly loses the bridge and reconnects to load the new entities.
 3. It's hidden again after 60 minutes, with another long press of the maintenance key, with the **Physical maintenance** switch under the bridge, or when the ESP restarts.
 
