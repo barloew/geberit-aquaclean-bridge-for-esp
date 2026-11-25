@@ -39,22 +39,7 @@ D = dict(_D)
 D["user_ha_device"] = ("Home Assistant device tracker linked to this profile (Home Assistant only; elsewhere use an "
                        "IRK instead).", "")
 
-# internal domain of the component -> ESPHome (MQTT) component
-PLATFORM = {
-    "status": "binary_sensor", "binary_sensor": "binary_sensor", "user_flag": "binary_sensor",
-    "stat_counter": "sensor", "stat_hours": "sensor", "stat_seconds": "sensor", "counter": "sensor",
-    "days": "sensor", "timestamp": "sensor", "gauge": "sensor", "rssi": "sensor", "user_rssi": "sensor",
-    "status_value": "sensor", "counter_value": "sensor",
-    "text_sensor": "text_sensor", "uptime": "text_sensor", "user_irk": "text_sensor", "status_enum": "text_sensor",
-    "user_text": "text", "user_entity": "text", "user_irk_set": "text", "raw_text": "text",
-    "setting_select": "select", "user_welcome": "select", "user_device": "select",
-    "number": "number", "threshold": "number",
-    "setting_switch": "switch", "hub_switch": "switch",
-    "button": "button", "command": "button",
-    "setting_time": "time",
-    "event": "event",
-    "light": "light",
-}
+# PLATFORM (internal domain of the component -> ESPHome/MQTT component) is imported from the component in build().
 UNITS = {"stat_hours": "h", "stat_seconds": "s", "days": "d", "gauge": "B", "rssi": "dBm", "user_rssi": "dBm",
          "threshold": "dBm"}
 WRITABLE = {"switch", "light", "button", "number", "select", "time", "text"}
@@ -160,45 +145,34 @@ def build(g):
     if missing:
         raise SystemExit(f"no description for: {', '.join(missing)}")
 
+    # internal domain -> ESPHome/MQTT component, from the component so the topics stay in step with the firmware
+    PLATFORM = g.PLATFORM
+
     # ------------------------------------------------------------ owners of every MQTT topic, per language
+    # The bridge prefixes the profile groups' names over MQTT (see _entity_name(..., mqtt=True) in the component),
+    # so every entity has its own topic: a profile entity is its own key (profile_<n>_<leaf>), writable like any
+    # other. We still check across all bridge languages that no two entities ever share one <component>/<object id>.
     topics: dict[str, str] = {}          # "<component>/<object id>" -> owner key
-    shared: set[str] = set()             # non-profile keys whose topic profile entities use too
-    ambiguous: set[str] = set()          # owner keys that stand for the same entity in several profiles
     owner_of: dict[str, str] = {}        # entity key -> owner key
     for code in g.LANGUAGES:
         tr = mqtt_lang(g, code)
         by_topic: dict[str, list] = {}
         for e in g.ENTITIES:
-            t = f"{PLATFORM[e.domain]}/{object_id(g._entity_name(tr, e, True))}"
+            t = f"{PLATFORM[e.domain]}/{object_id(g._entity_name(tr, e, True, mqtt=True))}"
             by_topic.setdefault(t, []).append(e)
         for key, comp, _sub, _fixed in SETUP:
             by_topic.setdefault(f"{comp}/{object_id(setup_names(code)[key])}", []).append(key)
         for t, members in by_topic.items():
             ents = [m for m in members if not isinstance(m, str)]
             setups = [m for m in members if isinstance(m, str)]
-            if setups:
-                if len(members) != 1:
-                    raise SystemExit(f"{code}: setup entity {setups} shares topic {t} with {members}")
-                owner = setups[0]
-            else:
-                plain = [m for m in ents if group_of(m) != "profile"]
-                profs = [m for m in ents if group_of(m) == "profile"]
-                if len(plain) > 1:
-                    raise SystemExit(f"{code}: topic {t} used by {[m.key for m in plain]}")
-                if plain:
-                    owner = plain[0].key
-                    if profs:
-                        shared.add(owner)
-                else:
-                    leaves = {leaf_of(m) for m in profs}
-                    if len(leaves) != 1:
-                        raise SystemExit(f"{code}: topic {t} used by {[m.key for m in profs]}")
-                    owner = f"profile_N_{leaves.pop()}"
-                    if len(profs) > 1:
-                        ambiguous.add(owner)
-                for m in ents:
-                    if owner_of.setdefault(m.key, owner) != owner:
-                        raise SystemExit(f"{m.key}: owner {owner_of[m.key]} in one language, {owner} in {code}")
+            if len(members) != 1:
+                keys = [m if isinstance(m, str) else m.key for m in members]
+                raise SystemExit(f"{code}: topic {t} shared by {keys} (the bridge should give every entity a "
+                                 "unique name over MQTT)")
+            owner = setups[0] if setups else ents[0].key
+            for m in ents:
+                if owner_of.setdefault(m.key, owner) != owner:
+                    raise SystemExit(f"{m.key}: owner {owner_of[m.key]} in one language, {owner} in {code}")
             if topics.setdefault(t, owner) != owner:
                 raise SystemExit(f"topic {t} means {topics[t]} in one language and {owner} in {code}")
 
@@ -230,10 +204,6 @@ def build(g):
             groups = [OPTION_KEY.get(e.domain, e.key)]
             groups += [ok for k, _cap, ok in g.OPTION_VARIANTS if k == e.key]
             r["o"] = groups
-        if owner in shared:
-            r["sh"] = 1
-        if owner in ambiguous:
-            r["pa"] = 1
         if e.discovery or e.disabled:
             r["adv"] = 1
         recs[owner] = r
@@ -367,7 +337,6 @@ def build_flow(tables) -> list:
                        "- `discoveryPrefix`: the discovery prefix (default `homeassistant`)\n"
                        "- `language`: `auto` (the bridge's language) or a code such as `en`, `nl`, `de`, `ja`, "
                        "`zh-TW`, `pt-BR`\n"
-                       "- `allowSharedWrites`: see the README (user profiles over MQTT)\n"
                        "- `onlyChanges`: send a state only when it changed\n"
                        "- `contextName`: name of the global context object with every state\n")
     tables_js = (head + "const tables = " + json.dumps(tables, ensure_ascii=False, separators=(",", ":"))
@@ -381,7 +350,7 @@ def build_flow(tables) -> list:
     n_settings = node("inject", "Settings", 190, 120, props=[{"p": "payload"}], repeat="", crontab="", once=True,
                       onceDelay="0.5", topic="", payloadType="json",
                       payload=json.dumps({"topicPrefix": "aquaclean", "discoveryPrefix": "homeassistant",
-                                          "language": "auto", "allowSharedWrites": False, "onlyChanges": True,
+                                          "language": "auto", "onlyChanges": True,
                                           "contextName": "aquaclean"}, indent=2),
                       wires=[[n_apply["id"]]])
 
@@ -524,8 +493,6 @@ def payload_type(r) -> str:
 
 
 def direction(r) -> str:
-    if r.get("pa"):
-        return "not over MQTT" if r["p"] == "button" else "state"
     if r["p"] == "button":
         return "command"
     if r["p"] == "event":
@@ -545,7 +512,7 @@ def values(r, en) -> str:
     if p == "light":
         return "true / false (command also `\"toggle\"`)"
     if p == "button":
-        return "–" if r.get("pa") else "any payload"
+        return "any payload"
     if p == "time":
         return "`\"HH:MM\"`"
     if r.get("ts"):
@@ -575,12 +542,10 @@ def write_docs(g, std, recs, rep) -> None:
         out += [GROUP_TITLES[gk], ""]
         if gk == "profile":
             out += ["Profiles 1–3 are stored in the toilet (profile keys 1–3 on the remote control), profiles 4–6 "
-                    "only on the bridge. Over MQTT the six profiles share one topic per setting, so these keys "
-                    "stand for *a* profile: read-only in this flow, see "
-                    "[User profiles over MQTT](#user-profiles-over-mqtt).", ""]
+                    "only on the bridge. `N` in `profile_N_…` is the profile number 1–6: each profile has its own "
+                    "keys (e.g. `profile_2_spray_intensity`), which you can read and write.", ""]
         if gk == "session":
-            out += ["`N` in `profile_N_activate` / `profile_N_store` is 1–6. Keys marked ⚠ share their MQTT topic "
-                    "with the user profiles, see [User profiles over MQTT](#user-profiles-over-mqtt).", ""]
+            out += ["`N` in `profile_N_activate` / `profile_N_store` is 1–6.", ""]
         out.append(COLS)
         for owner, e in rows:
             r = recs[owner]
@@ -588,9 +553,7 @@ def write_docs(g, std, recs, rep) -> None:
             shown = re.sub(r"profile_\d", "profile_N", owner)
             if e.name_args and "n" in e.name_args:
                 name = name.replace(str(e.name_args["n"]), "N")
-            mark = " ⚠" if r.get("sh") else ""
-            pt = payload_type(r) if not (r.get("pa") and r["p"] == "button") else "–"
-            out.append(f"| `{shown}`{mark} | {name} | {pt} | {direction(r)} | {values(r, en)} | "
+            out.append(f"| `{shown}` | {name} | {payload_type(r)} | {direction(r)} | {values(r, en)} | "
                        f"{D[base_key(e)][0]} |")
         if gk == "bridge":
             out += ["", "Setup entities of the web-installer firmware (normally set on the bridge's own web page):",
@@ -631,9 +594,9 @@ def main() -> None:
     (NR / "flow.json").write_text(json.dumps(nodes, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     if not args.no_docs:
         write_docs(g, std, recs, rep)
-    sh = sorted(k for k, r in recs.items() if r.get("sh"))
-    print(f"{len(recs)} keys, {len(tables['topics'])} topics in {len(g.LANGUAGES)} bridge languages, "
-          f"{len(ui_langs)} flow languages; shared with profiles: {', '.join(sh)}")
+    profiles = sum(1 for r in recs.values() if r.get("g") == "profile")
+    print(f"{len(recs)} keys ({profiles} user-profile), {len(tables['topics'])} topics in "
+          f"{len(g.LANGUAGES)} bridge languages, {len(ui_langs)} flow languages")
 
 
 if __name__ == "__main__":

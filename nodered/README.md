@@ -53,7 +53,6 @@ or let a long press on the remote control's arrow key switch on the bathroom fan
    | `topicPrefix` | `aquaclean` | The bridge's *MQTT topic prefix* (a field on its web page). |
    | `discoveryPrefix` | `homeassistant` | The discovery prefix: the shared convention that openHAB, Domoticz, Home Assistant and others read too. Change it only if you changed it on the bridge. |
    | `language` | `auto` | Language of labels and messages: `auto` follows the bridge, or a code such as `en`, `nl`, `de`, `fr`, `ja`, `zh-TW`, `pt-BR`. |
-   | `allowSharedWrites` | `false` | See [User profiles over MQTT](#user-profiles-over-mqtt). |
    | `onlyChanges` | `true` | Send a state only when its value changed (the remote control buttons always). |
    | `contextName` | `aquaclean` | Name of the global context object with every state. |
 
@@ -155,22 +154,13 @@ normal job on the toilet. `msg.aquaclean.label` names it in your language, e.g. 
 - **Keys** (`msg.topic`) are the same in every language, so a flow written for an English bridge works unchanged with
   a Polish one.
 
-## User profiles over MQTT
+## User profiles
 
-The bridge keeps up to six user profiles (profiles 1–3 in the toilet, 4–6 on the bridge). Over MQTT, a topic is made
-from the entity name alone, and a profile's settings carry the same names as the settings of the running session
-(*Spray intensity*, *Water temperature*, …). They therefore **share one topic**:
-
-- a state on such a topic can come from the session or from any profile;
-- a command on such a topic reaches the session **and every profile**, so it also changes the stored profiles.
-
-The flow handles this for you. The session keys concerned are marked ⚠ in the reference and arrive with
-`msg.aquaclean.shared = true`; commands to them are refused unless you set `allowSharedWrites: true` (do that only if
-changing the stored profiles along with the session is fine for you, for instance on a toilet without user profiles).
-The per-profile settings appear as read-only `profile_N_…` keys. To change one profile, use the remote control, the
-Geberit Home app, or the bridge's native API route (the Homey app and the ioBroker adapter address every profile
-separately). The *Default …* settings and the profile buttons (`profile_N_activate`, `profile_N_store`) have their own
-topics and are not affected.
+The bridge keeps up to six user profiles (profiles 1–3 in the toilet, 4–6 on the bridge). Each profile's settings have
+their own keys over MQTT, `profile_1_…` through `profile_6_…` (for example `profile_2_spray_intensity`), which you can
+read and write independently of the running session and of the other profiles — the same keys the Homey app and the
+ioBroker adapter use. The *Default …* settings and the profile buttons (`profile_N_activate`, `profile_N_store`) are
+separate again.
 
 ## Troubleshooting
 
@@ -305,7 +295,7 @@ Setup entities of the web-installer firmware (normally set on the bridge's own w
 
 ### `session` — Active session
 
-`N` in `profile_N_activate` / `profile_N_store` is 1–6. Keys marked ⚠ share their MQTT topic with the user profiles, see [User profiles over MQTT](#user-profiles-over-mqtt).
+`N` in `profile_N_activate` / `profile_N_store` is 1–6.
 
 | `msg.topic` | Name | `msg.payload` | Direction | Values | What it does |
 |---|---|---|---|---|---|
@@ -318,20 +308,20 @@ Setup entities of the web-installer firmware (normally set on the bridge's own w
 | `dryer_toggle` | Toggle dryer | – | command | any payload | Starts or stops the dryer. Only while someone is seated. |
 | `stop_all` | Stop shower and dryer | – | command | any payload | Stops the shower and the dryer. |
 | `stop_shower` | Stop shower | – | command | any payload | Stops the shower (models without dryer). |
-| `spray_intensity` ⚠ | Spray intensity | number | state + command | 1–5 | Spray intensity of the shower in the running session, 1–5 like on the remote control. |
-| `spray_arm_position` ⚠ | Spray arm position | number | state + command | 1–5 | Position of the spray arm for the shower, 1–5. |
-| `lady_spray_intensity` ⚠ | Spray intensity Lady | number | state + command | 1–5 | Spray intensity of the Lady shower, 1–5. |
-| `lady_spray_arm_position` ⚠ | Spray arm position Lady | number | state + command | 1–5 | Position of the spray arm for the Lady shower, 1–5. |
-| `water_temperature` ⚠ | Water temperature | number | state + command | 0–5 | Water temperature level; 0 means water heating off. |
-| `oscillating_spray` ⚠ | Oscillating spray | boolean | state + command | true / false | Oscillating spray (the spray arm moves back and forth). |
-| `seat_heating` ⚠ | Seat heating | number | state + command | 0–5 | Seat heating level; 0 is off. |
-| `dryer_temperature` ⚠ | Dryer temperature | number | state + command | 0–5 | Dryer temperature level. |
-| `dryer_intensity` ⚠ | Dryer intensity | number | state + command | 1–5 | Dryer fan power. |
-| `dryer` ⚠ | Dryer | boolean | state + command | true / false | Dryer on or off in the session settings. |
-| `odor_extraction` ⚠ | Odor extraction | boolean | state + command | true / false | Odor extraction on or off in the session settings. |
-| `seat_heating_on` ⚠ | Seat heating on | boolean | state + command | true / false | Seat heating on or off. |
-| `preflush` ⚠ | Pre-flush | boolean | state + command | true / false | Pre-flush before use on or off. |
-| `wc_water_heating` ⚠ | WC water heating | boolean | state + command | true / false | Heating of the WC water on or off. |
+| `spray_intensity` | Spray intensity | number | state + command | 1–5 | Spray intensity of the shower in the running session, 1–5 like on the remote control. |
+| `spray_arm_position` | Spray arm position | number | state + command | 1–5 | Position of the spray arm for the shower, 1–5. |
+| `lady_spray_intensity` | Spray intensity Lady | number | state + command | 1–5 | Spray intensity of the Lady shower, 1–5. |
+| `lady_spray_arm_position` | Spray arm position Lady | number | state + command | 1–5 | Position of the spray arm for the Lady shower, 1–5. |
+| `water_temperature` | Water temperature | number | state + command | 0–5 | Water temperature level; 0 means water heating off. |
+| `oscillating_spray` | Oscillating spray | boolean | state + command | true / false | Oscillating spray (the spray arm moves back and forth). |
+| `seat_heating` | Seat heating | number | state + command | 0–5 | Seat heating level; 0 is off. |
+| `dryer_temperature` | Dryer temperature | number | state + command | 0–5 | Dryer temperature level. |
+| `dryer_intensity` | Dryer intensity | number | state + command | 1–5 | Dryer fan power. |
+| `dryer` | Dryer | boolean | state + command | true / false | Dryer on or off in the session settings. |
+| `odor_extraction` | Odor extraction | boolean | state + command | true / false | Odor extraction on or off in the session settings. |
+| `seat_heating_on` | Seat heating on | boolean | state + command | true / false | Seat heating on or off. |
+| `preflush` | Pre-flush | boolean | state + command | true / false | Pre-flush before use on or off. |
+| `wc_water_heating` | WC water heating | boolean | state + command | true / false | Heating of the WC water on or off. |
 | `profile_N_activate` | Activate profile N settings | – | command | any payload | Loads the settings of user profile N into the session, as if that user was recognized. |
 | `profile_N_store` | Store settings in profile N | – | command | any payload | Stores the current session settings in user profile N. |
 | `remote_connected` | Remote control connected | boolean | state | true / false | The Geberit remote control is connected through the bridge. |
@@ -342,23 +332,37 @@ Setup entities of the web-installer firmware (normally set on the bridge's own w
 
 ### `profile` — User profiles 1–6
 
-Profiles 1–3 are stored in the toilet (profile keys 1–3 on the remote control), profiles 4–6 only on the bridge. Over MQTT the six profiles share one topic per setting, so these keys stand for *a* profile: read-only in this flow, see [User profiles over MQTT](#user-profiles-over-mqtt).
+Profiles 1–3 are stored in the toilet (profile keys 1–3 on the remote control), profiles 4–6 only on the bridge. `N` in `profile_N_…` is the profile number 1–6: each profile has its own keys (e.g. `profile_2_spray_intensity`), which you can read and write.
 
 | `msg.topic` | Name | `msg.payload` | Direction | Values | What it does |
 |---|---|---|---|---|---|
-| `profile_N_delete` | Clear profile | – | not over MQTT | – | Clears the profile: name, link, welcome light and IRK; profiles 4–6 also lose their settings. |
-| `profile_N_irk_capture` | Capture IRK | – | not over MQTT | – | Starts capturing the IRK of a phone, watch or tracker: pair it with the bridge within two minutes. |
-| `profile_N_irk_show` | Show IRK | – | not over MQTT | – | Sends the full IRK as a Home Assistant notification (Home Assistant only). |
-| `profile_N_user_name` | User | string | state | text | Name of the user of this profile. |
-| `profile_N_user_ha_device` | Home Assistant device | string | state | text | Home Assistant device tracker linked to this profile (Home Assistant only; elsewhere use an IRK instead). |
-| `profile_N_welcome_light` | Welcome light | number | state | 0 = Off, 1 = Blue, 2 = Turquoise, 3 = Magenta, 4 = Orange, 5 = Yellow, 6 = Warm white, 7 = White | Color in which the orientation light greets this user once recognized; Off for no greeting. |
+| `profile_N_spray_intensity` | Spray intensity | number | state + command | 1–5 | Spray intensity stored in this profile. |
+| `profile_N_spray_arm_position` | Spray arm position | number | state + command | 1–5 | Spray arm position stored in this profile. |
+| `profile_N_lady_spray_intensity` | Spray intensity Lady | number | state + command | 1–5 | Lady shower spray intensity stored in this profile. |
+| `profile_N_lady_spray_arm_position` | Spray arm position Lady | number | state + command | 1–5 | Lady shower arm position stored in this profile. |
+| `profile_N_water_temperature` | Water temperature | number | state + command | 0–5 | Water temperature stored in this profile. |
+| `profile_N_oscillating_spray` | Oscillating spray | boolean | state + command | true / false | Oscillating spray stored in this profile. |
+| `profile_N_seat_heating` | Seat heating | number | state + command | 0–5 | Seat heating level stored in this profile. |
+| `profile_N_dryer_temperature` | Dryer temperature | number | state + command | 0–5 | Dryer temperature stored in this profile. |
+| `profile_N_dryer_intensity` | Dryer intensity | number | state + command | 1–5 | Dryer fan power stored in this profile. |
+| `profile_N_dryer` | Dryer | boolean | state + command | true / false | Dryer on or off in this profile. |
+| `profile_N_odor_extraction` | Odor extraction | boolean | state + command | true / false | Odor extraction on or off in this profile. |
+| `profile_N_seat_heating_on` | Seat heating on | boolean | state + command | true / false | Seat heating on or off in this profile. |
+| `profile_N_preflush` | Pre-flush | boolean | state + command | true / false | Pre-flush on or off in this profile. |
+| `profile_N_wc_water_heating` | WC water heating | boolean | state + command | true / false | WC water heating on or off in this profile. |
+| `profile_N_delete` | Clear profile | – | command | any payload | Clears the profile: name, link, welcome light and IRK; profiles 4–6 also lose their settings. |
+| `profile_N_irk_capture` | Capture IRK | – | command | any payload | Starts capturing the IRK of a phone, watch or tracker: pair it with the bridge within two minutes. |
+| `profile_N_irk_show` | Show IRK | – | command | any payload | Sends the full IRK as a Home Assistant notification (Home Assistant only). |
+| `profile_N_user_name` | User | string | state + command | text | Name of the user of this profile. |
+| `profile_N_user_ha_device` | Home Assistant device | string | state + command | text | Home Assistant device tracker linked to this profile (Home Assistant only; elsewhere use an IRK instead). |
+| `profile_N_welcome_light` | Welcome light | number | state + command | 0 = Off, 1 = Blue, 2 = Turquoise, 3 = Magenta, 4 = Orange, 5 = Yellow, 6 = Warm white, 7 = White | Color in which the orientation light greets this user once recognized; Off for no greeting. |
 | `profile_N_user_recognized` | Recognized | boolean | state | true / false | The linked device of this user is near the toilet: the profile is loaded. |
 | `profile_N_user_active` | Seated | boolean | state | true / false | This user is recognized and seated (the active user). |
 | `profile_N_user_rssi` | Device signal user profile N | number | state | dBm | Signal strength of this user's linked device as the bridge hears it. |
 | `profile_N_user_irk` | IRK | string | state | text | Last four digits of the stored IRK, to check which key is stored. |
-| `profile_N_user_irk_set` | Enter IRK | string | state | text | Write a known IRK here (32 hex digits or base64). The field is emptied again right away; an empty value removes the stored IRK. |
-| `profile_N_lady_oscillating_spray` | Oscillating spray Lady | boolean | state | true / false | Profiles 4–6 only: oscillating spray for the Lady shower, separate from the shower. |
-| `profile_N_lady_water_temperature` | Water temperature Lady | number | state | 0–5 | Profiles 4–6 only: water temperature for the Lady shower, separate from the shower. |
+| `profile_N_user_irk_set` | Enter IRK | string | state + command | text | Write a known IRK here (32 hex digits or base64). The field is emptied again right away; an empty value removes the stored IRK. |
+| `profile_N_lady_oscillating_spray` | Oscillating spray Lady | boolean | state + command | true / false | Profiles 4–6 only: oscillating spray for the Lady shower, separate from the shower. |
+| `profile_N_lady_water_temperature` | Water temperature Lady | number | state + command | 0–5 | Profiles 4–6 only: water temperature for the Lady shower, separate from the shower. |
 
 ### `maintenance` — Physical maintenance (only while unlocked)
 

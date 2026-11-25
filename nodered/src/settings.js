@@ -4,7 +4,6 @@ const defaults = {
     topicPrefix: "aquaclean",        // the bridge's MQTT topic prefix (field "MQTT topic prefix" on its web page)
     discoveryPrefix: "homeassistant", // the discovery prefix (the shared convention; rarely changed)
     language: "auto",                // language of labels and messages: "auto" or a code such as "en", "nl", "ja"
-    allowSharedWrites: false,        // see the README: shared MQTT topics of the user profiles
     onlyChanges: true,               // send a state only when its value changed
     contextName: "aquaclean"         // name of the global context object with every state
 };

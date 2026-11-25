@@ -1071,14 +1071,52 @@ def _schema_for(e: Ent):
     raise ValueError(d)
 
 
-def _entity_name(lang: dict, e: Ent, sub_devices: bool) -> str:
+# Internal domain of an entity -> its ESPHome (and MQTT) component. The generators of the controller apps
+# (nodered/, homey/, iobroker/) import this so the MQTT topic <prefix>/<component>/<object_id> stays in step
+# with the firmware.
+PLATFORM = {
+    "status": "binary_sensor", "binary_sensor": "binary_sensor", "user_flag": "binary_sensor",
+    "stat_counter": "sensor", "stat_hours": "sensor", "stat_seconds": "sensor", "counter": "sensor",
+    "days": "sensor", "timestamp": "sensor", "gauge": "sensor", "rssi": "sensor", "user_rssi": "sensor",
+    "status_value": "sensor", "counter_value": "sensor",
+    "text_sensor": "text_sensor", "uptime": "text_sensor", "user_irk": "text_sensor", "status_enum": "text_sensor",
+    "user_text": "text", "user_entity": "text", "user_irk_set": "text", "raw_text": "text",
+    "setting_select": "select", "user_welcome": "select", "user_device": "select",
+    "number": "number", "threshold": "number",
+    "setting_switch": "switch", "hub_switch": "switch",
+    "button": "button", "command": "button",
+    "setting_time": "time",
+    "event": "event",
+    "light": "light",
+}
+
+
+def _entity_name(lang: dict, e: Ent, sub_devices: bool, mqtt: bool = False) -> str:
     name = lang["names"][e.name_key or e.key]
     if e.name_args:
         name = name.format(**e.name_args)
-    if not sub_devices and e.group is not None and e.group != G_SESSION:
-        # without sub-devices these names would collide with the session entities: prefix the group
+    # Without sub-devices the non-session names would collide with the session entities, so prefix the group.
+    # Over MQTT the sub-device is not part of the topic (see _mqtt_object_id), so the profile entities collide
+    # with the session and with each other even with sub-devices; prefix only the profile groups there, which
+    # leaves every other topic unchanged.
+    if (not sub_devices and e.group is not None and e.group != G_SESSION) or (mqtt and e.group in G_PROFILES):
         name = f"{lang['devices'][e.group]} {name}"
     return name
+
+
+def _mqtt_object_id(name: str) -> str:
+    """ESPHome's MQTT object id: per UTF-8 byte, ' ' -> '_', A-Z -> a-z, anything but [a-z0-9_-] -> '_'."""
+    out = []
+    for b in name.encode("utf-8"):
+        c = chr(b)
+        if c == " ":
+            c = "_"
+        elif "A" <= c <= "Z":
+            c = c.lower()
+        if not (c in "-_" or "0" <= c <= "9" or "a" <= c <= "z"):
+            c = "_"
+        out.append(c)
+    return "".join(out)
 
 
 def _expand_entities(config: dict) -> dict:
@@ -1201,6 +1239,33 @@ def _web_group_names(config):
             group[CONF_NAME] = names[gid]
 
 
+def _mqtt_unique_names(config):
+    # On the MQTT route the topic is <prefix>/<component>/<object_id> and the object id is the sanitized entity
+    # name only; the sub-device is not part of it. With sub-devices the profile entities would otherwise take the
+    # same names as the session entities (and as each other), so their topics would collide and one command would
+    # change the running session and every stored profile. Prefix the profile groups' names here (MQTT route only),
+    # so their object ids become unique while every other topic stays the same. Then guard that nothing collides.
+    lang_code = config[CONF_LANGUAGE]
+    name_lang = I18N["en"] if lang_code in ASCII_ID_LANGUAGES else I18N[lang_code]
+    sub = config[CONF_SUB_DEVICES]
+    for e in ENTITIES:
+        if e.key in config and e.group in G_PROFILES:
+            if config[e.key][CONF_NAME] == _entity_name(name_lang, e, sub):  # not renamed in the YAML
+                config[e.key][CONF_NAME] = _entity_name(name_lang, e, sub, mqtt=True)
+    seen = {}
+    for e in ENTITIES:
+        if e.key not in config:
+            continue
+        topic = f"{PLATFORM[e.domain]}/{_mqtt_object_id(config[e.key][CONF_NAME])}"
+        if seen.get(topic, e.key) != e.key:
+            raise cv.Invalid(
+                f"geberit_aquaclean: the MQTT topic '{topic}' would be shared by '{seen[topic]}' and '{e.key}'. "
+                "Two entities with the same name and component publish and receive on one topic over MQTT; "
+                "give one of them a different name."
+            )
+        seen[topic] = e.key
+
+
 def _final_validate(config):
     full = fv.full_config.get()
     if "api" in full and "mqtt" in full:
@@ -1209,6 +1274,8 @@ def _final_validate(config):
             "would show everything twice. In examples/atoms3-lite.yaml the substitution 'route' picks one."
         )
     _web_group_names(config)
+    if "mqtt" in full:
+        _mqtt_unique_names(config)
     if not config[CONF_SUB_DEVICES]:
         return config
     declared = {str(d[CONF_ID]) for d in fv.full_config.get().get("esphome", {}).get("devices", [])}

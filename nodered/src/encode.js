@@ -15,9 +15,7 @@ function fail(id, vars) {
     return null;
 }
 if (!e) return fail("err_unknown");
-if (e.pa) return fail("err_profile");
 if (!e.w) return fail("err_readonly");
-if (e.sh && !C.allowSharedWrites) return fail("err_shared");
 const base = LEARN.byKey[key];
 if (!base) return fail("err_unseen");
 const disc = LEARN.disc[base] || {};

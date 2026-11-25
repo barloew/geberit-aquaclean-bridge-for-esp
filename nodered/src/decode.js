@@ -1,7 +1,7 @@
 // Decode: turns the bridge's MQTT messages into one message per entity.
 //   msg.topic   = the entity key, the same in every language (e.g. "shower_active", "water_temperature")
 //   msg.payload = the value: true/false, a number, a text, or for selections the option number (0, 1, 2, ...)
-//   msg.aquaclean = { key, group, kind, name, label, unit, shared, known, mqtt, raw }
+//   msg.aquaclean = { key, group, kind, name, label, unit, known, mqtt, raw }
 // Output 1: every state   Output 2: remote control buttons   Output 3: connection and alarms
 if (!T || !C) return null;
 const P = C.topicPrefix, D = C.discoveryPrefix;
@@ -112,7 +112,7 @@ const out = {
     aquaclean: {
         key: id, known: !!e, group: e ? e.g : null, kind: component,
         name: disc.name || null, label, unit: disc.unit || (e && e.u) || null,
-        shared: !!(e && (e.sh || e.pa)), mqtt: msg.topic, raw
+        mqtt: msg.topic, raw
     }
 };
 if (component === "event") return [out, out, null];
