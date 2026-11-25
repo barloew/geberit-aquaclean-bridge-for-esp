@@ -116,7 +116,7 @@ ESPHome adapter at the same time): every client costs the ESP memory.
 
 ### Install the ioBroker adapter
 
-Needs Node.js 22 or newer and js-controller 6.0.11 or newer.
+Needs Node.js 22 or newer and js-controller 7.0.7 or newer.
 
 1. **Bridge on the native API route.** Install the native-API firmware and save an API encryption key on the
    bridge's `/setup` page — or, in your own YAML, set `api:` with an `encryption: key:`. Keep the key at hand.
