@@ -122,7 +122,7 @@ The bridge needs an ESP32-S3 with **at least 8 MB flash**, dedicated to the brid
 | M5Stack AtomS3R | `board-atoms3r.yaml` | Builds, not yet tested on hardware. Has PSRAM. |
 | Seeed XIAO ESP32S3 (also Plus) | `board-xiao-esp32s3.yaml` | Builds, not yet tested on hardware. Connect the included U.FL antenna. |
 
-The web installer has firmware for all four. Any other ESP32-S3 with at least 8 MB flash works too over ESPHome YAML — set the `board:` line directly. In ESPHome YAML you pick a board package with the `board:` include, for example `.../packages/board-atoms3r.yaml@v1.36.0`. See [Hardware](#hardware) for status indicators and buttons per board.
+The web installer has firmware for all four. Any other ESP32-S3 with at least 8 MB flash works too over ESPHome YAML — set the `board:` line directly. In ESPHome YAML you pick a board package with the `board:` include, for example `.../packages/board-atoms3r.yaml@v1.37.0`. See [Hardware](#hardware) for status indicators and buttons per board.
 
 </details>
 
@@ -225,7 +225,7 @@ For each of the up to six profiles:
 
 </summary>
 
-Apple HomeKit is compiled into every image and works stand-alone too, without any home automation system connected via native API or MQTT. It stays off until you turn on the **Apple Home** switch on the bridge — from its web page, or from whichever home automation system you use. With ESPHome YAML you can instead build it always-on:
+Apple HomeKit is compiled into every image and works stand-alone too, without Home Assistant or any other home automation system. It stays off until you turn on the **Apple Home** switch on the bridge — from its web page, or from whichever home automation system you use. With ESPHome YAML you can instead build it always-on:
 
 ```yaml
 geberit_aquaclean:
@@ -246,7 +246,7 @@ Then add the accessory in the Home app with the setup code or QR code. The Home 
 
 </summary>
 
-The bridge needs a **dedicated ESP32-S3 with at least 8 MB flash**: one bridge per toilet, and no other Bluetooth components on the same board. The web installer has firmware for every board below. In ESPHome YAML, pick your board with the `board:` line, for example `.../packages/board-atoms3r.yaml@v1.36.0`. On every board, holding the button for 3 s pairs the ESP with the toilet as remote control (then power-cycle the toilet so it accepts the new remote).
+The bridge needs a **dedicated ESP32-S3 with at least 8 MB flash**: one bridge per toilet, and no other Bluetooth components on the same board. The web installer has firmware for every board below. In ESPHome YAML, pick your board with the `board:` line, for example `.../packages/board-atoms3r.yaml@v1.37.0`. On every board, holding the button for 3 s pairs the ESP with the toilet as remote control (then power-cycle the toilet so it accepts the new remote).
 
 | Board | Package | Status |
 |---|---|---|

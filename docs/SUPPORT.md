@@ -4,13 +4,13 @@
 
 Branch **main**
 
-> Validated on AquaClean Sela (device firmware RS08 TS57, bridge v1.36.0) · Mera Comfort, Mera Classic, Tuma Comfort, Tuma Classic, Cama supported via feature discovery · 29 languages · routes: native_api, mqtt, homekit validated · Independent open-source project, not affiliated with Geberit AG
+> Validated on AquaClean Sela (device firmware RS08 TS57, bridge v1.37.0) · Mera Comfort, Mera Classic, Tuma Comfort, Tuma Classic, Cama supported via feature discovery · 29 languages · routes: native_api, mqtt, homekit validated · Independent open-source project, not affiliated with Geberit AG
 
 ## Models
 
 | Model | SAP prefix | Status | Evidence / note |
 |---|---|---|---|
-| AquaClean Sela | 146.22 | `validated` | bridge v1.36.0, device fw RS08 TS57 |
+| AquaClean Sela | 146.22 | `validated` | bridge v1.37.0, device fw RS08 TS57 |
 | AquaClean Mera Comfort | 146.21 | `supported` | Feature set resolved at runtime by feature discovery; not hardware-validated. |
 | AquaClean Mera Classic | 146.20, 146.24 | `supported` | Feature set resolved at runtime by feature discovery; not hardware-validated. |
 | AquaClean Tuma Comfort | 146.27, 146.29, 146.31 | `supported` | Feature set resolved at runtime by feature discovery; not hardware-validated. |
