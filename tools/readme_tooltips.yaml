@@ -35,3 +35,26 @@ notes-and-troubleshooting: Finding the toilet and remote, updating, logs, and sh
 other-aquaclean-integrations: Other AquaClean projects, and how this bridge differs from them.
 trademark--legal-disclaimer: Independent, unofficial project, not affiliated with Geberit. Use at your own risk.
 license: License and third-party notices.
+
+# Links to other files and pages, keyed by the link target exactly as written in README.md. A target
+# with a #fragment falls back to the same target without it. Every link to a target gets its text.
+links:
+  https://github.com/barloew/geberit-aquaclean-bridge-for-esp/tree/series-250-bridge: Experimental bridge for the AquaClean Alba (Series 250), kept in its own branch.
+  https://barloew.github.io/geberit-aquaclean-bridge-for-esp/: Install the firmware from Chrome or Edge over USB, in your language, without ESPHome.
+  https://github.com/barloew/geberit-aquaclean-bridge-for-esp/issues: Report a bug, share the discovery output of a new model, or ask a question.
+  https://github.com/barloew/geberit-aquaclean-bridge-for-esp/releases?q=homey&expanded=true: Releases with the Homey app zip, to install with the Homey CLI.
+  https://github.com/barloew/ioBroker.aquaclean-bridge: The AquaClean Bridge adapter for ioBroker over the native API, in its own repository.
+  docs/routes.md: The two routes (native API or MQTT) and the two install methods (web installer or ESPHome YAML) side by side.
+  docs/routes.md#homey: Homey over the native API with the AquaClean Bridge app or an ESPHome app, or over MQTT by hand.
+  docs/routes.md#iobroker: ioBroker over the native API with the AquaClean Bridge adapter, or over MQTT with the MQTT adapter.
+  docs/routes.md#install-the-homey-app: Step by step, how to install the AquaClean Bridge app on a Homey Pro with the Homey CLI.
+  nodered: The ready-made Node-RED flow for the MQTT route, with a fixed topic for every entity.
+  nodered/README.md: How the Node-RED flow works, its topics and commands, and the remote control button events.
+  homey: Source of the AquaClean Bridge app for Homey Pro, with flow cards for every standard entity.
+  docs/protocol.md: A function-level overview of how the bridge talks to the toilet, without protocol internals.
+  docs/models.md: Which entities each AquaClean model gets, and where that knowledge comes from.
+  docs/SOURCES.md: Where the knowledge in the code comes from, from third-party projects to Geberit's app and manuals.
+  docs/comparison.md: An objective comparison with the other AquaClean integrations, a real-time bridge versus a polling client.
+  CHANGELOG.md: What changed in each release.
+  LICENSE: The MIT license of this project.
+  THIRD_PARTY_NOTICES.md: Third-party components, embedded assets and logos, with their owners and licenses.

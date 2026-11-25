@@ -12,9 +12,9 @@
 </p>
 
 <p>
-  <a href="docs/routes.md"><img src="images/badges/home-assistant-api.svg" alt="Home Assistant over the native API"></a>
-  <a href="docs/routes.md#homey"><img src="images/badges/homey-api.svg" alt="Homey over the native API"></a>
-  <a href="docs/routes.md#iobroker"><img src="images/badges/iobroker-api.svg" alt="ioBroker over the native API"></a>
+  <a href="docs/routes.md" title="The two routes (native API or MQTT) and the two install methods (web installer or ESPHome YAML) side by side."><img src="images/badges/home-assistant-api.svg" alt="Home Assistant over the native API"></a>
+  <a href="docs/routes.md#homey" title="Homey over the native API with the AquaClean Bridge app or an ESPHome app, or over MQTT by hand."><img src="images/badges/homey-api.svg" alt="Homey over the native API"></a>
+  <a href="docs/routes.md#iobroker" title="ioBroker over the native API with the AquaClean Bridge adapter, or over MQTT with the MQTT adapter."><img src="images/badges/iobroker-api.svg" alt="ioBroker over the native API"></a>
   <br>
   <a href="#user-content-connecting-over-mqtt"><img src="images/badges/home-assistant-mqtt.svg" alt="Home Assistant over MQTT"></a>
   <a href="#user-content-connecting-over-mqtt"><img src="images/badges/openhab-mqtt.svg" alt="openHAB over MQTT"></a>
@@ -83,7 +83,7 @@ Find the article number on the type plate or in the Geberit Home app and look it
 - **Supported:** AquaClean Mera Comfort, Mera Classic (also floor-standing), Tuma Comfort and Tuma Classic (seat, complete and floor-standing), and Cama. Feature discovery shows only what your toilet supports.
 - **Not supported:**
   - AquaClean 4000: it has no app and no remote control.
-  - AquaClean Alba: it runs on Geberit's newer platform (Series 250), whose encrypted protocol v2 the bridge doesn't speak. There is a separate, experimental ESP bridge for the Alba in the [`series-250-bridge` branch](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/tree/series-250-bridge).
+  - AquaClean Alba: it runs on Geberit's newer platform (Series 250), whose encrypted protocol v2 the bridge doesn't speak. There is a separate, experimental ESP bridge for the Alba in the [`series-250-bridge` branch](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/tree/series-250-bridge "Experimental bridge for the AquaClean Alba (Series 250), kept in its own branch.").
 
 Have a different model? See [Supporting other models](#user-content-open-supporting-other-models "Discovery tools to find out what an untested model supports, without a sniffer.").
 
@@ -163,7 +163,7 @@ See [Two routes: ESPHome or MQTT](#user-content-open-two-routes-esphome-or-mqtt 
 
 </summary><a id="open-step-5-install-the-firmware"></a>
 
-Open the [web installer](https://barloew.github.io/geberit-aquaclean-bridge-for-esp/) in Chrome or Edge, connect the board with USB, choose your **route**, [board](#user-content-open-hardware "Supported boards, their status LEDs and buttons.") and [language](#user-content-open-languages "Entity names in your language, in Geberit's own terminology. How to choose or add a language."), press **Install** and enter your Wi-Fi in the same window. If the bridge knows no Wi-Fi later on, it opens the hotspot **AquaClean Setup** (captive portal).
+Open the [web installer](https://barloew.github.io/geberit-aquaclean-bridge-for-esp/ "Install the firmware from Chrome or Edge over USB, in your language, without ESPHome.") in Chrome or Edge, connect the board with USB, choose your **route**, [board](#user-content-open-hardware "Supported boards, their status LEDs and buttons.") and [language](#user-content-open-languages "Entity names in your language, in Geberit's own terminology. How to choose or add a language."), press **Install** and enter your Wi-Fi in the same window. If the bridge knows no Wi-Fi later on, it opens the hotspot **AquaClean Setup** (captive portal).
 
 #### Native API
 
@@ -320,7 +320,7 @@ A single orange LED shows the status as a pattern. The button is BOOT (GPIO0). T
 
 </summary><a id="open-two-routes-esphome-or-mqtt"></a>
 
-Either route is installed with the web installer or with ESPHome YAML. In YAML, the route is a single key: the substitution `route: api` or `route: mqtt` in [`examples/atoms3-lite.yaml`](examples/atoms3-lite.yaml). Only that route is built; both expose the same entities. They differ in Home Assistant device grouping: the native API route splits the entities into separate devices, while the MQTT route currently groups them under one device. Per-sub-device MQTT discovery is planned, pending ESPHome's opt-in sub-device support. For controllers (Home Assistant, Homey, …) and install methods, see [docs/routes.md](docs/routes.md).
+Either route is installed with the web installer or with ESPHome YAML. In YAML, the route is a single key: the substitution `route: api` or `route: mqtt` in [`examples/atoms3-lite.yaml`](examples/atoms3-lite.yaml). Only that route is built; both expose the same entities. They differ in Home Assistant device grouping: the native API route splits the entities into separate devices, while the MQTT route currently groups them under one device. Per-sub-device MQTT discovery is planned, pending ESPHome's opt-in sub-device support. For controllers (Home Assistant, Homey, …) and install methods, see [docs/routes.md](docs/routes.md "The two routes (native API or MQTT) and the two install methods (web installer or ESPHome YAML) side by side.").
 
 | | Route 1: ESPHome | Route 2: MQTT |
 |---|---|---|
@@ -397,9 +397,9 @@ The bridge announces itself with MQTT discovery (prefix `homeassistant`), so mos
 - **Home Assistant:** add the MQTT integration with your broker. Discovery is on by default; the bridge's devices appear under **Settings → Devices & services → MQTT**. <!-- TODO: equivalent of "Allow the device to perform Home Assistant actions" for the MQTT route -->
 - **openHAB:** install the MQTT binding and add your broker as a Bridge Thing. The bridge's devices show up in the inbox through Home Assistant discovery.
 - **Domoticz:** add the hardware *MQTT Auto Discovery Client Gateway with LAN interface* with your broker and auto-discovery prefix `homeassistant`.
-- **Node-RED:** import the ready-made flow in [`nodered/`](nodered) (`flow.json`; how it works in its [README](nodered/README.md)): every entity becomes a message with a fixed `msg.topic` in any firmware language, commands go through one link node, and the remote control buttons arrive as events. Or use your own `mqtt in` and `mqtt out` nodes on the bridge's topics: states are published under `<name>/<component>/<entity>/state`, commands go to `.../command`.
-- **ioBroker:** the native API route with the [AquaClean Bridge adapter](https://github.com/barloew/ioBroker.aquaclean-bridge) (`iobroker.aquaclean-bridge`, category *household*) is the easiest: every standard entity becomes a state with a fixed id, role and names in 11 languages. Over MQTT, use ioBroker's MQTT adapter. See [docs/routes.md](docs/routes.md#iobroker).
-- **Homey:** the native API route is the easiest. On a Homey Pro, the AquaClean Bridge app (in [`homey/`](homey), installed with the Homey CLI from the [release zip](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/releases?q=homey&expanded=true)) gives every standard entity its own flow cards; a Homey ESPHome app works too. Over MQTT, Homey does not ingest Home Assistant discovery, so map the bridge's topics to Homey devices/flows by hand with the MQTT Client app. See [docs/routes.md](docs/routes.md#homey) and [Install the Homey app](docs/routes.md#install-the-homey-app).
+- **Node-RED:** import the ready-made flow in [`nodered/`](nodered "The ready-made Node-RED flow for the MQTT route, with a fixed topic for every entity.") (`flow.json`; how it works in its [README](nodered/README.md "How the Node-RED flow works, its topics and commands, and the remote control button events.")): every entity becomes a message with a fixed `msg.topic` in any firmware language, commands go through one link node, and the remote control buttons arrive as events. Or use your own `mqtt in` and `mqtt out` nodes on the bridge's topics: states are published under `<name>/<component>/<entity>/state`, commands go to `.../command`.
+- **ioBroker:** the native API route with the [AquaClean Bridge adapter](https://github.com/barloew/ioBroker.aquaclean-bridge "The AquaClean Bridge adapter for ioBroker over the native API, in its own repository.") (`iobroker.aquaclean-bridge`, category *household*) is the easiest: every standard entity becomes a state with a fixed id, role and names in 11 languages. Over MQTT, use ioBroker's MQTT adapter. See [docs/routes.md](docs/routes.md#iobroker "ioBroker over the native API with the AquaClean Bridge adapter, or over MQTT with the MQTT adapter.").
+- **Homey:** the native API route is the easiest. On a Homey Pro, the AquaClean Bridge app (in [`homey/`](homey "Source of the AquaClean Bridge app for Homey Pro, with flow cards for every standard entity."), installed with the Homey CLI from the [release zip](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/releases?q=homey&expanded=true "Releases with the Homey app zip, to install with the Homey CLI.")) gives every standard entity its own flow cards; a Homey ESPHome app works too. Over MQTT, Homey does not ingest Home Assistant discovery, so map the bridge's topics to Homey devices/flows by hand with the MQTT Client app. See [docs/routes.md](docs/routes.md#homey "Homey over the native API with the AquaClean Bridge app or an ESPHome app, or over MQTT by hand.") and [Install the Homey app](docs/routes.md#install-the-homey-app "Step by step, how to install the AquaClean Bridge app on a Homey Pro with the Homey CLI.").
 
 ### Packages
 
@@ -513,7 +513,7 @@ Shower, Lady shower and dryer only start while someone is seated, whichever way 
 
 Settings don't need anyone seated. Session settings can be written before sitting down; the toilet keeps them for the next session (that's how a recognized user's profile is loaded in advance). Profiles can be changed and stored at any time, from the bridge or the app. Only the quick store on the front of the remote control (long press of a profile key) stores the settings that are active at that moment, so in practice that one is used while seated.
 
-The functions and settings follow the Geberit Home app 2.14.2; those on the Sela are validated on a real toilet. See [`docs/protocol.md`](docs/protocol.md) for a function-level overview.
+The functions and settings follow the Geberit Home app 2.14.2; those on the Sela are validated on a real toilet. See [`docs/protocol.md`](docs/protocol.md "A function-level overview of how the bridge talks to the toilet, without protocol internals.") for a function-level overview.
 
 ### Renaming or hiding entities
 
@@ -672,9 +672,9 @@ The **In this bridge** column: ✓ supported (Series 248 protocol); ✗ not reac
 | AquaClean 4000 | 146.13x | None: no app and no remote control, can't be reached | ✗ not reachable |
 | **AquaClean Alba** | 146.350, 146.351 | Shower only — jet strength (5 levels) and oscillation on the remote; arm position (5 levels), water temperature (5 levels) and water heating in the app; descaling; SoftClosing (mechanical) lid. No lady shower, dryer, odor extraction, orientation light or flush actuation. | ✗ Series 250 |
 
-**Series 250 (Alba)** is not supported here: the Geberit Home app runs it on its newer platform with the encrypted **protocol v2**, unlike the cleartext Series 248 protocol that this bridge speaks. The functions above are listed so you know what the model does, but this ESP component cannot talk to it. A separate, experimental dual-role ESP bridge for the Alba lives in the [`series-250-bridge` branch](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/tree/series-250-bridge) (its own ESP-IDF/NimBLE firmware); see [`docs/models.md`](docs/models.md) for the Alba's datapoints.
+**Series 250 (Alba)** is not supported here: the Geberit Home app runs it on its newer platform with the encrypted **protocol v2**, unlike the cleartext Series 248 protocol that this bridge speaks. The functions above are listed so you know what the model does, but this ESP component cannot talk to it. A separate, experimental dual-role ESP bridge for the Alba lives in the [`series-250-bridge` branch](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/tree/series-250-bridge "Experimental bridge for the AquaClean Alba (Series 250), kept in its own branch.") (its own ESP-IDF/NimBLE firmware); see [`docs/models.md`](docs/models.md "Which entities each AquaClean model gets, and where that knowledge comes from.") for the Alba's datapoints.
 
-The Sela is validated on a toilet. The other Series 248 models are supported: their ids come from the Geberit Home app, which uses the same protocol for all Series 248 models, and feature discovery shows what each toilet has. See [`docs/models.md`](docs/models.md) for the entities per model.
+The Sela is validated on a toilet. The other Series 248 models are supported: their ids come from the Geberit Home app, which uses the same protocol for all Series 248 models, and feature discovery shows what each toilet has. See [`docs/models.md`](docs/models.md "Which entities each AquaClean model gets, and where that knowledge comes from.") for the entities per model.
 
 </details>
 
@@ -712,7 +712,7 @@ A practical route for a new model:
 
 </details>
 
-Please [open an issue](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/issues) with the discovery output of your model.
+Please [open an issue](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/issues "Report a bug, share the discovery output of a new model, or ask a question.") with the discovery output of your model.
 
 </details>
 
@@ -773,13 +773,13 @@ Arabic, Hebrew, Russian, Ukrainian, Chinese and Korean use no Latin letters, whi
 - **Finding the toilet.** `toilet_mac` is optional. Without it, the bridge looks for Geberit toilets, waits 10 s and takes the one with the strongest signal. **Search for a nearby toilet** forgets it and searches again. Other bridges advertise like a toilet too, so place each bridge closest to its own toilet or set `toilet_mac`.
 - **Finding the remote control.** `remote_mac` is optional. The device that pairs while **Pair remote control** is on is stored as the remote control; **Unpair remote control** removes it.
 - **Requirements.** ESPHome 2026.10 or newer, with ESP-IDF.
-- **Updating.** Web installer: install the new version from the same page without erasing the device (settings stay), or upload the `.ota.bin` on the bridge's web page. ESPHome YAML: change the version in the `github://…@vX.Y.Z` lines and install. With a local copy of the project, use **Clean Build Files** in the ESPHome dashboard after replacing it, otherwise ESPHome may keep building old files. See [`CHANGELOG.md`](CHANGELOG.md) for what changed.
+- **Updating.** Web installer: install the new version from the same page without erasing the device (settings stay), or upload the `.ota.bin` on the bridge's web page. ESPHome YAML: change the version in the `github://…@vX.Y.Z` lines and install. With a local copy of the project, use **Clean Build Files** in the ESPHome dashboard after replacing it, otherwise ESPHome may keep building old files. See [`CHANGELOG.md`](CHANGELOG.md "What changed in each release.") for what changed.
 - **Orientation light changes** are written to both the stored and the active value, so the light changes at once, also when the change comes from the app.
 - **Logs.** The bridge keeps no log files: the log is a live stream (dashboard, web interface). The component's log follows `language:`; ESPHome's own messages stay English. `ble_device_base: INFO` under `logger: logs:` hides ESPHome's messages about other Apple devices nearby.
 - **Sharing a log in a public issue.** Set `log_obfuscate: "true"` (substitution) to mask Bluetooth addresses, user names, linked devices, the serial number and keys down to their last four characters. Copy the log from the bridge's web interface: the `[S]` lines of the ESPHome log viewer are not masked.
 - **Timeouts.** An unanswered request is retried once before it counts; a single missed status poll is left to the next poll. Around 1% missed polls is normal with Wi-Fi and Bluetooth on one radio.
 - **Bond watchdog.** If the bond with the toilet disappears while connected, the bridge reconnects within 30 s.
-- **Protocol.** A function-level overview is in [`docs/protocol.md`](docs/protocol.md); its sources are listed in [`docs/SOURCES.md`](docs/SOURCES.md). The reverse-engineering internals are kept private, outside this repository.
+- **Protocol.** A function-level overview is in [`docs/protocol.md`](docs/protocol.md "A function-level overview of how the bridge talks to the toilet, without protocol internals."); its sources are listed in [`docs/SOURCES.md`](docs/SOURCES.md "Where the knowledge in the code comes from, from third-party projects to Geberit's app and manuals."). The reverse-engineering internals are kept private, outside this repository.
 
 </details>
 
@@ -792,7 +792,7 @@ Arabic, Hebrew, Russian, Ukrainian, Chinese and Korean use no Latin letters, whi
 
 </summary><a id="open-other-aquaclean-integrations"></a>
 
-This isn't the only way to bring a Geberit AquaClean into home automation — **jens62/geberit-aquaclean** (Python, MQTT/HACS) and **torp93/homey-geberit-aquaclean** (a Homey app) are both good, mature projects, worth a look depending on your setup. If you want to understand how this project's bridge architecture differs from a client-based integration — real-time instead of polled, and the remote, app and automation all connected at once — there's an objective write-up: [How this bridge compares](docs/comparison.md).
+This isn't the only way to bring a Geberit AquaClean into home automation — **jens62/geberit-aquaclean** (Python, MQTT/HACS) and **torp93/homey-geberit-aquaclean** (a Homey app) are both good, mature projects, worth a look depending on your setup. If you want to understand how this project's bridge architecture differs from a client-based integration — real-time instead of polled, and the remote, app and automation all connected at once — there's an objective write-up: [How this bridge compares](docs/comparison.md "An objective comparison with the other AquaClean integrations, a real-time bridge versus a polling client.").
 
 </details>
 
@@ -811,7 +811,7 @@ This project is an independent, unofficial open-source initiative and is **not**
 
 Any use of these names or marks in this repository is solely for **nominative and descriptive purposes**, such as identifying compatible hardware, models, or protocols. It does not imply any official association, partnership, or approval. All other trademarks remain the property of their respective owners.
 
-The logos of ESPHome, Home Assistant, Homey, ioBroker, openHAB, Node-RED, Domoticz, MQTT and Espressif in the overview image and the badges belong to their owners. They are used unmodified, only to show compatibility, and are not covered by this project's license; no Geberit, Apple, Bluetooth or Wi-Fi logos are used. See [Logos](THIRD_PARTY_NOTICES.md#logos).
+The logos of ESPHome, Home Assistant, Homey, ioBroker, openHAB, Node-RED, Domoticz, MQTT and Espressif in the overview image and the badges belong to their owners. They are used unmodified, only to show compatibility, and are not covered by this project's license; no Geberit, Apple, Bluetooth or Wi-Fi logos are used. See [Logos](THIRD_PARTY_NOTICES.md#logos "Third-party components, embedded assets and logos, with their owners and licenses.").
 
 The Node-RED icon is by **Nick O'Leary** (OpenJS Foundation), licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). It is used unmodified.
 
@@ -828,7 +828,7 @@ This software is provided "as is", without warranty of any kind. Use at your own
 
 </summary><a id="open-license"></a>
 
-See [LICENSE](LICENSE). Third-party components, embedded assets and trademark notices are listed in
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+See [LICENSE](LICENSE "The MIT license of this project."). Third-party components, embedded assets and trademark notices are listed in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md "Third-party components, embedded assets and logos, with their owners and licenses.").
 
 </details>

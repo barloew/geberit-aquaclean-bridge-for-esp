@@ -18,6 +18,7 @@ section whose <summary> holds a Markdown heading:
 4. Hover texts from tools/readme_tooltips.yaml go on the collapsed heading
    (`## <span title="...">Hardware</span>`) and on every in-page link to that section: the
    navigation line, the step cards and links in the text. Back links (text starting with ↑) get none.
+5. Links to other files and pages get their hover text from the `links:` table in the same file.
 
 Plain links from elsewhere (`#hardware`) still land on the heading, just with the section closed.
 Back links (`#installation`, `#contents`) point outside any <details> and are left alone.
@@ -42,11 +43,19 @@ TITLED = re.compile(r'^<span title="[^"]*">(.*)</span>$')
 
 
 def load_tooltips(path=TOOLTIPS):
-    tips = yaml.safe_load(path.read_text()) or {}
-    for key, text in tips.items():
-        if not isinstance(text, str) or '"' in text or "\n" in text.strip():
-            sys.exit(f"{path}: '{key}' must be one line of plain text without double quotes")
-    return {k: " ".join(v.split()) for k, v in tips.items()}
+    """Section texts keyed by heading slug, plus link texts under `links:` keyed by link target."""
+    data = yaml.safe_load(path.read_text()) or {}
+    links = data.pop("links", None) or {}
+
+    def clean(table):
+        for key, text in table.items():
+            if not isinstance(text, str) or '"' in text or "\n" in text.strip():
+                sys.exit(f"{path}: '{key}' must be one line of plain text without double quotes")
+        return {k: " ".join(v.split()) for k, v in table.items()}
+
+    tips = clean(data)
+    tips["links"] = clean(links)
+    return tips
 
 
 def slug(heading):
@@ -159,7 +168,35 @@ def fix(text, tips=None):
         return f'<a{attrs} href="#{frag}"{title}{rest}>'
 
     text = re.sub(r'\[([^\]]*)\]\(#([^)\s]+)(?:\s+"[^"]*")?\)', md, text)
-    return re.sub(r'<a([^>]*?)\s+href="#([^"]+)"([^>]*)>', tag, text)
+    text = re.sub(r'<a([^>]*?)\s+href="#([^"]+)"([^>]*)>', tag, text)
+
+    # Links to other files and pages: text from `links:`, by exact target or target without #fragment.
+    links = tips.get("links", {})
+
+    def link_tip(target):
+        return links.get(target) or links.get(target.split("#", 1)[0])
+
+    def md_ext(m):
+        bang, label, target = m.group(1), m.group(2), m.group(3)
+        tip = None if bang else link_tip(target)
+        return f'[{label}]({target} "{tip}")' if tip else m.group(0)
+
+    def tag_ext(m):
+        attrs, target, rest = m.group(1), m.group(2), m.group(3)
+        tip = link_tip(target)
+        if not tip:
+            return m.group(0)
+        attrs = re.sub(r'\s+title="[^"]*"', "", attrs)
+        rest = re.sub(r'\s+title="[^"]*"', "", rest)
+        return f'<a{attrs} href="{target}" title="{html.escape(tip, quote=False)}"{rest}>'
+
+    text = re.sub(r'(!?)\[([^\]]*)\]\(([^)#\s][^)\s]*)(?:\s+"[^"]*")?\)', md_ext, text)
+    return re.sub(r'<a([^>]*?)\s+href="([^#"][^"]*)"([^>]*)>', tag_ext, text)
+
+
+def unused_links(text, tips):
+    """Link targets in readme_tooltips.yaml that no longer occur in the README."""
+    return [t for t in tips.get("links", {}) if f"({t}" not in text and f'href="{t}"' not in text]
 
 
 def main():
@@ -167,6 +204,9 @@ def main():
     readme = Path(args[0]) if args else ROOT / "README.md"
     text = readme.read_text()
     new = fix(text)
+    stale = unused_links(new, load_tooltips())
+    if stale:
+        sys.exit(f"{TOOLTIPS}: link targets not in {readme.name}: {', '.join(stale)}")
     if "--check" in sys.argv:
         if new != text:
             sys.exit(f"{readme}: links to collapsed sections are not up to date; run tools/readme_anchors.py")
