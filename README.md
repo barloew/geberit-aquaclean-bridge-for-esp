@@ -20,21 +20,21 @@
   <a href="#user-content-connecting-over-mqtt"><img src="images/badges/openhab-mqtt.svg" alt="openHAB over MQTT"></a>
   <a href="#user-content-connecting-over-mqtt"><img src="images/badges/node-red-mqtt.svg" alt="Node-RED over MQTT"></a>
   <a href="#user-content-connecting-over-mqtt"><img src="images/badges/domoticz-mqtt.svg" alt="Domoticz over MQTT"></a>
-  <a href="#user-content-open-apple-home-homekit-optional"><img src="images/badges/apple-home.svg" alt="Apple Home, optional, also stand-alone"></a>
+  <a href="#user-content-open-apple-home-homekit-optional" title="The bridge as an Apple Home accessory with Siri, alongside a route or stand-alone."><img src="images/badges/apple-home.svg" alt="Apple Home, optional, also stand-alone"></a>
 </p>
 
 <a name="contents"></a>
 
-**[Installation](#installation)** · **[AquaClean Models](#user-content-open-models-and-feature-discovery)** · **[Hardware](#user-content-open-hardware)** · **[Users](#user-content-open-users)** · **[Entities](#user-content-open-entities)** · **[Apple Home](#user-content-open-apple-home-homekit-optional)** · **[29 Languages](#user-content-open-languages)** · **[Disclaimer](#user-content-open-trademark--legal-disclaimer)**
+**[Installation](#installation "Eight steps from checking your model to Apple Home, starting in the browser.")** · **[AquaClean Models](#user-content-open-models-and-feature-discovery "Which AquaClean models work, and how the bridge shows only what your model has.")** · **[Hardware](#user-content-open-hardware "Supported boards, their status LEDs and buttons.")** · **[Users](#user-content-open-users "Six profiles, recognized by a linked phone, watch or tracker. Profiles 1–3 live in the toilet, 4–6 on the bridge.")** · **[Entities](#user-content-open-entities "Every device and entity the bridge exposes, the same on both routes.")** · **[Apple Home](#user-content-open-apple-home-homekit-optional "The bridge as an Apple Home accessory with Siri, alongside a route or stand-alone.")** · **[29 Languages](#user-content-open-languages "Entity names in your language, in Geberit's own terminology. How to choose or add a language.")** · **[Disclaimer](#user-content-open-trademark--legal-disclaimer "Independent, unofficial project, not affiliated with Geberit. Use at your own risk.")**
 
 **Geberit AquaClean Bridge for ESP** makes your **Geberit AquaClean shower toilet** personal and brings it into your smart home. It recognizes who is approaching and loads their personal profile automatically. No need to press a user key on the remote.
 
 Out of the box, the Geberit AquaClean shower toilet supports only one Bluetooth connection at a time. Running on an ESP32, the Geberit AquaClean Bridge keeps one persistent, fully local connection to the toilet. It bridges it to Home Assistant over the ESPHome native API — also usable by other systems that speak it, such as Homey and ioBroker (each with its own AquaClean Bridge app or adapter) — or to any home automation system via MQTT, such as openHAB, Node-RED or Domoticz. It can also add Apple HomeKit support. Meanwhile, the AquaClean remote control and one Geberit Home app stay connected alongside it.
 
 > [!IMPORTANT]
-> The Geberit AquaClean Bridge requires a **dedicated ESP32-S3 with at least 8 MB flash** (see [Hardware](#user-content-open-hardware)), installed close to the Geberit AquaClean shower toilet. A Bluetooth signal strength of around -60 dBm is ideal; -80 dBm is the minimum. The spot also needs USB power and Wi-Fi (2.4 GHz). Check that this is possible at your location before you start.
+> The Geberit AquaClean Bridge requires a **dedicated ESP32-S3 with at least 8 MB flash** (see [Hardware](#user-content-open-hardware "Supported boards, their status LEDs and buttons.")), installed close to the Geberit AquaClean shower toilet. A Bluetooth signal strength of around -60 dBm is ideal; -80 dBm is the minimum. The spot also needs USB power and Wi-Fi (2.4 GHz). Check that this is possible at your location before you start.
 >
-> Validated on the **AquaClean Sela**. Mera, Tuma and Cama are supported through feature discovery. The AquaClean 4000 and the AquaClean Alba (Geberit's newer platform, Series 250) are not supported. See [Check your model](#user-content-open-step-1-check-your-model).
+> Validated on the **AquaClean Sela**. Mera, Tuma and Cama are supported through feature discovery. The AquaClean 4000 and the AquaClean Alba (Geberit's newer platform, Series 250) are not supported. See [Check your model](#user-content-open-step-1-check-your-model "Sela is validated; Mera, Tuma and Cama are supported. The article number is on the type plate or in the Geberit Home app.").
 
 ## Highlights
 
@@ -55,29 +55,29 @@ Out of the box, the Geberit AquaClean shower toilet supports only one Bluetooth 
 
 <!-- steps:begin -->
 <p align="center">
-  <a href="#user-content-open-step-1-check-your-model"><img src="images/steps/step-1.svg" width="24%" alt="Step 1: Check your model"></a>
-  <a href="#user-content-open-step-2-find-and-test-the-spot"><img src="images/steps/step-2.svg" width="24%" alt="Step 2: Find and test the spot"></a>
-  <a href="#user-content-open-step-3-choose-your-board"><img src="images/steps/step-3.svg" width="24%" alt="Step 3: Choose your board"></a>
-  <a href="#user-content-open-step-4-choose-your-route"><img src="images/steps/step-4.svg" width="24%" alt="Step 4: Choose your route"></a>
+  <a href="#user-content-open-step-1-check-your-model" title="Sela is validated; Mera, Tuma and Cama are supported. The article number is on the type plate or in the Geberit Home app."><img src="images/steps/step-1.svg" width="24%" alt="Step 1: Check your model"></a>
+  <a href="#user-content-open-step-2-find-and-test-the-spot" title="The spot by the toilet needs Bluetooth (-60 dBm ideal, -80 dBm minimum), USB power and 2.4 GHz Wi-Fi."><img src="images/steps/step-2.svg" width="24%" alt="Step 2: Find and test the spot"></a>
+  <a href="#user-content-open-step-3-choose-your-board" title="Any ESP32-S3 with at least 8 MB flash, one per toilet. The M5Stack AtomS3 Lite is recommended."><img src="images/steps/step-3.svg" width="24%" alt="Step 3: Choose your board"></a>
+  <a href="#user-content-open-step-4-choose-your-route" title="Native API (Home Assistant, Homey, ioBroker) or MQTT (openHAB, Node-RED, Domoticz, Home Assistant). Same entities, pick one."><img src="images/steps/step-4.svg" width="24%" alt="Step 4: Choose your route"></a>
 </p>
 
 <p align="center">
-  <a href="#user-content-open-step-5-install-the-firmware"><img src="images/steps/step-5.svg" width="24%" alt="Step 5: Install the firmware"></a>
-  <a href="#user-content-open-step-6-pair-toilet-remote-and-app"><img src="images/steps/step-6.svg" width="24%" alt="Step 6: Pair toilet, remote and app"></a>
-  <a href="#user-content-open-step-7-set-up-your-users"><img src="images/steps/step-7.svg" width="24%" alt="Step 7: Set up your users"></a>
-  <a href="#user-content-open-step-8-add-apple-home"><img src="images/steps/step-8.svg" width="24%" alt="Step 8: Add Apple Home"></a>
+  <a href="#user-content-open-step-5-install-the-firmware" title="Flash from the browser in Chrome or Edge over USB, then set up your route on the bridge's web page."><img src="images/steps/step-5.svg" width="24%" alt="Step 5: Install the firmware"></a>
+  <a href="#user-content-open-step-6-pair-toilet-remote-and-app" title="Pair the bridge with the toilet first, then the remote control and the Geberit Home app."><img src="images/steps/step-6.svg" width="24%" alt="Step 6: Pair toilet, remote and app"></a>
+  <a href="#user-content-open-step-7-set-up-your-users" title="Up to six profiles: link a phone, watch or tracker, pick a welcome light color and tune the range."><img src="images/steps/step-7.svg" width="24%" alt="Step 7: Set up your users"></a>
+  <a href="#user-content-open-step-8-add-apple-home" title="Optional, also without any other system: turn on the Apple Home switch and add the accessory in the Home app."><img src="images/steps/step-8.svg" width="24%" alt="Step 8: Add Apple Home"></a>
 </p>
 
 <details>
 <summary>
 
-### Step 1: Check your model
+### <span title="Sela is validated; Mera, Tuma and Cama are supported. The article number is on the type plate or in the Geberit Home app.">Step 1: Check your model</span>
 
 <sub>[↑ back to Installation](#installation)</sub>
 
 </summary><a id="open-step-1-check-your-model"></a>
 
-Find the article number on the type plate or in the Geberit Home app and look it up in [Models and feature discovery](#user-content-open-models-and-feature-discovery).
+Find the article number on the type plate or in the Geberit Home app and look it up in [Models and feature discovery](#user-content-open-models-and-feature-discovery "Which AquaClean models work, and how the bridge shows only what your model has.").
 
 - **Validated:** AquaClean Sela.
 - **Supported:** AquaClean Mera Comfort, Mera Classic (also floor-standing), Tuma Comfort and Tuma Classic (seat, complete and floor-standing), and Cama. Feature discovery shows only what your toilet supports.
@@ -85,14 +85,14 @@ Find the article number on the type plate or in the Geberit Home app and look it
   - AquaClean 4000: it has no app and no remote control.
   - AquaClean Alba: it runs on Geberit's newer platform (Series 250), whose encrypted protocol v2 the bridge doesn't speak. There is a separate, experimental ESP bridge for the Alba in the [`series-250-bridge` branch](https://github.com/barloew/geberit-aquaclean-bridge-for-esp/tree/series-250-bridge).
 
-Have a different model? See [Supporting other models](#user-content-open-supporting-other-models).
+Have a different model? See [Supporting other models](#user-content-open-supporting-other-models "Discovery tools to find out what an untested model supports, without a sniffer.").
 
 </details>
 
 <details>
 <summary>
 
-### Step 2: Find and test the spot
+### <span title="The spot by the toilet needs Bluetooth (-60 dBm ideal, -80 dBm minimum), USB power and 2.4 GHz Wi-Fi.">Step 2: Find and test the spot</span>
 
 <sub>[↑ back to Installation](#installation)</sub>
 
@@ -110,7 +110,7 @@ To test a spot before buying anything, use a Bluetooth scanner app on your phone
 <details>
 <summary>
 
-### Step 3: Choose your board
+### <span title="Any ESP32-S3 with at least 8 MB flash, one per toilet. The M5Stack AtomS3 Lite is recommended.">Step 3: Choose your board</span>
 
 <sub>[↑ back to Installation](#installation)</sub>
 
@@ -121,18 +121,18 @@ The bridge needs an ESP32-S3 with **at least 8 MB flash**, dedicated to the brid
 | Board | Package | Status |
 |---|---|---|
 | M5Stack AtomS3 Lite | `board-atoms3-lite.yaml` | Recommended, validated on hardware |
-| LilyGo T-Dongle-S3 | `board-lilygo-tdongle-s3.yaml` | Validated on hardware. 16 MB flash, no PSRAM; MQTT + HomeKit at once is tight here (see [Apple Home](#user-content-open-apple-home-homekit-optional)). |
+| LilyGo T-Dongle-S3 | `board-lilygo-tdongle-s3.yaml` | Validated on hardware. 16 MB flash, no PSRAM; MQTT + HomeKit at once is tight here (see [Apple Home](#user-content-open-apple-home-homekit-optional "The bridge as an Apple Home accessory with Siri, alongside a route or stand-alone.")). |
 | M5Stack AtomS3R | `board-atoms3r.yaml` | Builds, not yet tested on hardware. Has PSRAM. |
 | Seeed XIAO ESP32S3 (also Plus) | `board-xiao-esp32s3.yaml` | Builds, not yet tested on hardware. Connect the included U.FL antenna. |
 
-The web installer has firmware for all four. Any other ESP32-S3 with at least 8 MB flash works too over ESPHome YAML — set the `board:` line directly. In ESPHome YAML you pick a board package with the `board:` include, for example `.../packages/board-atoms3r.yaml@v1.37.0`. See [Hardware](#user-content-open-hardware) for status indicators and buttons per board.
+The web installer has firmware for all four. Any other ESP32-S3 with at least 8 MB flash works too over ESPHome YAML — set the `board:` line directly. In ESPHome YAML you pick a board package with the `board:` include, for example `.../packages/board-atoms3r.yaml@v1.37.0`. See [Hardware](#user-content-open-hardware "Supported boards, their status LEDs and buttons.") for status indicators and buttons per board.
 
 </details>
 
 <details>
 <summary>
 
-### Step 4: Choose your route
+### <span title="Native API (Home Assistant, Homey, ioBroker) or MQTT (openHAB, Node-RED, Domoticz, Home Assistant). Same entities, pick one.">Step 4: Choose your route</span>
 
 <sub>[↑ back to Installation](#installation)</sub>
 
@@ -148,22 +148,22 @@ Both routes give the same devices and entities. Pick one; never both.
 | Web interface on the ESP | Installer image: yes (`/setup`, `/homekit`); YAML: add `web.yaml` | Yes |
 | Apple Home (HomeKit) | In every image; start with the Apple Home switch | In every image; start with the Apple Home switch |
 
-**Only Apple Home?** HomeKit needs no route. Flash either image, skip the route setup in [Step 5](#user-content-open-step-5-install-the-firmware), and turn on the **Apple Home** switch ([Step 8](#user-content-open-step-8-add-apple-home)).
+**Only Apple Home?** HomeKit needs no route. Flash either image, skip the route setup in [Step 5](#user-content-open-step-5-install-the-firmware "Flash from the browser in Chrome or Edge over USB, then set up your route on the bridge's web page."), and turn on the **Apple Home** switch ([Step 8](#user-content-open-step-8-add-apple-home "Optional, also without any other system: turn on the Apple Home switch and add the accessory in the Home app.")).
 
-See [Two routes: ESPHome or MQTT](#user-content-open-two-routes-esphome-or-mqtt) for all differences.
+See [Two routes: ESPHome or MQTT](#user-content-open-two-routes-esphome-or-mqtt "What each route reaches, how its devices are grouped, and how to connect over MQTT.") for all differences.
 
 </details>
 
 <details>
 <summary>
 
-### Step 5: Install the firmware
+### <span title="Flash from the browser in Chrome or Edge over USB, then set up your route on the bridge's web page.">Step 5: Install the firmware</span>
 
 <sub>[↑ back to Installation](#installation)</sub>
 
 </summary><a id="open-step-5-install-the-firmware"></a>
 
-Open the [web installer](https://barloew.github.io/geberit-aquaclean-bridge-for-esp/) in Chrome or Edge, connect the board with USB, choose your **route**, [board](#user-content-open-hardware) and [language](#user-content-open-languages), press **Install** and enter your Wi-Fi in the same window. If the bridge knows no Wi-Fi later on, it opens the hotspot **AquaClean Setup** (captive portal).
+Open the [web installer](https://barloew.github.io/geberit-aquaclean-bridge-for-esp/) in Chrome or Edge, connect the board with USB, choose your **route**, [board](#user-content-open-hardware "Supported boards, their status LEDs and buttons.") and [language](#user-content-open-languages "Entity names in your language, in Geberit's own terminology. How to choose or add a language."), press **Install** and enter your Wi-Fi in the same window. If the bridge knows no Wi-Fi later on, it opens the hotspot **AquaClean Setup** (captive portal).
 
 #### Native API
 
@@ -179,10 +179,10 @@ Open the [web installer](https://barloew.github.io/geberit-aquaclean-bridge-for-
 
 #### HomeKit only (stand-alone)
 
-No home automation system? Flash either image and skip the route setup above. Open the bridge's web page (`http://aquaclean-xxxxxx.local`), turn on the **Apple Home** switch, and add the accessory in the Home app — see [Step 8](#user-content-open-step-8-add-apple-home). For the toilet to recognize you and load your profile, also capture your IRK ([Step 7](#user-content-open-step-7-set-up-your-users)).
+No home automation system? Flash either image and skip the route setup above. Open the bridge's web page (`http://aquaclean-xxxxxx.local`), turn on the **Apple Home** switch, and add the accessory in the Home app — see [Step 8](#user-content-open-step-8-add-apple-home "Optional, also without any other system: turn on the Apple Home switch and add the accessory in the Home app."). For the toilet to recognize you and load your profile, also capture your IRK ([Step 7](#user-content-open-step-7-set-up-your-users "Up to six profiles: link a phone, watch or tracker, pick a welcome light color and tune the range.")).
 
 > [!IMPORTANT]
-> The ready-made firmware has no password on its web page and on firmware updates, and no TLS: anyone on your network can open the page. For a web-page password, encrypted MQTT (`web_auth.yaml`, `mqtt_tls.yaml`), or a compile-time API key, build with ESPHome YAML instead: copy [`examples/atoms3-lite.yaml`](examples/atoms3-lite.yaml) — it fits every board: set the `board:` line, `route:` and your [language](#user-content-open-languages) — fill in `secrets.yaml`, and flash with ESPHome 2026.10 or newer. On the native API route, HA's *Allow the device to perform Home Assistant actions* enables the Show IRK notification.
+> The ready-made firmware has no password on its web page and on firmware updates, and no TLS: anyone on your network can open the page. For a web-page password, encrypted MQTT (`web_auth.yaml`, `mqtt_tls.yaml`), or a compile-time API key, build with ESPHome YAML instead: copy [`examples/atoms3-lite.yaml`](examples/atoms3-lite.yaml) — it fits every board: set the `board:` line, `route:` and your [language](#user-content-open-languages "Entity names in your language, in Geberit's own terminology. How to choose or add a language.") — fill in `secrets.yaml`, and flash with ESPHome 2026.10 or newer. On the native API route, HA's *Allow the device to perform Home Assistant actions* enables the Show IRK notification.
 
 > [!NOTE]
 > Only one bridge may run per toilet. Switch off any previous ESP first.
@@ -192,7 +192,7 @@ No home automation system? Flash either image and skip the route setup above. Op
 <details>
 <summary>
 
-### Step 6: Pair toilet, remote and app
+### <span title="Pair the bridge with the toilet first, then the remote control and the Geberit Home app.">Step 6: Pair toilet, remote and app</span>
 
 <sub>[↑ back to Installation](#installation)</sub>
 
@@ -209,7 +209,7 @@ A new ESP has a new Bluetooth address, so after moving to new hardware all three
 <details>
 <summary>
 
-### Step 7: Set up your users
+### <span title="Up to six profiles: link a phone, watch or tracker, pick a welcome light color and tune the range.">Step 7: Set up your users</span>
 
 <sub>[↑ back to Installation](#installation)</sub>
 
@@ -218,7 +218,7 @@ A new ESP has a new Bluetooth address, so after moving to new hardware all three
 For each of the up to six profiles:
 
 1. **Name the user** (optional) with **User**.
-2. **Link a device.** Press **Capture IRK** in the profile and pair your phone, watch or tracker with the bridge within two minutes. Or link a device Home Assistant already knows. See [Users](#user-content-open-users).
+2. **Link a device.** Press **Capture IRK** in the profile and pair your phone, watch or tracker with the bridge within two minutes. Or link a device Home Assistant already knows. See [Users](#user-content-open-users "Six profiles, recognized by a linked phone, watch or tracker. Profiles 1–3 live in the toilet, 4–6 on the bridge.").
 3. **Pick a welcome light color** with **Welcome light**.
 4. **Tune the range** if needed with **User recognition signal strength**: -60 dBm by default, around -80 dBm for a phone in a pocket.
 
@@ -227,7 +227,7 @@ For each of the up to six profiles:
 <details>
 <summary>
 
-### Step 8: Add Apple Home
+### <span title="Optional, also without any other system: turn on the Apple Home switch and add the accessory in the Home app.">Step 8: Add Apple Home</span>
 
 <sub>[↑ back to Installation](#installation)</sub>
 
@@ -241,7 +241,7 @@ geberit_aquaclean:
     enabled: true
 ```
 
-Then add the accessory in the Home app with the setup code or QR code. The Home app warns about an uncertified accessory; that's expected. The **HomeKit code** sensor and the page `http://<esp>/homekit` show the setup code on every route. See [Apple Home](#user-content-open-apple-home-homekit-optional) for all options.
+Then add the accessory in the Home app with the setup code or QR code. The Home app warns about an uncertified accessory; that's expected. The **HomeKit code** sensor and the page `http://<esp>/homekit` show the setup code on every route. See [Apple Home](#user-content-open-apple-home-homekit-optional "The bridge as an Apple Home accessory with Siri, alongside a route or stand-alone.") for all options.
 
 </details>
 <!-- steps:end -->
@@ -249,7 +249,7 @@ Then add the accessory in the Home app with the setup code or QR code. The Home 
 <details>
 <summary>
 
-## Hardware
+## <span title="Supported boards, their status LEDs and buttons.">Hardware</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -314,7 +314,7 @@ A single orange LED shows the status as a pattern. The button is BOOT (GPIO0). T
 <details>
 <summary>
 
-## Two routes: ESPHome or MQTT
+## <span title="What each route reaches, how its devices are grouped, and how to connect over MQTT.">Two routes: ESPHome or MQTT</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -366,7 +366,7 @@ The bridge appears as one ESPHome device with its sub-devices:
 
 <img src="images/user-interface/native-api-user-profile-1.png" width="100%" alt="Native API: device User profile 1">
 
-**Physical maintenance** (only while it is unlocked, see [Physical maintenance](#user-content-open-physical-maintenance))
+**Physical maintenance** (only while it is unlocked, see [Physical maintenance](#user-content-open-physical-maintenance "Descaling, arm cleaning, calibration and filter replacement, unlocked at the toilet with the remote."))
 
 <img src="images/user-interface/native-api-physical-maintenance.png" width="100%" alt="Native API: device Physical maintenance">
 
@@ -416,7 +416,7 @@ The bridge announces itself with MQTT discovery (prefix `homeassistant`), so mos
 <details>
 <summary>
 
-## Users
+## <span title="Six profiles, recognized by a linked phone, watch or tracker. Profiles 1–3 live in the toilet, 4–6 on the bridge.">Users</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -484,7 +484,7 @@ Normally the bridge listens 30 ms of every 320 ms, so a phone is heard every few
 <details>
 <summary>
 
-## Entities
+## <span title="Every device and entity the bridge exposes, the same on both routes.">Entities</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -498,9 +498,9 @@ Your home automation system shows nine devices, whichever route you use (names f
 | **AquaClean Toilet** | Orientation light (on/off, 7 colors, 5 levels), next descaling in, showers today, last descaling, number of descalings, error code, toilet fault (an alarm), arm cleaning status, days until filter change. **Configuration:** default shower settings, light activation (off / on / automatic / time-controlled), color, brightness, run-on time, two time windows, water hardness, demo mode. **Diagnostics:** model, article number, serial number, production date, commissioning, device type, firmware, toilet signal, address, reconnections, connected since, last error code, arm cleaning status, spray calibration, showers until unlock, descaling requested since, registration. Disabled by default: the discovery entities (raw status, last response, raw request, toilet advertisement, procedures seen, scan settings). |
 | **Active session** | User detected, shower / Lady shower active, start/stop buttons, stop shower and dryer, spray intensity and arm position (both showers), water temperature, oscillating spray, activate / store profile 1–6, remote control connected and button event, Geberit Home app connected, recognized user, active user. |
 | **User profile 1–6** | The profile's shower settings, clear profile, user, Home Assistant device, welcome light, capture IRK, enter IRK, recognized, seated, signal. **Diagnostics:** IRK (last four digits), show IRK. |
-| **Physical maintenance** (hidden until switched on for one boot) | Descaling status and time left, start / continue / cancel descaling, unlock the shower, arm cleaning (start, next step), spray calibration, lid calibration and opening angle (set / larger / smaller / save), filter replaced. On other models: draining. Disabled by default: lid / shower-arm / dryer-arm offsets and shower-/dryer-arm position adjustment. See [Physical maintenance](#user-content-open-physical-maintenance). |
+| **Physical maintenance** (hidden until switched on for one boot) | Descaling status and time left, start / continue / cancel descaling, unlock the shower, arm cleaning (start, next step), spray calibration, lid calibration and opening angle (set / larger / smaller / save), filter replaced. On other models: draining. Disabled by default: lid / shower-arm / dryer-arm offsets and shower-/dryer-arm position adjustment. See [Physical maintenance](#user-content-open-physical-maintenance "Descaling, arm cleaning, calibration and filter replacement, unlocked at the toilet with the remote."). |
 
-Seat heating, dryer, odor extraction, the automatic lid, pre-flush, WC water heating and accessibility mode exist on other models; [feature discovery](#user-content-open-models-and-feature-discovery) hides them on models without them. Light sensor sensitivity is on the Sela.
+Seat heating, dryer, odor extraction, the automatic lid, pre-flush, WC water heating and accessibility mode exist on other models; [feature discovery](#user-content-open-models-and-feature-discovery "Which AquaClean models work, and how the bridge shows only what your model has.") hides them on models without them. Light sensor sensitivity is on the Sela.
 
 - **Flush** and **automatic flush** need Geberit's interface module for the flush actuation, except on the floor-standing Mera where it is built in. They appear on the Mera Comfort and Classic, the Sela (from 2019, optional) and the Tuma Comfort complete system (optional) once the bridge sees the module. On the Sela, flushing is supported but not validated: the Sela it was validated on has no interface module. The Tuma Classic and the Alba have no flush actuation.
 - **Draining** appears only on the Cama (from the app's data points). The Sela (from 2019), Mera and Tuma refresh and drain the water themselves; only the old boiler models (AquaClean 4000, 5000, 8000, Sela before 2019) have a drain screw.
@@ -531,7 +531,7 @@ geberit_aquaclean:
 <details>
 <summary>
 
-## Physical maintenance
+## <span title="Descaling, arm cleaning, calibration and filter replacement, unlocked at the toilet with the remote.">Physical maintenance</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -557,7 +557,7 @@ While it's hidden, the bridge refuses maintenance commands, also from actions an
 <details>
 <summary>
 
-## Apple Home (HomeKit, optional)
+## <span title="The bridge as an Apple Home accessory with Siri, alongside a route or stand-alone.">Apple Home (HomeKit, optional)</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -599,7 +599,7 @@ Then in the Home app: **Add accessory** → scan the QR code, or **More options*
 
 A switch that did nothing returns to the real state after about 6 s (20 s after switching off, while the arm retracts). HomeKit's own messages only appear at log level `VERBOSE`; pairing, removal and warnings are always shown.
 
-At most 4 Apple devices can have the accessory open at the same time; see [Connections](#user-content-open-connections).
+At most 4 Apple devices can have the accessory open at the same time; see [Connections](#user-content-open-connections "What can be connected at the same time: toilet, remote, app, native API or MQTT clients and Apple devices.").
 
 <details>
 <summary>Memory cost</summary>
@@ -613,7 +613,7 @@ At most 4 Apple devices can have the accessory open at the same time; see [Conne
 <details>
 <summary>
 
-## Connections
+## <span title="What can be connected at the same time: toilet, remote, app, native API or MQTT clients and Apple devices.">Connections</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -644,7 +644,7 @@ How they work together:
 <details>
 <summary>
 
-## Models and feature discovery
+## <span title="Which AquaClean models work, and how the bridge shows only what your model has.">Models and feature discovery</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -681,7 +681,7 @@ The Sela is validated on a toilet. The other Series 248 models are supported: th
 <details>
 <summary>
 
-## Supporting other models
+## <span title="Discovery tools to find out what an untested model supports, without a sniffer.">Supporting other models</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -719,7 +719,7 @@ Please [open an issue](https://github.com/barloew/geberit-aquaclean-bridge-for-e
 <details>
 <summary>
 
-## Languages
+## <span title="Entity names in your language, in Geberit's own terminology. How to choose or add a language.">Languages</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -764,7 +764,7 @@ Arabic, Hebrew, Russian, Ukrainian, Chinese and Korean use no Latin letters, whi
 <details>
 <summary>
 
-## Notes and troubleshooting
+## <span title="Finding the toilet and remote, updating, logs, and sharing a log safely.">Notes and troubleshooting</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -786,7 +786,7 @@ Arabic, Hebrew, Russian, Ukrainian, Chinese and Korean use no Latin letters, whi
 <details>
 <summary>
 
-## Other AquaClean integrations
+## <span title="Other AquaClean projects, and how this bridge differs from them.">Other AquaClean integrations</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -799,7 +799,7 @@ This isn't the only way to bring a Geberit AquaClean into home automation — **
 <details>
 <summary>
 
-## Trademark & Legal Disclaimer
+## <span title="Independent, unofficial project, not affiliated with Geberit. Use at your own risk.">Trademark & Legal Disclaimer</span>
 
 <sub>[↑ back to top](#contents)</sub>
 
@@ -822,7 +822,7 @@ This software is provided "as is", without warranty of any kind. Use at your own
 <details>
 <summary>
 
-## License
+## <span title="License and third-party notices.">License</span>
 
 <sub>[↑ back to top](#contents)</sub>
 

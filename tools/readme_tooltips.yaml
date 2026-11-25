@@ -1,0 +1,37 @@
+# Hover texts (tooltips) for README sections, keyed by the section heading's GitHub slug.
+#
+# tools/readme_anchors.py writes each text to every place the section appears: its collapsed
+# heading, the navigation line, the step cards and in-text links to it. Change a text here and run
+#   python3 tools/readme_anchors.py
+# CI runs it with --check.
+#
+# Rules: one short sentence, plain text, no double quotes inside the text (quote the whole value
+# when it contains a colon). Name functions, never protocol internals.
+# Lead with the route, not one hub. Only make support claims that support/matrix.yaml makes.
+# A tooltip is an extra: it never holds information that isn't on the page itself.
+
+installation: Eight steps from checking your model to Apple Home, starting in the browser.
+
+step-1-check-your-model: Sela is validated; Mera, Tuma and Cama are supported. The article number is on the type plate or in the Geberit Home app.
+step-2-find-and-test-the-spot: The spot by the toilet needs Bluetooth (-60 dBm ideal, -80 dBm minimum), USB power and 2.4 GHz Wi-Fi.
+step-3-choose-your-board: Any ESP32-S3 with at least 8 MB flash, one per toilet. The M5Stack AtomS3 Lite is recommended.
+step-4-choose-your-route: Native API (Home Assistant, Homey, ioBroker) or MQTT (openHAB, Node-RED, Domoticz, Home Assistant). Same entities, pick one.
+step-5-install-the-firmware: Flash from the browser in Chrome or Edge over USB, then set up your route on the bridge's web page.
+step-6-pair-toilet-remote-and-app: Pair the bridge with the toilet first, then the remote control and the Geberit Home app.
+step-7-set-up-your-users: "Up to six profiles: link a phone, watch or tracker, pick a welcome light color and tune the range."
+step-8-add-apple-home: "Optional, also without any other system: turn on the Apple Home switch and add the accessory in the Home app."
+
+hardware: Supported boards, their status LEDs and buttons.
+two-routes-esphome-or-mqtt: What each route reaches, how its devices are grouped, and how to connect over MQTT.
+users: Six profiles, recognized by a linked phone, watch or tracker. Profiles 1–3 live in the toilet, 4–6 on the bridge.
+entities: Every device and entity the bridge exposes, the same on both routes.
+physical-maintenance: Descaling, arm cleaning, calibration and filter replacement, unlocked at the toilet with the remote.
+apple-home-homekit-optional: The bridge as an Apple Home accessory with Siri, alongside a route or stand-alone.
+connections: "What can be connected at the same time: toilet, remote, app, native API or MQTT clients and Apple devices."
+models-and-feature-discovery: Which AquaClean models work, and how the bridge shows only what your model has.
+supporting-other-models: Discovery tools to find out what an untested model supports, without a sniffer.
+languages: Entity names in your language, in Geberit's own terminology. How to choose or add a language.
+notes-and-troubleshooting: Finding the toilet and remote, updating, logs, and sharing a log safely.
+other-aquaclean-integrations: Other AquaClean projects, and how this bridge differs from them.
+trademark--legal-disclaimer: Independent, unofficial project, not affiliated with Geberit. Use at your own risk.
+license: License and third-party notices.

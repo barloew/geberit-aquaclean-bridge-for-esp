@@ -15,22 +15,38 @@ section whose <summary> holds a Markdown heading:
    anything.
 3. In-page links to a collapsed section point to `#user-content-open-<slug>`; links to an anchor
    or heading inside a collapsed body point to `#user-content-<name>`.
+4. Hover texts from tools/readme_tooltips.yaml go on the collapsed heading
+   (`## <span title="...">Hardware</span>`) and on every in-page link to that section: the
+   navigation line, the step cards and links in the text. Back links (text starting with ↑) get none.
 
 Plain links from elsewhere (`#hardware`) still land on the heading, just with the section closed.
 Back links (`#installation`, `#contents`) point outside any <details> and are left alone.
 Idempotent; tools/steps/generate.py runs it after splicing the step sections, CI runs --check.
 """
+import html
 import re
 import sys
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parent.parent
+TOOLTIPS = Path(__file__).resolve().parent / "readme_tooltips.yaml"
 
 LONE_ANCHOR = re.compile(r'^<a (?:name|id)="([^"]+)"></a>\s*$')
 HEADING = re.compile(r"^(#{1,6})\s+(.*?)\s*$")
 HEADING_WITH_BACK = re.compile(r"^(#{1,6}\s+.*?)\s*(<sub>\[[^\]]*\]\(#[^)]+\)</sub>)\s*$")
 ANCHOR_IN = re.compile(r'<a (?:name|id)="([^"]+)"></a>')
 PREFIX = "open-"
+TITLED = re.compile(r'^<span title="[^"]*">(.*)</span>$')
+
+
+def load_tooltips(path=TOOLTIPS):
+    tips = yaml.safe_load(path.read_text()) or {}
+    for key, text in tips.items():
+        if not isinstance(text, str) or '"' in text or "\n" in text.strip():
+            sys.exit(f"{path}: '{key}' must be one line of plain text without double quotes")
+    return {k: " ".join(v.split()) for k, v in tips.items()}
 
 
 def slug(heading):
@@ -40,7 +56,7 @@ def slug(heading):
     return s.replace(" ", "-")
 
 
-def restructure(lines):
+def restructure(lines, tips):
     """Rebuild each collapsed section: plain heading, back link below it, hidden open- anchor."""
     out, i, sections = [], 0, set()
     while i < len(lines):
@@ -56,15 +72,20 @@ def restructure(lines):
             if j < len(lines):
                 summary, title = [], None
                 for s in lines[i + 2:j]:
+                    back = None
                     m = HEADING_WITH_BACK.match(s)
                     if m:
-                        summary += [m.group(1), "", m.group(2)]
-                        s = m.group(1)
-                    else:
-                        summary.append(s)
+                        s, back = m.group(1), m.group(2)
                     h = HEADING.match(s)
                     if h and title is None:
-                        title = h.group(2)
+                        text = h.group(2)
+                        t = TITLED.match(text)
+                        title = t.group(1) if t else text
+                        tip = tips.get(slug(title))
+                        s = f"{h.group(1)} " + (f'<span title="{html.escape(tip, quote=False)}">{title}</span>' if tip else title)
+                    summary.append(s)
+                    if back:
+                        summary += ["", back]
                 if title is not None:
                     sl = slug(title)
                     sections.add(sl)
@@ -112,12 +133,33 @@ def retarget(frag, sections, hidden):
     return frag
 
 
-def fix(text):
-    lines, sections = restructure(text.split("\n"))
+def tooltip_for(frag, tips):
+    base = frag.removeprefix("user-content-").removeprefix(PREFIX)
+    return tips.get(base)
+
+
+def fix(text, tips=None):
+    tips = load_tooltips() if tips is None else tips
+    lines, sections = restructure(text.split("\n"), tips)
     hidden = hidden_targets(lines)
     text = "\n".join(lines)
-    text = re.sub(r"\]\(#([^)\s]+)\)", lambda m: f"](#{retarget(m.group(1), sections, hidden)})", text)
-    return re.sub(r'href="#([^"]+)"', lambda m: f'href="#{retarget(m.group(1), sections, hidden)}"', text)
+
+    def md(m):
+        label, frag = m.group(1), retarget(m.group(2), sections, hidden)
+        tip = None if label.lstrip("*").startswith("↑") else tooltip_for(frag, tips)
+        return f'[{label}](#{frag} "{tip}")' if tip else f"[{label}](#{frag})"
+
+    def tag(m):
+        attrs, rest = m.group(1), m.group(3)
+        frag = retarget(m.group(2), sections, hidden)
+        attrs = re.sub(r'\s+title="[^"]*"', "", attrs)
+        rest = re.sub(r'\s+title="[^"]*"', "", rest)
+        tip = tooltip_for(frag, tips)
+        title = f' title="{html.escape(tip, quote=False)}"' if tip else ""
+        return f'<a{attrs} href="#{frag}"{title}{rest}>'
+
+    text = re.sub(r'\[([^\]]*)\]\(#([^)\s]+)(?:\s+"[^"]*")?\)', md, text)
+    return re.sub(r'<a([^>]*?)\s+href="#([^"]+)"([^>]*)>', tag, text)
 
 
 def main():
