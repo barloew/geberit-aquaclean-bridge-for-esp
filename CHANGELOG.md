@@ -9,6 +9,24 @@ merged/released) will let MQTT do the same. When it ships, set `sub_device_topic
 `packages/mqtt.yaml` and rebuild the web-installer firmware so MQTT installs get the device split too, with
 no ESPHome needed on the user's side.
 
+## v1.37.0 — 2026-11-25
+
+- **Breaking (MQTT route): user-profile settings each get their own topic.** Over MQTT a topic is built from
+the entity name alone (the sub-device is not part of it), so the six user profiles previously shared one topic
+per setting with the running session and with one another — a single command changed the session *and* every
+stored profile, and discovery kept only the last config per name. The bridge now prefixes the profile
+entities' names over MQTT (*User profile 2 Spray intensity*), limited to the profile groups, so every profile
+setting has its own `<component>/<object_id>`. Every other topic (session, defaults, toilet, maintenance) is
+unchanged, and the native API route is untouched. A build-time check refuses any MQTT build in which two
+entities would share a topic. MQTT-discovery users (Home Assistant, openHAB, Domoticz, …) see the profile
+entities re-appear once under their new object ids; automations that addressed the old shared profile topics
+need updating. This does not change the MQTT *device* grouping (see **Planned**). Fixes #10.
+- **Node-RED flow: user profiles are first-class.** The six profiles now arrive as writable per-profile keys
+`profile_1_…` through `profile_6_…` (e.g. `profile_2_spray_intensity`) — the same keys the Homey app and the
+ioBroker adapter already use — instead of the previous read-only `profile_N_…` placeholders. The shared-topic
+workaround is gone: the `allowSharedWrites` setting, the ⚠ markers and the *User profiles over MQTT* section
+are removed, and the session settings are writable without it.
+
 ## ioBroker adapter v0.1.1 — 2026-11-24
 
 - **New: AquaClean Bridge adapter for ioBroker** (`iobroker/`, category *household*). Talks to the bridge
