@@ -26,9 +26,19 @@ not yet merged). Until then, pick the native API route if the separate-devices l
 
 ## Install method (how the firmware gets onto the ESP)
 
-- **ESPHome (own YAML build)** — full control, needs an ESPHome toolchain.
-- **Web installer (prebuilt firmware)** — flash from the browser, then enter settings on the device page.
-- **Home Assistant ESPHome add-on** — build and flash from within Home Assistant.
+- **ESPHome (own YAML build)** — full control, needs an ESPHome toolchain. **Start from
+  [`examples/atoms3-lite.yaml`](../examples/atoms3-lite.yaml)** (pick your board, and `route: api` or
+  `route: mqtt`). On the MQTT route the broker, user, password and topic prefix are **substitutions** in that
+  file — set them there. Do **not** copy a `firmware/*.yaml` file for an own build: those are the web-installer
+  images and include `packages/mqtt_setup.yaml`, which takes the broker from the ESP's web page and ignores the
+  YAML `mqtt_broker` substitution, so the broker would look unset. `mqtt_setup` belongs to the web installer
+  only.
+- **Web installer (prebuilt firmware)** — flash from the browser, then enter the broker and other settings on
+  the device's web page (`packages/mqtt_setup.yaml`).
+- **Home Assistant ESPHome add-on** — build and flash from within Home Assistant; it is an own-YAML build, so
+  follow the ESPHome bullet above (start from `examples/atoms3-lite.yaml`, broker in substitutions). You can
+  pull the packages straight from GitHub (`github://barloew/geberit-aquaclean-bridge-for-esp/...@<ref>`), so
+  no local checkout is needed.
 
 The install method is a matter of preference and of the system you connect to; it does not change what the
 bridge can do.
