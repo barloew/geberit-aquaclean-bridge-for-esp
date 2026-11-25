@@ -28,13 +28,13 @@ Over that link the bridge:
 - reads **device information** and **usage statistics** (model, firmware, serial number, counters).
 
 Which functions a given model exposes is decided at runtime by feature discovery (see
-[Models and feature discovery](../README.md#models-and-feature-discovery)); the bridge never assumes a
+[Models and feature discovery](../README.md#user-content-models-and-feature-discovery)); the bridge never assumes a
 function the toilet does not report.
 
 ## User recognition
 
 The bridge recognises a user's phone, watch or tracker by its Bluetooth Identity Resolving Key (IRK),
-resolving the device's rotating random address locally. See [Users](../README.md#users) for how a profile
+resolving the device's rotating random address locally. See [Users](../README.md#user-content-users) for how a profile
 is linked to a device, and [`irk_capture.cpp`](../components/geberit_aquaclean/irk_capture.cpp) for how the
 key is captured.
 

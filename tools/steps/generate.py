@@ -12,6 +12,9 @@ straight into the SVG, so nothing is loaded from the web.
 import json, re, sys, html
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import readme_anchors  # noqa: E402  (tools/readme_anchors.py)
+
 HERE = Path(__file__).parent
 ROOT = HERE.parent.parent  # paths in steps.json are relative to the repository root
 ICON_DIR = HERE / "node_modules" / "lucide-static" / "icons"
@@ -54,7 +57,9 @@ def section(hashes, heading, details, collapse=False, back_link=None):
     """One step section. With collapse, the heading stays visible and the body folds under it.
 
     A heading that carries a back link gets a different GitHub anchor, so a named anchor keeps
-    the plain one (#step-1-...) working for the cards and for links from elsewhere.
+    the plain one (#step-1-...) working for the cards and for links from elsewhere. In a collapsed
+    step the anchor sits inside the body, right after </summary>: a link to #user-content-step-1-...
+    then opens the step on arrival (see tools/readme_anchors.py).
     """
     title = heading
     if back_link:
@@ -63,7 +68,7 @@ def section(hashes, heading, details, collapse=False, back_link=None):
         anchor = f'<a name="{slug(heading)}"></a>\n\n' if back_link else ""
         return f"{anchor}{hashes} {title}\n\n{details}\n"
     return (
-        f'<a name="{slug(heading)}"></a>\n<details>\n<summary>\n\n{hashes} {title}\n\n</summary>\n\n'
+        f'<details>\n<summary>\n\n{hashes} {title}\n\n</summary><a id="{slug(heading)}"></a>\n\n'
         f"{details}\n\n</details>\n"
     )
 
@@ -119,7 +124,8 @@ def main():
     for n, step in enumerate(cfg["steps"], 1):
         (out / f"step-{n}.svg").write_text(card(n, step, cfg.get("accent", "#2f81f7")))
         heading = f"Step {n}: {step['title']}"
-        links.append(f'  <a href="#{slug(heading)}"><img src="{cfg["output_dir"]}/step-{n}.svg" '
+        target = f"user-content-{slug(heading)}" if cfg.get("collapse", False) else slug(heading)
+        links.append(f'  <a href="#{target}"><img src="{cfg["output_dir"]}/step-{n}.svg" '
                      f'width="{width}" alt="{html.escape(heading)}"></a>')
         details = step.get("details", f"{step['text']}\n\n<!-- more details here -->")
         sections.append(section(hashes, heading, details, cfg.get("collapse", False), cfg.get("back_link")))
@@ -140,7 +146,7 @@ def _splice(snippet):
     if begin in text and end in text:
         head, rest = text.split(begin, 1)
         tail = rest.split(end, 1)[1]
-        readme.write_text(f"{head}{begin}\n{snippet}{end}{tail}")
+        readme.write_text(readme_anchors.fix(f"{head}{begin}\n{snippet}{end}{tail}"))
 
 
 if __name__ == "__main__":

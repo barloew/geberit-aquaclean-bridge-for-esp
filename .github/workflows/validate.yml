@@ -55,6 +55,7 @@ jobs:
           python-version: "3.12"
       - run: pip install pyyaml fonttools
       - run: python3 tools/overview/generate.py --check
+      - run: python3 tools/readme_anchors.py --check
 
   clang-format:
     name: clang-format (C++)

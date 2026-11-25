@@ -14,7 +14,7 @@ suits you.
 - **Apple HomeKit (optional, alongside either route or stand-alone).** Every image can also be an Apple Home
   accessory, for the Home app and Siri — even stand-alone, without any other controller. It is compiled into
   every image and stays off until you turn on the bridge's **Apple Home** switch. See the README's
-  [Apple Home](https://github.com/barloew/geberit-aquaclean-bridge-for-esp#apple-home-homekit-optional) section.
+  [Apple Home](https://github.com/barloew/geberit-aquaclean-bridge-for-esp#user-content-apple-home-homekit-optional) section.
 
 Both routes expose the same functions and entities. Choose one; you can switch later.
 
