@@ -81,7 +81,7 @@ switch (component) {
 }
 if (e && e.ts === "iso" && value) value = Date.parse(value) || null;  // moment of connecting -> ms
 if (e && e.o && typeof value === "string") {  // selections and status texts -> option number
-    const hit = optionIndex(e, value);
+    const hit = optionIndex(e, value, true);
     if (hit) {
         index = hit.index;
         label = (optionList(hit.group, uiLang()) || [])[index] || value;

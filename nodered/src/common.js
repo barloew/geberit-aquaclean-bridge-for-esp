@@ -29,8 +29,8 @@ function optionList(group, lang) {
     const g = T.options[group];
     return g && (g[lang] || g[T.fallback[lang]] || g.en);
 }
-// index of an option label in any language; remembers the bridge language when it is unambiguous
-function optionIndex(e, label) {
+// index of an option label in any language; with learn (states from the bridge only) it remembers the bridge language
+function optionIndex(e, label, learn) {
     const groups = e.o || [];
     const order = LEARN.lang ? [LEARN.lang] : [];
     if (label === "") return null;
@@ -40,7 +40,7 @@ function optionIndex(e, label) {
             const list = T.options[g][lang];
             const i = list ? list.indexOf(label) : -1;
             if (i >= 0) {
-                if (!LEARN.lang) {
+                if (learn && !LEARN.lang) {  // only from the bridge's own states, never from a command
                     const langs = T.languages.filter(l => T.options[g][l] && T.options[g][l].indexOf(label) === i);
                     if (langs.length === 1) LEARN.lang = langs[0];
                 }
