@@ -3,14 +3,18 @@
 // functions (descaling, arm cleaning, calibration, counter resets). Those need someone at the toilet, so they
 // are hidden unless consent is given AND the maintenance key on the remote is long-pressed. A YAML build opts
 // in with maintenance_disclaimer_accepted: true; the web-installer firmware has no YAML to edit, so this page
-// lets the user accept once, during setup.
+// lets the user accept it once, from the bridge's own web UI.
 //
-// Always reachable at http://<device>/maintenance (served on the web server and the "AquaClean Setup" captive
-// portal): it shows the current status, the full warning, and how to enable/disable. Saving is PSK-style and
-// permanent — accepting is only possible during the captive-portal setup window, and once stored only a factory
-// reset changes it (POST returns 409 afterwards). So a later client on the LAN cannot silently turn it on.
+// Reachable at http://<device>/maintenance on the normal network (the web server). It shows the current
+// status, the full warning, and how to change it. Saving is PSK-style (mirrors /setup): it can be accepted
+// until it is set once, and once stored only a factory reset changes it (POST returns 409 afterwards).
 //
-// Requires: web_server: and/or captive_portal:, plus the component's consent free functions (maintenance.cpp).
+// NOTE: do not expect this to work while the "AquaClean Setup" captive portal is active — ESPHome's captive
+// portal claims every GET while it is up (canHandle = active && GET) and is checked before this handler, so it
+// would serve the Wi-Fi page instead. That is fine: consent is given on the LAN after Wi-Fi setup, not during
+// the portal.
+//
+// Requires: web_server:, plus the component's consent free functions (maintenance.cpp).
 // ESP32 / ESP-IDF only. Signatures mirror psk_setup.h, verified against ESPHome 2026.10.2.
 
 #include <string>
@@ -18,9 +22,6 @@
 #include "esphome/core/log.h"
 #include "esphome/components/web_server_base/web_server_base.h"  // WebServerBase::add_handler
 #include "esphome/components/web_server_idf/web_server_idf.h"    // AsyncWebHandler / AsyncWebServerRequest (ESP32)
-#ifdef USE_CAPTIVE_PORTAL
-#include "esphome/components/captive_portal/captive_portal.h"    // global_captive_portal, is_active()
-#endif
 
 // Same namespace as the component (esphome::geberit_aquaclean), so these resolve against the free functions
 // defined in maintenance.cpp without pulling in hub.h. A bare global `namespace geberit_aquaclean` would
@@ -60,18 +61,11 @@ class MaintSetupHandler : public esphome::web_server_idf::AsyncWebHandler {
     const bool yaml = maintenance_consent_yaml();
     const bool locked = maintenance_consent_locked();
     const bool on = maintenance_consent_accepted();
-    const bool setup_window = this->in_setup_window_();
-    const bool can_enable = !yaml && !locked && setup_window;
+    const bool can_enable = !yaml && !locked;  // PSK-style: acceptable until set once, then permanently locked
 
     if (url == "/api/accept_maintenance") {
-      // Permanent lock first, then the setup-window gate.
-      if (yaml || locked) {
+      if (!can_enable) {
         request->send(409, "application/json", "{\"error\":\"already set; factory-reset to change\"}");
-        return;
-      }
-      if (!setup_window) {
-        request->send(409, "application/json",
-                      "{\"error\":\"re-run setup (connect to the AquaClean Setup hotspot) to change\"}");
         return;
       }
       auto *c = request->getParam("confirm");
@@ -87,7 +81,7 @@ class MaintSetupHandler : public esphome::web_server_idf::AsyncWebHandler {
       return;
     }
 
-    // GET /maintenance — always reachable: status + warning + what to do.
+    // GET /maintenance — always reachable on the LAN: status + warning + what to do.
     std::string page;
     page.reserve(sizeof(MAINT_WARNING) + 2600);
     page +=
@@ -104,7 +98,7 @@ class MaintSetupHandler : public esphome::web_server_idf::AsyncWebHandler {
     if (yaml)
       page += "enabled in this firmware's YAML build.";
     else if (on || locked)
-      page += "enabled during setup (stored on the bridge).";
+      page += "enabled (stored on the bridge).";
     else
       page += "disabled.";
     page += "</p>";
@@ -128,14 +122,10 @@ class MaintSetupHandler : public esphome::web_server_idf::AsyncWebHandler {
       page +=
           "<p>This is set in the firmware's YAML (<code>maintenance_disclaimer_accepted</code>). To change it, "
           "edit the YAML and reflash.</p>";
-    } else if (on || locked) {
+    } else {  // locked
       page +=
-          "<p>Already enabled on this bridge. To disable it, factory-reset the bridge (see the README) and run "
-          "setup again without enabling it.</p>";
-    } else {
-      page +=
-          "<p>To enable, re-run setup: connect to the <b>AquaClean Setup</b> Wi-Fi hotspot and reopen this page. "
-          "Enabling is only possible during the setup window.</p>";
+          "<p>Already enabled on this bridge. It is permanent; to turn it off again, factory-reset the bridge "
+          "(see the README).</p>";
     }
     page +=
         "<p>Once enabled, hold the maintenance key on the toilet's remote to actually show the functions; they "
@@ -143,16 +133,6 @@ class MaintSetupHandler : public esphome::web_server_idf::AsyncWebHandler {
         "</body></html>";
 
     request->send(200, "text/html", page.c_str());
-  }
-
- protected:
-  bool in_setup_window_() const {
-#ifdef USE_CAPTIVE_PORTAL
-    auto *cp = esphome::captive_portal::global_captive_portal;
-    if (cp != nullptr && cp->is_active())
-      return true;
-#endif
-    return false;
   }
 };
 
