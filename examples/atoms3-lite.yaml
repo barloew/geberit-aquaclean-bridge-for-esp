@@ -37,15 +37,15 @@ esphome:
 
 packages:
   # board: board-atoms3-lite.yaml, board-atoms3r.yaml or board-xiao-esp32s3.yaml
-  board: github://barloew/geberit-aquaclean-bridge-for-esp/packages/board-atoms3-lite.yaml@v1.37.0
-  aquaclean: github://barloew/geberit-aquaclean-bridge-for-esp/packages/aquaclean.yaml@v1.37.0
-  route: github://barloew/geberit-aquaclean-bridge-for-esp/packages/route_${route}.yaml@v1.37.0
+  board: github://barloew/geberit-aquaclean-bridge-for-esp/packages/board-atoms3-lite.yaml@v1.38.0
+  aquaclean: github://barloew/geberit-aquaclean-bridge-for-esp/packages/aquaclean.yaml@v1.38.0
+  route: github://barloew/geberit-aquaclean-bridge-for-esp/packages/route_${route}.yaml@v1.38.0
   # only with route: mqtt
-  # mqtt_tls: github://barloew/geberit-aquaclean-bridge-for-esp/packages/mqtt_tls.yaml@v1.37.0
-  # web_auth: github://barloew/geberit-aquaclean-bridge-for-esp/packages/web_auth.yaml@v1.37.0
+  # mqtt_tls: github://barloew/geberit-aquaclean-bridge-for-esp/packages/mqtt_tls.yaml@v1.38.0
+  # web_auth: github://barloew/geberit-aquaclean-bridge-for-esp/packages/web_auth.yaml@v1.38.0
 
 external_components:
-  - source: github://barloew/geberit-aquaclean-bridge-for-esp@v1.37.0
+  - source: github://barloew/geberit-aquaclean-bridge-for-esp@v1.38.0
     components: [geberit_aquaclean]
 
 logger:
