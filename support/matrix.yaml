@@ -136,16 +136,19 @@ boards:
 
 # Evidence records. A `validated` status must reference one of these.
 validations:
+  # v1.38.0 adds the web-installer /maintenance consent page and entity-icon corrections. The BLE / MQTT /
+  # HomeKit paths are unchanged, so the earlier validations carry forward; the /maintenance consent + show flow
+  # is itself hardware-validated on 2026-11-26 (see sela-hw-maintenance).
   # v1.37.0 differs from v1.36.0 only in the MQTT per-profile entity naming (issue #10), re-validated on
   # hardware on 2026-11-25 (LilyGo + MQTT; see sela-hw-lilygo / sela-hw-mqtt). The native-API and HomeKit
   # firmware is byte-identical to v1.36.0, so those hardware validations carry forward unchanged.
   - id: sela-hw
     model: sela
     status: validated
-    bridge_release: "v1.37.0"
+    bridge_release: "v1.38.0"
     device_firmware: "RS08 TS57"      # main control node; BT node 10.18; remote 3.60.101.900/0001
     by: "maintainer"
-    evidence: "AquaClean Sela on an AtomS3 Lite (GigaDevice flash): a toilet error reproduced and labelled (log 8fe51613); native API + HomeKit validated on hardware (HomeKit started, Ed25519 selftest OK, accessory paired) and the toilet connected with the stored pairing key, model 146.22x.xx.1 / firmware RS08 TS57 read out."
+    evidence: "AquaClean Sela on an AtomS3 Lite (GigaDevice flash): a toilet error reproduced and labelled (log 8fe51613); native API + HomeKit validated on hardware (HomeKit started, Ed25519 selftest OK, accessory paired) and the toilet connected with the stored pairing key, model 146.22x.xx.1 / firmware RS08 TS57 read out. Re-confirmed on v1.38.0 (log 205b3aaf): same AtomS3 Lite, native API + HomeKit (4 controllers), connected to the toilet and model 146.22x.xx.1 / firmware RS08 TS57 read out."
   - id: sela-hw-lilygo
     model: sela
     status: validated
@@ -167,6 +170,13 @@ validations:
     device_firmware: "RS08 TS57"
     by: "maintainer"
     evidence: "Runtime HomeKit toggle (the 'Apple Home' switch, homekit: runtime_toggle) validated on hardware. AtomS3 Lite over the native API; LilyGo T-Dongle-S3 with MQTT + web server + HomeKit running together (logs cffca608, c67782f9). On the LilyGo the switch started HomeKit live, the state persisted across the MQTT-connect reboot and HomeKit restarted by itself, and a full Apple Home pairing (4 controllers) completed with MQTT connected. No-PSRAM heap floor during simultaneous MQTT + HomeKit + pairing: lowest free ~5.1 KB, largest block ~10 KB — works, but no headroom for a third concurrent heavy task."
+  - id: sela-hw-maintenance
+    model: sela
+    status: validated
+    bridge_release: "v1.38.0"
+    device_firmware: "RS08 TS57"
+    by: "maintainer"
+    evidence: "Web-installer physical-maintenance consent validated on a Sela (AtomS3 Lite, native-API route with HomeKit, 2026-11-26, log 205b3aaf). The /maintenance page is served on the normal LAN web UI; accepting it stored the consent and it persisted (a second POST is refused — permanent until factory reset). After pairing the ESP as remote, a long-press of the maintenance key showed the full physical-maintenance entity set (descaling, arm cleaning, calibration, drain, offsets) and Home Assistant reloaded to pick them up; a factory reset cleared the stored consent. The entity-icon corrections (seated, dryer-temperature and seat-heating numbers) ride along in the same build. Note: the maintenance entities are still shown by toggling `internal` at runtime, which ESPHome flags as deprecated (removed in 2027.3.0) — tracked for a follow-up, not a regression in this release."
 
 # Device-independent, CI-verified checks. NOT hardware validations: no device_firmware, not tied to
 # any model, and never shown as "tested on hardware". Kept separate on purpose.
@@ -184,5 +194,5 @@ device_firmware_seen:
   "RS08 TS57":
     model: sela
     status: known-good
-    bridge_release: "v1.37.0"
+    bridge_release: "v1.38.0"
     note: "BT node 10.18; remote 3.60.101.900/0001"

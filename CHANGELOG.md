@@ -9,6 +9,31 @@ merged/released) will let MQTT do the same. When it ships, set `sub_device_topic
 `packages/mqtt.yaml` and rebuild the web-installer firmware so MQTT installs get the device split too, with
 no ESPHome needed on the user's side.
 
+## v1.38.0 — 2026-11-26
+
+- **Web installer: enable physical maintenance without an own YAML build.** Physical maintenance (descaling,
+arm cleaning, calibration, counter resets) could only be turned on with `maintenance_disclaimer_accepted: true`
+in an own YAML build; the web-installer firmware had no way to accept it. The bridge now serves a
+`/maintenance` page on its normal LAN web UI: it always shows the status and the full warning, and — like the
+Noise key on `/setup` — the consent can be accepted once and is then stored permanently (a factory reset is
+required to change it; a second attempt is refused). The effective consent is the YAML opt-in *or* the stored
+web consent, and the physical long-press of the maintenance key at the toilet still has to reveal the
+functions. Web-installer images only (both routes); a self-build YAML keeps using
+`maintenance_disclaimer_accepted`. Like `/setup` and `/homekit`, the page is English. Hardware-validated on a
+Sela.
+- **Entity icons corrected and extended.** `seated` now carries its own icon (`mdi:seat`), the
+dryer-temperature settings use `mdi:heat-wave`, and the seat-heating settings use `mdi:car-seat-heater`. These
+reach Home Assistant, Homey, openHAB, Node-RED, Domoticz, ioBroker and Apple Home over the native API or MQTT.
+A set of 36 function/profile line icons was added to `images/ui/` for the web page and the controller-app UIs
+(derived from Geberit's app icons; see `THIRD_PARTY_NOTICES.md`).
+
+### Known issues
+
+- When physical maintenance is shown, ESPHome logs `set_internal() after setup is undefined behavior` for each
+maintenance entity. The show/hide mechanism (toggling `internal` at runtime) predates this release and still
+works, but ESPHome removes it in 2027.3.0; reworking how the maintenance entities are revealed is tracked as a
+follow-up.
+
 ## v1.37.0 — 2026-11-25
 
 - **Breaking (MQTT route): user-profile settings each get their own topic.** Over MQTT a topic is built from
