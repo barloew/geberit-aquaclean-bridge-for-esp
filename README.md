@@ -125,7 +125,7 @@ The bridge needs an ESP32-S3 with **at least 8 MB flash**, dedicated to the brid
 | M5Stack AtomS3R | `board-atoms3r.yaml` | Builds, not yet tested on hardware. Has PSRAM. |
 | Seeed XIAO ESP32S3 (also Plus) | `board-xiao-esp32s3.yaml` | Builds, not yet tested on hardware. Connect the included U.FL antenna. |
 
-The web installer has firmware for all four. Any other ESP32-S3 with at least 8 MB flash works too over ESPHome YAML — set the `board:` line directly. In ESPHome YAML you pick a board package with the `board:` include, for example `.../packages/board-atoms3r.yaml@v1.37.0`. See [Hardware](#user-content-open-hardware "Supported boards, their status LEDs and buttons.") for status indicators and buttons per board.
+The web installer has firmware for all four. Any other ESP32-S3 with at least 8 MB flash works too over ESPHome YAML — set the `board:` line directly. In ESPHome YAML you pick a board package with the `board:` include, for example `.../packages/board-atoms3r.yaml@v1.38.0`. See [Hardware](#user-content-open-hardware "Supported boards, their status LEDs and buttons.") for status indicators and buttons per board.
 
 </details>
 
@@ -255,7 +255,7 @@ Then add the accessory in the Home app with the setup code or QR code. The Home 
 
 </summary><a id="open-hardware"></a>
 
-The bridge needs a **dedicated ESP32-S3 with at least 8 MB flash**: one bridge per toilet, and no other Bluetooth components on the same board. The web installer has firmware for every board below. In ESPHome YAML, pick your board with the `board:` line, for example `.../packages/board-atoms3r.yaml@v1.37.0`. On every board, holding the button for 3 s pairs the ESP with the toilet as remote control (then power-cycle the toilet so it accepts the new remote).
+The bridge needs a **dedicated ESP32-S3 with at least 8 MB flash**: one bridge per toilet, and no other Bluetooth components on the same board. The web installer has firmware for every board below. In ESPHome YAML, pick your board with the `board:` line, for example `.../packages/board-atoms3r.yaml@v1.38.0`. On every board, holding the button for 3 s pairs the ESP with the toilet as remote control (then power-cycle the toilet so it accepts the new remote).
 
 | Board | Package | Status |
 |---|---|---|
@@ -546,7 +546,7 @@ Procedures that need someone at the toilet are in a separate device, **Physical 
 
 To use it:
 
-1. In an ESPHome YAML build, read the warning and set `maintenance_disclaimer_accepted: "true"` (as a substitution, or directly under `geberit_aquaclean:`), then install. Without it the device can't be shown at all. This opt-in is build-time only: the **web-installer firmware is built with it off and has no page to turn it on**, so physical maintenance needs an own YAML build.
+1. Give consent, after reading the warning. In an **own YAML build**, set `maintenance_disclaimer_accepted: "true"` (as a substitution, or directly under `geberit_aquaclean:`), then install. On the **web-installer firmware** it is built off, so accept it once on the bridge's **`/maintenance`** page during setup (also reachable on the "AquaClean Setup" captive portal); that page always shows the status and the full warning, and — like the Noise key on `/setup` — the consent can only be set during the setup window and, once stored, only a factory reset changes it. Without consent the device can't be shown at all.
 2. At the toilet, long-press the maintenance key on the remote control. The device appears, with the warning as a notification (otherwise in the log). Your home automation system briefly loses the bridge and reconnects to load the new entities.
 3. It's hidden again after 60 minutes, with another long press of the maintenance key, with the **Physical maintenance** switch under the bridge, or when the ESP restarts.
 

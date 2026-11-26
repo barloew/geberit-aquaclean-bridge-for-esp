@@ -373,6 +373,7 @@ packages:
   mqtt_setup: !include ../packages/mqtt_setup.yaml
   timezone: !include ../packages/timezone.yaml
   provisioning: !include ../packages/provisioning.yaml
+  maintenance: !include ../packages/maintenance_setup.yaml
 
 external_components:
   - source:
@@ -421,6 +422,7 @@ packages:
   web: !include ../packages/web.yaml
   timezone: !include ../packages/timezone.yaml
   provisioning: !include ../packages/provisioning.yaml
+  maintenance: !include ../packages/maintenance_setup.yaml
 
 external_components:
   - source:

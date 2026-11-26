@@ -24,6 +24,7 @@ packages:
   web: !include ../packages/web.yaml
   timezone: !include ../packages/timezone.yaml
   provisioning: !include ../packages/provisioning.yaml
+  maintenance: !include ../packages/maintenance_setup.yaml
 
 external_components:
   - source:

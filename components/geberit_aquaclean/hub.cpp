@@ -96,7 +96,10 @@ static std::string to_hex(const uint8_t *data, size_t len) {
 // Setup
 // ---------------------------------------------------------------------------------------------------
 
+AquaCleanHub *global_aquaclean_hub = nullptr;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+
 void AquaCleanHub::setup() {
+  global_aquaclean_hub = this;
   if (this->time_ != nullptr)
     this->time_->add_on_time_sync_callback([this]() {
       if (!this->time_synced_) this->time_synced_at_ = millis();
@@ -121,6 +124,12 @@ void AquaCleanHub::setup() {
     ESP_LOGW(TAG, LT("Recovery: resumed after a recovery reboot (%u this episode)"), this->recovery_reboots_);
   this->users_setup_();
   this->apply_profile_();
+  // Physical-maintenance consent: the YAML opt-in OR a runtime acceptance stored once during web-installer
+  // setup (maint_setup.h). Once stored it is locked: only a factory reset changes it.
+  this->maint_consent_pref_ = global_preferences->make_preference<bool>(fnv1_hash("geberit_aquaclean_maint_consent"));
+  bool maint_stored = false;
+  if (this->maint_consent_pref_.load(&maint_stored)) this->maint_consent_locked_ = true;
+  this->maint_accepted_ = this->maint_consent_yaml_ || (this->maint_consent_locked_ && maint_stored);
   this->maintenance_setup_();  // after the feature discovery: hides the maintenance entities unless switched on
 
   // Switches: restore their state and apply it
