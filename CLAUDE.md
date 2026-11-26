@@ -3,6 +3,21 @@
 Read this first. It is auto-loaded for Claude Code / Claude agents. It contains **no secrets**;
 it tells you where the secret knowledge lives and the rules for using it.
 
+## Rule 0 — verify against the code, never assume
+
+Before stating how anything in this project behaves — what a file, entity, mechanism, build, option
+or tool does; whether something is translated, present, hidden, supported, English-only, visible in a
+given place — **open the actual source, config or data and base the statement on what you find there.**
+Do not answer from memory, from pattern-matching, or by analogy to another part of the codebase, and do
+not present an untested assumption as fact. If you have not verified it this session, either verify it
+first or say plainly that you have not checked. Prefer "let me check" over a confident guess. Examples of
+assumptions that were wrong and sent the maintainer down the wrong path: claiming the C++ "only compiles
+in CI" (it compiles locally — see below); claiming the `/maintenance` page had to stay English and that
+translation was a big separate project (the `LT()` mechanism in `log_text.h` already localizes
+user-facing text, including the physical-maintenance notification); claiming physical-maintenance text is
+English-only (the notification and entity names are translated). When a claim turns out wrong, fix it at
+the source of the mistake, not just the symptom.
+
 ## This repository
 
 An ESPHome external component that bridges Geberit AquaClean **Series 248** toilets (Sela, Mera,
@@ -199,6 +214,16 @@ runs in this environment and is the right way to validate any component change b
 
 ### Language requirements (non-negotiable)
 
+- **Everything compiled into the firmware that a user can see must exist in all 29 languages — no
+  exceptions, no "best-covered subset", and English fallback is not an acceptable end state.** This covers
+  two stores, both mandatory for all 29: entity names and `options`/enum labels in every
+  `lang/<code>.yaml`, **and** every `LT()` string (logs, the Home Assistant notifications, and the text of
+  the bridge-served web pages `/setup`, `/homekit`, `/maintenance`), whose English source lives in
+  `lang/log/<code>.json`. When you add or change an `LT()` string or any user-facing page, add its
+  translation to **all 28** non-English `lang/log/*.json` in the same change — a string present in only
+  some languages is a bug even though `lt()` falls back to English at runtime. `_log_table` tolerates that
+  fallback; the project's policy does not. The project ships in 29 languages; keep every firmware-facing
+  string at 29.
 - Any user-facing string — entity names and `options`/enum labels — must be provided for **every
   supported language**, i.e. every `components/geberit_aquaclean/lang/<code>.yaml`. The supported set
   is the `LANGUAGES` list in `__init__.py`: Geberit's own languages **plus the ones we added to the
