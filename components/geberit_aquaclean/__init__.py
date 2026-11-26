@@ -474,7 +474,7 @@ RANGE_VARIANTS = [("spray_intensity", "pressure_3", 2)]
 
 ENTITIES: list[Ent] = [
     # --- shower session ---------------------------------------------------------------------------
-    Ent("seated", "status", G_SESSION, {"device_class": "occupancy"}, setting=(0,)),
+    Ent("seated", "status", G_SESSION, {"device_class": "occupancy", CONF_ICON: "mdi:seat"}, setting=(0,)),
     Ent("shower_active", "status", G_SESSION, {"device_class": "running", CONF_ICON: "mdi:shower-head"}, setting=(1,)),
     Ent("lady_shower_active", "status", G_SESSION, {"device_class": "running", CONF_ICON: "mdi:shower"}, setting=(2,)),
     Ent("shower_toggle", "button", G_SESSION, {CONF_ICON: "mdi:shower-head"}, action=BTN_SHOWER),
@@ -494,8 +494,8 @@ ENTITIES: list[Ent] = [
     Ent("oscillating_spray", "setting_switch", G_SESSION, {CONF_ICON: "mdi:sine-wave"}, setting=(KIND_SESSION, 0x01, 1, 0)),
     # Mera / Tuma Comfort only (not tested on a toilet): shown only when the model has the function and the
     # toilet answers
-    _num("seat_heating", G_SESSION, KIND_SESSION, 0x07, 5, 0, "mdi:heat-wave"),
-    _num("dryer_temperature", G_SESSION, KIND_SESSION, 0x08, 5, 0, "mdi:thermometer"),
+    _num("seat_heating", G_SESSION, KIND_SESSION, 0x07, 5, 0, "mdi:car-seat-heater"),
+    _num("dryer_temperature", G_SESSION, KIND_SESSION, 0x08, 5, 0, "mdi:heat-wave"),
     # dryer air intensity, levels 1-5
     _num("dryer_intensity", G_SESSION, KIND_SESSION, 0x0D, 4, 1, "mdi:weather-windy"),
     Ent("dryer", "setting_switch", G_SESSION, {CONF_ICON: "mdi:hair-dryer"}, setting=(KIND_SESSION, 0x09, 1, 0)),
@@ -519,8 +519,8 @@ ENTITIES: list[Ent] = [
         {CONF_ICON: "mdi:sine-wave", CONF_ENTITY_CATEGORY: CONFIG},
         setting=(KIND_DEFAULT, 0x01, 1, 0),
     ),
-    _num("default_seat_heating", G_DEFAULTS, KIND_DEFAULT, 0x07, 5, 0, "mdi:heat-wave", CONFIG),
-    _num("default_dryer_temperature", G_DEFAULTS, KIND_DEFAULT, 0x08, 5, 0, "mdi:thermometer", CONFIG),
+    _num("default_seat_heating", G_DEFAULTS, KIND_DEFAULT, 0x07, 5, 0, "mdi:car-seat-heater", CONFIG),
+    _num("default_dryer_temperature", G_DEFAULTS, KIND_DEFAULT, 0x08, 5, 0, "mdi:heat-wave", CONFIG),
     _num("default_dryer_intensity", G_DEFAULTS, KIND_DEFAULT, 0x0D, 4, 1, "mdi:weather-windy", CONFIG),
     Ent("default_dryer", "setting_switch", G_DEFAULTS, {CONF_ICON: "mdi:hair-dryer", CONF_ENTITY_CATEGORY: CONFIG},
         setting=(KIND_DEFAULT, 0x09, 1, 0)),

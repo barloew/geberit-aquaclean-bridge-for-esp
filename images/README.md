@@ -90,6 +90,18 @@ different colour, change the `color="…"` attribute in the file, or inline the 
 
 These are part of this project and fall under its license.
 
+The icons listed above are own line icons. `ui/` also holds a second set: the **AquaClean function and
+profile icons** (`shower`, `lady_shower`, `spray_intensity`, `dryer`, `dryer_heating`, `lid_opens`,
+`lid_closes`, `odour_extraction`, `system_flush`, `filter`, `seat_heating`, the `profile{1..6}_recognized`
+/ `_seated` / `_signal` set, and so on). These are named after the entity keys they illustrate, for the
+bridge's own web page and the controller-app UIs. Unlike the icons above they use a **fixed** `#334155`
+fill and stroke (not `currentColor`), and they are **derived from Geberit's own app icons** rather than
+drawn from scratch — so they fall under the note in
+[THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md#embedded-assets), not the line above. Every function
+they show also has a plain `mdi:` entity icon in `components/geberit_aquaclean/__init__.py`, which is what
+actually reaches home-automation systems over the native API or MQTT; these SVGs are the richer web
+version only.
+
 ## `illustrations/` — own drawings
 
 | File | Shows |
