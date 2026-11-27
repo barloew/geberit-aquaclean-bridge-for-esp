@@ -20,6 +20,7 @@
 #include "esphome/core/application.h"
 #include "esphome/core/helpers.h"
 #include "esphome/core/log.h"
+#include "esphome/core/preferences.h"
 
 namespace esphome::geberit_aquaclean {
 
@@ -111,8 +112,9 @@ void AquaCleanHub::maintenance_show_(bool show) {
 
 void AquaCleanHub::on_maintenance_button() {
   if (!this->maint_accepted_) {
-    ESP_LOGW(TAG, LT("Physical maintenance is off: set maintenance_disclaimer_accepted: true in the YAML (read the "
-                     "warning in the README first)"));
+    ESP_LOGW(TAG, LT("Physical maintenance is off. Enable it in an ESPHome YAML build "
+                     "(maintenance_disclaimer_accepted: true), or on the web-installer firmware during setup via the "
+                     "AquaClean Setup captive portal (open /maintenance). Read the warning in the README first."));
     return;
   }
   const bool show = !this->maint_active_;
@@ -131,6 +133,33 @@ void AquaCleanHub::on_maintenance_button() {
   this->restart_pending_ = true;
   if (show) this->maintenance_notice_();
 #endif
+}
+
+bool AquaCleanHub::accept_maintenance_consent() {
+  if (this->maint_consent_yaml_ || this->maint_consent_locked_)
+    return false;  // already enabled in the YAML, or already decided: a factory reset changes it
+  bool v = true;
+  this->maint_consent_pref_.save(&v);
+  global_preferences->sync();
+  this->maint_consent_locked_ = true;
+  this->maint_accepted_ = true;
+  ESP_LOGW(TAG, LT("Physical maintenance enabled during setup and stored (factory-reset to change). Long-press the "
+                   "maintenance key at the toilet to show it."));
+  return true;
+}
+
+// Free functions for the web-installer setup page (maint_setup.h); they reach the hub through global_aquaclean_hub.
+bool maintenance_consent_accepted() {
+  return global_aquaclean_hub != nullptr && global_aquaclean_hub->maintenance_consent_accepted();
+}
+bool maintenance_consent_yaml() {
+  return global_aquaclean_hub != nullptr && global_aquaclean_hub->maintenance_consent_yaml();
+}
+bool maintenance_consent_locked() {
+  return global_aquaclean_hub != nullptr && global_aquaclean_hub->maintenance_consent_locked();
+}
+bool accept_maintenance_consent() {
+  return global_aquaclean_hub != nullptr && global_aquaclean_hub->accept_maintenance_consent();
 }
 
 void AquaCleanHub::maintenance_switch_(HubSwitch *sw, bool state) {

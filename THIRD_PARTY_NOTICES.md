@@ -73,10 +73,20 @@ as libsodium 1.0.21 (`crypto_sign/ed25519/ref10`). ISC license, Copyright (c) 20
 All images live in [`images/`](images/README.md). The overview image (`images/overview/`), the step cards
 (`images/steps/`), the line icons (`images/ui/`), the drawings (`images/illustrations/`) and the badges
 (`images/badges/`) are original project artwork under this project's license, except for the embedded
-Lucide icons, the Espressif symbol on the chip drawing, and the third-party logos embedded in the overview
-image and the badges. The step diagrams, the overview image and the badges reference common system fonts by
-name (`Inter`, `Segoe UI`, `Verdana`, …) as CSS fallbacks; no font files are embedded in them. The overview
-generator bundles a subset of Inter (OFL 1.1, see above) only to measure text and render the PNG.
+Lucide icons, the Espressif symbol on the chip drawing, the third-party logos embedded in the overview
+image and the badges, and the AquaClean function/profile icons in `images/ui/` noted below. The step
+diagrams, the overview image and the badges reference common system fonts by name (`Inter`, `Segoe UI`,
+`Verdana`, …) as CSS fallbacks; no font files are embedded in them. The overview generator bundles a subset
+of Inter (OFL 1.1, see above) only to measure text and render the PNG.
+
+The AquaClean **function and profile icons** in `images/ui/` (the shower, spray, dryer, lid, odour, flush,
+filter and seat-heating line icons, and the `profile*` / `seated` / `signal` icons; fixed slate `#334155`)
+are **derived from Geberit's own app icons** — redrawn with a small deliberate variation, not copied
+pixel-for-pixel. They are for the bridge's own web page and controller-app UIs. "Geberit" and "AquaClean"
+are Geberit trademarks (see [Trademarks](#trademarks)); these icons imply no affiliation or endorsement.
+Anything that needs strictly independent artwork can ignore them: every entity also carries a plain Material
+Design (`mdi:`) icon covering the same function, which is what reaches Home Assistant, Homey, openHAB,
+Node-RED, Domoticz, ioBroker and Apple Home over the native API or MQTT.
 
 ### Logos
 

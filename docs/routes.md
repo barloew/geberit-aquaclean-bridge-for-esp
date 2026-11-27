@@ -41,9 +41,14 @@ not yet merged). Until then, pick the native API route if the separate-devices l
   no local checkout is needed.
 
 The install method is a matter of preference and of the system you connect to; it does not change what the
-bridge can do, with one exception: **physical maintenance** (descaling, arm cleaning, calibration, filter
-replacement) can only be enabled in an own YAML build — the `maintenance_disclaimer_accepted` opt-in is
-build-time only, and the web-installer firmware is built with it off and has no page to turn it on.
+bridge can do. **Physical maintenance** (descaling, arm cleaning, calibration, filter replacement) is gated
+either way: in an own YAML build you opt in with `maintenance_disclaimer_accepted: true`; the web-installer
+firmware is built with it off, so you accept it once on the bridge's `/maintenance` page — a normal LAN page
+(`http://<bridge>/maintenance`) you open after the bridge has joined Wi-Fi. That page is always viewable — it
+shows the status and the full warning — and, like the Noise key on `/setup`, saving is permanent: it can be set
+once and, once stored, only a factory reset changes it. (It is not reachable while the "AquaClean Setup"
+captive portal is still up, because the portal claims every request until Wi-Fi is configured.) After enabling
+it, a long press of the maintenance key on the remote still has to unlock the functions at the toilet.
 
 ## Homey
 

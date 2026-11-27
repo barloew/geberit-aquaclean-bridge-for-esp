@@ -87,6 +87,7 @@ CONF_WEB_SERVER_GROUPS = "web_server_groups"
 CONF_STATESTREAM_TOPIC = "statestream_topic"
 CONF_LOG_OBFUSCATE = "log_obfuscate"
 CONF_MAINT_ACCEPTED = "maintenance_disclaimer_accepted"
+CONF_CUSTOM_ICONS = "custom_icons"
 CONF_HOMEKIT = "homekit"
 CONF_ENABLED = "enabled"
 CONF_PORT = "port"
@@ -474,7 +475,7 @@ RANGE_VARIANTS = [("spray_intensity", "pressure_3", 2)]
 
 ENTITIES: list[Ent] = [
     # --- shower session ---------------------------------------------------------------------------
-    Ent("seated", "status", G_SESSION, {"device_class": "occupancy"}, setting=(0,)),
+    Ent("seated", "status", G_SESSION, {"device_class": "occupancy", CONF_ICON: "mdi:seat"}, setting=(0,)),
     Ent("shower_active", "status", G_SESSION, {"device_class": "running", CONF_ICON: "mdi:shower-head"}, setting=(1,)),
     Ent("lady_shower_active", "status", G_SESSION, {"device_class": "running", CONF_ICON: "mdi:shower"}, setting=(2,)),
     Ent("shower_toggle", "button", G_SESSION, {CONF_ICON: "mdi:shower-head"}, action=BTN_SHOWER),
@@ -494,8 +495,8 @@ ENTITIES: list[Ent] = [
     Ent("oscillating_spray", "setting_switch", G_SESSION, {CONF_ICON: "mdi:sine-wave"}, setting=(KIND_SESSION, 0x01, 1, 0)),
     # Mera / Tuma Comfort only (not tested on a toilet): shown only when the model has the function and the
     # toilet answers
-    _num("seat_heating", G_SESSION, KIND_SESSION, 0x07, 5, 0, "mdi:heat-wave"),
-    _num("dryer_temperature", G_SESSION, KIND_SESSION, 0x08, 5, 0, "mdi:thermometer"),
+    _num("seat_heating", G_SESSION, KIND_SESSION, 0x07, 5, 0, "mdi:car-seat-heater"),
+    _num("dryer_temperature", G_SESSION, KIND_SESSION, 0x08, 5, 0, "mdi:heat-wave"),
     # dryer air intensity, levels 1-5
     _num("dryer_intensity", G_SESSION, KIND_SESSION, 0x0D, 4, 1, "mdi:weather-windy"),
     Ent("dryer", "setting_switch", G_SESSION, {CONF_ICON: "mdi:hair-dryer"}, setting=(KIND_SESSION, 0x09, 1, 0)),
@@ -519,8 +520,8 @@ ENTITIES: list[Ent] = [
         {CONF_ICON: "mdi:sine-wave", CONF_ENTITY_CATEGORY: CONFIG},
         setting=(KIND_DEFAULT, 0x01, 1, 0),
     ),
-    _num("default_seat_heating", G_DEFAULTS, KIND_DEFAULT, 0x07, 5, 0, "mdi:heat-wave", CONFIG),
-    _num("default_dryer_temperature", G_DEFAULTS, KIND_DEFAULT, 0x08, 5, 0, "mdi:thermometer", CONFIG),
+    _num("default_seat_heating", G_DEFAULTS, KIND_DEFAULT, 0x07, 5, 0, "mdi:car-seat-heater", CONFIG),
+    _num("default_dryer_temperature", G_DEFAULTS, KIND_DEFAULT, 0x08, 5, 0, "mdi:heat-wave", CONFIG),
     _num("default_dryer_intensity", G_DEFAULTS, KIND_DEFAULT, 0x0D, 4, 1, "mdi:weather-windy", CONFIG),
     Ent("default_dryer", "setting_switch", G_DEFAULTS, {CONF_ICON: "mdi:hair-dryer", CONF_ENTITY_CATEGORY: CONFIG},
         setting=(KIND_DEFAULT, 0x09, 1, 0)),
@@ -541,10 +542,10 @@ ENTITIES: list[Ent] = [
     _num("light_brightness", G_DEVICE, KIND_COMMON, 0x01, 4, 1, "mdi:brightness-6", CONFIG),
     Ent("light_run_on_time", "setting_select", G_DEVICE, {CONF_ICON: "mdi:timer-outline", CONF_ENTITY_CATEGORY: CONFIG},
         setting=(KIND_COMMON, 0x0B, 4, 0)),
-    Ent("light_window_1_start", "setting_time", G_DEVICE, {CONF_ENTITY_CATEGORY: CONFIG}, setting=(KIND_SCHEDULE, 0x0C, 1439, 0)),
-    Ent("light_window_1_end", "setting_time", G_DEVICE, {CONF_ENTITY_CATEGORY: CONFIG}, setting=(KIND_SCHEDULE, 0x0D, 1439, 0)),
-    Ent("light_window_2_start", "setting_time", G_DEVICE, {CONF_ENTITY_CATEGORY: CONFIG}, setting=(KIND_SCHEDULE, 0x0E, 1439, 0)),
-    Ent("light_window_2_end", "setting_time", G_DEVICE, {CONF_ENTITY_CATEGORY: CONFIG}, setting=(KIND_SCHEDULE, 0x0F, 1439, 0)),
+    Ent("light_window_1_start", "setting_time", G_DEVICE, {CONF_ICON: "mdi:clock-start", CONF_ENTITY_CATEGORY: CONFIG}, setting=(KIND_SCHEDULE, 0x0C, 1439, 0)),
+    Ent("light_window_1_end", "setting_time", G_DEVICE, {CONF_ICON: "mdi:clock-end", CONF_ENTITY_CATEGORY: CONFIG}, setting=(KIND_SCHEDULE, 0x0D, 1439, 0)),
+    Ent("light_window_2_start", "setting_time", G_DEVICE, {CONF_ICON: "mdi:clock-start", CONF_ENTITY_CATEGORY: CONFIG}, setting=(KIND_SCHEDULE, 0x0E, 1439, 0)),
+    Ent("light_window_2_end", "setting_time", G_DEVICE, {CONF_ICON: "mdi:clock-end", CONF_ENTITY_CATEGORY: CONFIG}, setting=(KIND_SCHEDULE, 0x0F, 1439, 0)),
     Ent("demo_mode", "setting_switch", G_DEVICE, {CONF_ICON: "mdi:presentation-play", CONF_ENTITY_CATEGORY: CONFIG},
         setting=(KIND_COMMON, 0x09, 1, 0)),
     # Mera Comfort only (not tested): automatic lid and odor extraction run-on
@@ -624,7 +625,7 @@ ENTITIES: list[Ent] = [
     Ent("spray_calibration", "status", G_DEVICE, {"device_class": "running", CONF_ICON: "mdi:tune-vertical",
         CONF_ENTITY_CATEGORY: DIAG}, setting=(8,)),
     # automatic lid (Mera Comfort)
-    _cmd("lid_toggle", G_DEVICE, 0x0A, "mdi:toilet"),
+    _cmd("lid_toggle", G_DEVICE, 0x0A, "mdi:arrange-bring-forward"),
     _cmd("lid_calibration", G_DEVICE, 0x0B, "mdi:tune", CONFIG),
     _cmd("lid_angle_start", G_DEVICE, 0x21, "mdi:angle-acute", CONFIG),
     _cmd("lid_angle_up", G_DEVICE, 0x23, "mdi:plus", CONFIG),
@@ -654,12 +655,12 @@ ENTITIES: list[Ent] = [
     Ent("remote_unpair", "button", G_REMOTE, {CONF_ICON: "mdi:link-off", CONF_ENTITY_CATEGORY: CONFIG},
         action=BTN_UNPAIR_REMOTE, remote=True),
     # --- the bridge itself --------------------------------------------------------------------------
-    Ent("connected", "binary_sensor", G_MAIN, {"device_class": "connectivity", CONF_ENTITY_CATEGORY: DIAG}),
+    Ent("connected", "binary_sensor", G_MAIN, {"device_class": "connectivity", CONF_ICON: "mdi:transit-connection", CONF_ENTITY_CATEGORY: DIAG}),
     Ent("app_connected", "binary_sensor", G_MAIN, {"device_class": "connectivity", CONF_ICON: "mdi:cellphone-link",
         CONF_ENTITY_CATEGORY: DIAG}),
     Ent("reconnects", "counter", G_MAIN, {CONF_ENTITY_CATEGORY: DIAG, CONF_ICON: "mdi:connection"}),
     Ent("timeouts", "counter", G_MAIN, {CONF_ENTITY_CATEGORY: DIAG, CONF_ICON: "mdi:timer-alert-outline"}),
-    Ent("connection_uptime", "uptime", G_MAIN, {CONF_ENTITY_CATEGORY: DIAG}),
+    Ent("connection_uptime", "uptime", G_MAIN, {CONF_ICON: "mdi:calendar-check", CONF_ENTITY_CATEGORY: DIAG}),
     # Health & resource watchdog (step 4): one coarse verdict (visible) plus memory diagnostics (hidden)
     Ent("bridge_health", "status_enum", G_MAIN, {CONF_ICON: "mdi:heart-pulse"}, setting=(0x101,)),  # synthetic index, not a status id
     # Bridge problem alarm: on when the bridge decides the toilet is wedged and needs a power-cycle. The rich
@@ -685,7 +686,7 @@ ENTITIES: list[Ent] = [
     Ent("rediscover", "button", G_MAIN, {CONF_ICON: "mdi:magnify-expand", CONF_ENTITY_CATEGORY: DIAG},
         action=BTN_REDISCOVER),
     Ent("firmware", "text_sensor", G_MAIN, {CONF_ICON: "mdi:chip", CONF_ENTITY_CATEGORY: DIAG}),
-    Ent("toilet_signal", "rssi", G_MAIN, {CONF_ENTITY_CATEGORY: DIAG}),
+    Ent("toilet_signal", "rssi", G_MAIN, {CONF_ICON: "mdi:signal", CONF_ENTITY_CATEGORY: DIAG}),
     Ent("toilet_address", "text_sensor", G_MAIN, {CONF_ICON: "mdi:bluetooth", CONF_ENTITY_CATEGORY: DIAG}),
     Ent("search_toilet", "button", G_MAIN, {CONF_ICON: "mdi:bluetooth-audio", CONF_ENTITY_CATEGORY: DIAG},
         action=BTN_SEARCH_TOILET),
@@ -743,7 +744,7 @@ ENTITIES: list[Ent] = [
     Ent("draining", "status", G_DEVICE, {"device_class": "running", CONF_ICON: "mdi:water-pump",
         CONF_ENTITY_CATEGORY: DIAG}, setting=(0x0A,), discovery=True),
     _cmd("drain", G_DEVICE, 0x34, "mdi:water-pump", CONFIG, True),
-    Ent("flush", "command", G_DEVICE, {CONF_ICON: "mdi:toilet"}, action=0x25, probe=(PROBE_MODULE, 0, 0)),
+    Ent("flush", "command", G_DEVICE, {CONF_ICON: "mdi:ubisoft"}, action=0x25, probe=(PROBE_MODULE, 0, 0)),
     Ent("ssm_modules", "status_value", G_DEVICE, {CONF_ICON: "mdi:puzzle", CONF_ENTITY_CATEGORY: DIAG},
         setting=(0x64,), discovery=True),
     Ent("lid_offset", "status_value", G_DEVICE, {CONF_ICON: "mdi:angle-acute", CONF_ENTITY_CATEGORY: DIAG},
@@ -933,9 +934,9 @@ for _p, _g in zip(USERS, G_PROFILES):
         ("user_name", "user_text", {CONF_ICON: "mdi:account", CONF_ENTITY_CATEGORY: CONFIG}),
         ("user_ha_device", "user_entity", {CONF_ICON: "mdi:account-badge", CONF_ENTITY_CATEGORY: CONFIG}),
         ("welcome_light", "user_welcome", {CONF_ICON: "mdi:lightbulb-on", CONF_ENTITY_CATEGORY: CONFIG}),
-        ("user_recognized", "user_flag", {"device_class": "presence"}),
-        ("user_active", "user_flag", {"device_class": "occupancy"}),
-        ("user_rssi", "user_rssi", {CONF_ENTITY_CATEGORY: DIAG}),
+        ("user_recognized", "user_flag", {"device_class": "presence", CONF_ICON: "mdi:account-check"}),
+        ("user_active", "user_flag", {"device_class": "occupancy", CONF_ICON: "mdi:seat"}),
+        ("user_rssi", "user_rssi", {CONF_ICON: "mdi:signal", CONF_ENTITY_CATEGORY: DIAG}),
         ("user_irk", "user_irk", {CONF_ICON: "mdi:key-variant", CONF_ENTITY_CATEGORY: DIAG}),
         # enter a known IRK (32 hex digits as Show IRK gives it, or base64); never shown again
         ("user_irk_set", "user_irk_set", {CONF_ICON: "mdi:key-plus", CONF_ENTITY_CATEGORY: CONFIG}),
@@ -997,6 +998,34 @@ for _e in ENTITIES:
 
 ENT_BY_KEY = {e.key: e for e in ENTITIES}
 SETTING_SELECT_KEYS = [e.key for e in ENTITIES if e.domain == "setting_select"]
+
+# Opt-in custom icons (custom_icons: true). These entities then carry an "aquaclean:<name>" icon
+# instead of their mdi default, so the matching SVG from images/ui/ is shown wherever the
+# aquaclean: prefix is known (Home Assistant with the HACS icon-set, the bridge's own web page with
+# its bundle). Default off: the mdi icons are kept, which work everywhere with no extra install. The
+# icon names here must match the set in tools/icons/generate.py (which bakes the frontends).
+# An icon that the YAML overrode explicitly is left untouched (see the build loop).
+# Which stock mdi icon maps to which aquaclean: SVG. Applied to EVERY entity that carries that mdi
+# icon, so a function's icon is consistent everywhere it appears: the active session, the basic
+# profile (default_*), every per-profile clone, and the statistics counters. These five mdi strings
+# belong only to these functions, so matching by icon has no unintended collisions. An icon that the
+# YAML overrode explicitly is left alone (see the build loop). Icon names must match the set in
+# tools/icons/generate.py (which bakes the frontends).
+_CUSTOM_ICON_BY_MDI = {
+    "mdi:shower-head": "aquaclean:shower",
+    "mdi:shower": "aquaclean:lady_shower",
+    "mdi:water": "aquaclean:spray_intensity",
+    "mdi:water-outline": "aquaclean:lady_spray_intensity",
+    "mdi:car-seat-heater": "aquaclean:seat_heating",
+}
+CUSTOM_ICON_MAP = {
+    _k: _CUSTOM_ICON_BY_MDI[_e.defaults[CONF_ICON]]
+    for _k, _e in ENT_BY_KEY.items()
+    if _e.defaults.get(CONF_ICON) in _CUSTOM_ICON_BY_MDI
+}
+# The lady-shower counter carries the generic shower-head icon upstream; give it the lady SVG.
+if "stat_lady_showers" in ENT_BY_KEY:
+    CUSTOM_ICON_MAP["stat_lady_showers"] = "aquaclean:lady_shower"
 
 
 def _schema_for(e: Ent):
@@ -1194,6 +1223,9 @@ BASE_SCHEMA = (
             cv.Optional(CONF_LOG_OBFUSCATE, default=False): cv.boolean,
             # physical maintenance: accept the disclaimer; then a long press of the maintenance key shows it
             cv.Optional(CONF_MAINT_ACCEPTED, default=False): cv.boolean,
+            # opt-in: give a few shower/spray entities the own "aquaclean:" SVG icons instead of mdi.
+            # Needs the frontend(s) that know the prefix; default off keeps the universal mdi icons.
+            cv.Optional(CONF_CUSTOM_ICONS, default=False): cv.boolean,
             # Apple Home (HomeKit) directly on the ESP: shower, lady shower, dryer and odor extraction as switches
             cv.Optional(CONF_HOMEKIT): HOMEKIT_SCHEMA,
             cv.Optional(CONF_MAINT_CODE): cv.string,
@@ -1477,6 +1509,17 @@ async def to_code(config):
     if "api" in CORE.config:
         cg.add_define("USE_API_HOMEASSISTANT_STATES")
         cg.add_define("USE_API_HOMEASSISTANT_SERVICES")  # IRK shown as a Home Assistant notification
+    # custom_icons: the aquaclean: icon strings set below render in Home Assistant (icon-set module) and
+    # on the bridge's own web_server v3 page only once that page knows the prefix. With local:true the page
+    # is a compressed blob baked into ESPHome's server_index_v3.h, so we inject the icon collection into it
+    # here, at build time — it travels with the component over github:// and reapplies on every build, with
+    # no manual patch step. Guarded to web_server builds; apply() never fails the build over a cosmetic icon.
+    if "web_server" in CORE.config:
+        from . import web_icons
+
+        _changed = web_icons.apply(enable=bool(config[CONF_CUSTOM_ICONS]))
+        if config[CONF_CUSTOM_ICONS] and _changed:
+            _LOGGER.info("custom_icons: injected aquaclean icons into the web page (%d array(s))", _changed)
     if config[CONF_LOG_OBFUSCATE]:
         cg.add(hub.set_log_obfuscate(True))
     if config.get(CONF_MAINT_CODE):
@@ -1511,6 +1554,10 @@ async def to_code(config):
                     raise cv.Invalid(f"lang/{lang_code}.yaml: '{shown}' is the name of two different entities")
                 _HASH_OVERRIDE[shown] = key
                 conf = {**conf, CONF_NAME: shown}
+        if config[CONF_CUSTOM_ICONS] and e.key in CUSTOM_ICON_MAP:
+            # replace only the default mdi icon, never one the YAML set explicitly
+            if conf.get(CONF_ICON) == e.defaults.get(CONF_ICON):
+                conf = {**conf, CONF_ICON: CUSTOM_ICON_MAP[e.key]}
         d = e.domain
         if d == "status":
             var = await binary_sensor.new_binary_sensor(conf)

@@ -1,0 +1,19 @@
+# Runtime physical-maintenance consent over HTTP — WEB-INSTALLER IMAGES ONLY (added by tools/gen_firmware.py).
+# The web-installer firmware has no YAML to edit, so the physical-maintenance disclaimer cannot be accepted with
+# maintenance_disclaimer_accepted: true. This page lets the user accept it once, during the captive-portal setup
+# window; it is then stored on the bridge and, PSK-style, only a factory reset changes it.
+#
+# Always reachable at http://<device>/maintenance (also on the "AquaClean Setup" captive portal, because it
+# attaches to the shared web server base). Do NOT add this to the self-build route/example packages: a YAML
+# build uses maintenance_disclaimer_accepted instead.
+#
+# Requires a web server (both web-installer routes provide one) and the component's consent free functions.
+# ESP32 / ESP-IDF only.
+
+esphome:
+  includes:
+    - maint_setup.h
+  on_boot:
+    priority: -100   # web_server_base is initialised by now
+    then:
+      - lambda: 'geberit_aquaclean::register_maintenance_endpoint();'

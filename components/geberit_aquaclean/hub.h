@@ -252,8 +252,16 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
     this->gated_.push_back({e, e->is_internal(), req, probe_kind, probe_id, probe_profile, setting, -1, true});
   }
   void set_layout(uint32_t layout) { this->layout_ = layout; }
-  /// Physical maintenance (maintenance.cpp): consent from the YAML, its entities and its sub-device
-  void set_maintenance_consent(bool accepted) { this->maint_accepted_ = accepted; }
+  /// Physical maintenance (maintenance.cpp): the YAML opt-in. The effective consent (maint_accepted_) is this
+  /// OR a runtime acceptance stored in flash during web-installer setup; both are combined in setup().
+  void set_maintenance_consent(bool accepted) { this->maint_consent_yaml_ = accepted; }
+  bool maintenance_consent_accepted() const { return this->maint_accepted_; }
+  bool maintenance_consent_yaml() const { return this->maint_consent_yaml_; }
+  /// True once a runtime consent value is stored in flash: set once, only a factory reset changes it.
+  bool maintenance_consent_locked() const { return this->maint_consent_locked_; }
+  /// Store runtime consent (web-installer setup page). Permanent: refuses when consent is forced in the YAML
+  /// or already stored. Returns true only when it stored it now.
+  bool accept_maintenance_consent();
   /// Long press of the maintenance key on the remote control: show or hide the physical maintenance device
   void on_maintenance_button();
   void add_maintenance_entity(EntityBase *e) { this->maint_entities_.push_back(e); }
@@ -443,7 +451,10 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
   void maintenance_switch_(HubSwitch *sw, bool state);
   void maintenance_notice_();
   void maintenance_show_(bool show);
-  bool maint_accepted_{false};
+  bool maint_accepted_{false};        // effective consent = YAML opt-in OR stored runtime acceptance
+  bool maint_consent_yaml_{false};    // the YAML opt-in (maintenance_disclaimer_accepted)
+  bool maint_consent_locked_{false};  // a runtime consent value is stored in flash (set once; factory-reset to change)
+  ESPPreferenceObject maint_consent_pref_;
   bool maint_active_{false};  // shown now
   uint32_t maint_since_{0};
   std::vector<EntityBase *> maint_entities_;
@@ -863,6 +874,10 @@ class AquaCleanHub : public Component, public ble_client::BLEClientNode {
   int16_t scan_total_{0};
   int16_t scan_done_{0};
 };
+
+// Set in the hub constructor. The web-installer maintenance setup page (maint_setup.h) reaches the hub through
+// the free functions in maintenance.cpp, which use this.
+extern AquaCleanHub *global_aquaclean_hub;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 
 }  // namespace esphome::geberit_aquaclean
 

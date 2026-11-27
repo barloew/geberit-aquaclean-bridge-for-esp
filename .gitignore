@@ -1,6 +1,7 @@
 __pycache__/
 .esphome/
 secrets.yaml
+compile-check*.yaml
 
 # Private reverse-engineering material — never commit (see CLAUDE.md)
 *_RE.zip
