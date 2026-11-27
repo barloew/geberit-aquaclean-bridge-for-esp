@@ -63,14 +63,15 @@ whatever icon you configure in that system. The visible effect of `custom_icons`
 
 Manual install:
 
-1. Copy `frontend/ha-custom-icons.js` to `config/www/geberit-aquaclean/ha-custom-icons.js` on the
-   Home Assistant host.
+1. Copy `frontend/ha-custom-icons.js` to `config/www/geberit-aquaclean-icons/ha-custom-icons.js` on
+   the Home Assistant host. The folder name is free, but it must match the `extra_module_url` path
+   below exactly (a mismatch serves a 404).
 2. Add it as a frontend module:
 
    ```yaml
    frontend:
      extra_module_url:
-       - /local/geberit-aquaclean/ha-custom-icons.js
+       - /local/geberit-aquaclean-icons/ha-custom-icons.js
    ```
 
 3. Restart Home Assistant and reload the browser (clear the cache if an icon does not appear).
