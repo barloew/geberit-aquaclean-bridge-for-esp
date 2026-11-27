@@ -2,9 +2,14 @@ name: PR AI disclosure
 
 # Requires every PR description to declare whether AI wrote or helped write it, via an
 # "AI-Assistance: none|assisted|generated" line (see the PR template). Fails until it's filled in.
+#
+# Uses pull_request (not pull_request_target): this check only reads the PR body from the event
+# payload — it checks out no PR code and uses no secrets — so it needs none of pull_request_target's
+# elevated context, and pull_request sidesteps GitHub's 2026-12-02 default restriction on
+# pull_request_target for public repositories.
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, edited, synchronize, reopened]
 
 permissions:
