@@ -212,6 +212,20 @@ runs in this environment and is the right way to validate any component change b
 - The **Node-RED** icon is CC BY 3.0 by **Nick O'Leary**: keep his credit in the README disclaimer
   wherever the icon is shown.
 
+### Custom icons (`aquaclean:`) — opt-in, generated frontends
+
+- The `custom_icons: true` component option (default off) gives a few shower/spray entities an
+  `aquaclean:<name>` icon instead of their `mdi:` default. The entity→icon map is `CUSTOM_ICON_MAP`
+  in `__init__.py`; it replaces only the stock mdi default, never a YAML-set icon. ESPHome stores an
+  entity's icon at compile time, so this is a build-time choice, not runtime. See `docs/custom-icons.md`.
+- The `aquaclean:` SVGs come from `images/ui/` and are baked into frontend modules by
+  **`tools/icons/generate.py`** (generated output in `frontend/`, e.g. `ha-custom-icons.js`); change
+  the SVG or the generator, never hand-edit the output. The icon names in `CUSTOM_ICON_MAP` and in
+  the generator's `ICONS` map must stay in sync. Needs picosvg (pip).
+- Default off is deliberate: a bare `aquaclean:` string renders only in Home Assistant with the
+  icon-set module and (once shipped) on the bridge's own web page; other routes keep their own icons.
+  Don't make it the default, or write docs that assume Home Assistant, without the matching frontends.
+
 ### Language requirements (non-negotiable)
 
 - **Everything compiled into the firmware that a user can see must exist in all 29 languages — no
