@@ -1,16 +1,20 @@
 name: PR AI disclosure
 
-# Requires every PR description to declare whether AI wrote or helped write it, via an
-# "AI-Assistance: none|assisted|generated" line (see the PR template). Fails until it's filled in.
+# Requires every PR to declare whether AI wrote or helped write it. Satisfy it either way:
+#   * a repository label "ai: none|assisted|generated" (one click; needs write access, so maintainers
+#     and triagers), or
+#   * an "AI-Assistance: none|assisted|generated" line in the PR description (works for everyone,
+#     including PRs from forks).
+# See the PR template.
 #
-# Uses pull_request (not pull_request_target): this check only reads the PR body from the event
-# payload — it checks out no PR code and uses no secrets — so it needs none of pull_request_target's
-# elevated context, and pull_request sidesteps GitHub's 2026-12-02 default restriction on
-# pull_request_target for public repositories.
+# Uses pull_request (not pull_request_target): this check only reads the PR body and labels from the
+# event payload — it checks out no PR code and uses no secrets — so it needs none of
+# pull_request_target's elevated context, and pull_request sidesteps GitHub's 2026-12-02 default
+# restriction on pull_request_target for public repositories.
 
 on:
   pull_request:
-    types: [opened, edited, synchronize, reopened]
+    types: [opened, edited, synchronize, reopened, labeled, unlabeled]
 
 permissions:
   pull-requests: read
@@ -26,12 +30,22 @@ jobs:
           python3 - <<'PY'
           import json, os, re, sys
           ev = json.load(open(os.environ["EVENT_PATH"]))
-          body = (ev.get("pull_request", {}).get("body") or "")
+          pr = ev.get("pull_request", {})
+          # 1) a label like "ai: generated" — one click, for maintainers/triagers
+          label_re = re.compile(r"(?i)^\s*ai(?:[-\s]?assistance)?\s*[:\-]\s*(none|assisted|generated)\s*$")
+          for lab in pr.get("labels", []):
+              m = label_re.match(lab.get("name", "") or "")
+              if m:
+                  print(f"OK (label): {m.group(1).lower()}")
+                  sys.exit(0)
+          # 2) a line in the PR description — works for everyone, including fork PRs
+          body = pr.get("body") or ""
           m = re.search(r"(?im)^\s*AI-Assistance:\s*(none|assisted|generated)\b", body)
           if m:
-              print(f"OK: AI-Assistance: {m.group(1).lower()}")
+              print(f"OK (body): {m.group(1).lower()}")
               sys.exit(0)
-          print("::error::PR description must contain a line 'AI-Assistance: none|assisted|generated' "
-                "(see the PR template).")
+          print("::error::Declare AI assistance: add a label 'ai: none|assisted|generated' "
+                "(maintainers), or an 'AI-Assistance: none|assisted|generated' line in the PR "
+                "description (works for fork PRs). See the PR template.")
           sys.exit(1)
           PY
