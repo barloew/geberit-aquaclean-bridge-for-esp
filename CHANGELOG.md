@@ -24,8 +24,11 @@ Sela.
 - **Entity icons corrected and extended.** `seated` now carries its own icon (`mdi:seat`), the
 dryer-temperature settings use `mdi:heat-wave`, the seat-heating settings use `mdi:car-seat-heater`, the flush
 command uses `mdi:ubisoft`, the lid toggle `mdi:arrange-bring-forward`, the connection sensor
-`mdi:transit-connection`, and the connection-uptime and date sensors `mdi:calendar-check`. These reach Home
-Assistant, Homey, openHAB, Node-RED, Domoticz, ioBroker and Apple Home over the native API or MQTT. A set of 36
+`mdi:transit-connection`, and the connection-uptime and date sensors `mdi:calendar-check`. Entities that had
+no icon at all — the orientation-light time windows, the toilet-signal sensor, and each user profile's
+*recognized*, *seated* and *device-signal* — now carry one (`mdi:clock-start`/`mdi:clock-end`, `mdi:signal`,
+`mdi:account-check`, `mdi:seat`), so the bridge's own web page no longer shows a blank slot for them. These
+reach Home Assistant, Homey, openHAB, Node-RED, Domoticz, ioBroker and Apple Home over the native API or MQTT. A set of 36
 function/profile line icons was added to `images/ui/` for the web page and the controller-app UIs (derived from
 Geberit's app icons; see `THIRD_PARTY_NOTICES.md`).
 - **Optional custom icons (`custom_icons`).** A new opt-in `custom_icons: true` (default off) swaps the `mdi:`
