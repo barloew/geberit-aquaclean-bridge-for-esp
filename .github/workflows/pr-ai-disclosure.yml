@@ -7,10 +7,11 @@ name: PR AI disclosure
 #     including PRs from forks).
 # See the PR template.
 #
-# Uses pull_request (not pull_request_target): this check only reads the PR body and labels from the
-# event payload — it checks out no PR code and uses no secrets — so it needs none of
-# pull_request_target's elevated context, and pull_request sidesteps GitHub's 2026-12-02 default
-# restriction on pull_request_target for public repositories.
+# The PR body and label names are passed in as environment variables (not read from
+# github.event_path, which can arrive empty, and never interpolated into the shell), so the check
+# needs no checkout and no secrets. Uses pull_request (not pull_request_target): it reads only the
+# body and labels, so it needs none of pull_request_target's elevated context, and pull_request
+# sidesteps GitHub's 2026-12-02 default restriction on pull_request_target for public repositories.
 
 on:
   pull_request:
@@ -25,21 +26,24 @@ jobs:
     steps:
       - name: Require AI-assistance disclosure
         env:
-          EVENT_PATH: ${{ github.event_path }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
         run: |
           python3 - <<'PY'
           import json, os, re, sys
-          ev = json.load(open(os.environ["EVENT_PATH"]))
-          pr = ev.get("pull_request", {})
+          try:
+              labels = json.loads(os.environ.get("PR_LABELS") or "[]")
+          except Exception:
+              labels = []
+          body = os.environ.get("PR_BODY") or ""
           # 1) a label like "ai: generated" — one click, for maintainers/triagers
           label_re = re.compile(r"(?i)^\s*ai(?:[-\s]?assistance)?\s*[:\-]\s*(none|assisted|generated)\s*$")
-          for lab in pr.get("labels", []):
-              m = label_re.match(lab.get("name", "") or "")
+          for name in labels:
+              m = label_re.match(name or "")
               if m:
                   print(f"OK (label): {m.group(1).lower()}")
                   sys.exit(0)
           # 2) a line in the PR description — works for everyone, including fork PRs
-          body = pr.get("body") or ""
           m = re.search(r"(?im)^\s*AI-Assistance:\s*(none|assisted|generated)\b", body)
           if m:
               print(f"OK (body): {m.group(1).lower()}")
