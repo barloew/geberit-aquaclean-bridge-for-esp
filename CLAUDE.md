@@ -218,18 +218,24 @@ runs in this environment and is the right way to validate any component change b
   `aquaclean:<name>` icon instead of their `mdi:` default. The entity→icon map is `CUSTOM_ICON_MAP`
   in `__init__.py`; it replaces only the stock mdi default, never a YAML-set icon. ESPHome stores an
   entity's icon at compile time, so this is a build-time choice, not runtime. See `docs/custom-icons.md`.
-- The `aquaclean:` SVGs come from `images/ui/`. Two tools consume them; change the SVG or the tool,
-  never hand-edit output. **`tools/icons/generate.py`** writes `frontend/ha-custom-icons.js` (the Home
-  Assistant icon-set); **`tools/icons/patch_webserver_v3.py`** patches ESPHome's embedded web_server v3
-  page (`server_index_v3.h`) in place with a `window.IconifyPreload`, so the ESP's own page shows the
-  icons while keeping `web_server: local: true`. Both share `iconify_collection()`/`ICONS` in
-  `generate.py`, and those names plus `CUSTOM_ICON_MAP` in `__init__.py` must stay in sync. Needs picosvg
-  (pip). The patch edits the *installed* ESPHome (so run it with the ESPHome you build with, before
-  compiling, and again after an ESPHome upgrade / icon change); it is robust (name-agnostic regex, gzip
-  or brotli) and idempotent, and `--check` fails if stale. See `docs/custom-icons.md`.
+- The `aquaclean:` SVGs come from `images/ui/`. **The ESP's own web page is handled by the component
+  itself** — `components/geberit_aquaclean/web_icons.py`, called from `to_code`: when `custom_icons` is
+  on and `web_server` is in the build, it injects a `window.IconifyPreload` into ESPHome's embedded
+  web_server v3 page (`server_index_v3.h`) at build time, keeping `web_server: local: true`. It runs on
+  every build, so it travels with the `github://` package (dashboard included) with no manual step; it is
+  robust (name-agnostic regex, gzip+brotli, idempotent) and never fails the build over an icon. It reads
+  the committed `components/geberit_aquaclean/web_icons.json` (an Iconify collection), so **no picosvg on
+  the build host**.
+- **`tools/icons/generate.py`** regenerates the SVG-derived outputs and needs picosvg (pip): it writes
+  both `frontend/ha-custom-icons.js` (the Home Assistant icon-set) and `components/geberit_aquaclean/web_icons.json`.
+  Run it after any SVG/`ICONS` change and commit both; `--check` fails if either is stale.
+  `tools/icons/patch_webserver_v3.py` is now only a thin CLI/CI wrapper over `web_icons.py` (manual
+  apply + `--check`); you don't need it for a normal build. `iconify_collection()`/`ICONS` in
+  `generate.py` plus `CUSTOM_ICON_MAP` in `__init__.py` must stay in sync, and `web_icons.json` must be
+  regenerated whenever the icons change. See `docs/custom-icons.md`.
 - Default off is deliberate: a bare `aquaclean:` string renders only in Home Assistant with the
-  icon-set module, and on the bridge's own web page with the patch applied; other routes keep their own
-  icons. Don't make it the default, or write docs that assume Home Assistant, without the matching frontends.
+  icon-set module, and on the bridge's own web page (which the component handles automatically); other
+  routes keep their own icons. Don't make it the default, or write docs that assume Home Assistant, without the matching frontends.
 
 ### Language requirements (non-negotiable)
 

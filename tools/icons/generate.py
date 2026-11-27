@@ -24,6 +24,7 @@ drop the colour so the frontends theme it.
 Needs picosvg (pip).
 """
 import argparse
+import json
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -32,6 +33,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 UI = ROOT / "images" / "ui"
 OUT_HA = ROOT / "frontend" / "ha-custom-icons.js"
+# Committed Iconify collection, read at build time by the component (components/.../web_icons.py) to
+# inject the icons into the ESP's own web page — no picosvg needed on the build host. Keep it in sync.
+OUT_JSON = ROOT / "components" / "geberit_aquaclean" / "web_icons.json"
 
 PREFIX = "aquaclean"
 
@@ -114,21 +118,30 @@ def iconify_collection(paths: dict[str, str]) -> dict:
     }
 
 
+def _json_text(paths: dict[str, str]) -> str:
+    return json.dumps(iconify_collection(paths), ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--check", action="store_true", help="fail if the output is stale")
+    ap.add_argument("--check", action="store_true", help="fail if any output is stale")
     args = ap.parse_args()
-    content = build_ha(entries())
+    paths = entries()
+    content = build_ha(paths)
+    json_content = _json_text(paths)
+    outputs = ((OUT_HA, content), (OUT_JSON, json_content))
     if args.check:
-        current = OUT_HA.read_text(encoding="utf-8") if OUT_HA.exists() else ""
-        if current != content:
-            print(f"STALE: {OUT_HA.relative_to(ROOT)} — run tools/icons/generate.py", file=sys.stderr)
+        stale = [out for out, want in outputs if (out.read_text(encoding="utf-8") if out.exists() else "") != want]
+        if stale:
+            for out in stale:
+                print(f"STALE: {out.relative_to(ROOT)} — run tools/icons/generate.py", file=sys.stderr)
             return 1
-        print("ha-custom-icons.js up to date")
+        print("ha-custom-icons.js and web_icons.json up to date")
         return 0
-    OUT_HA.parent.mkdir(parents=True, exist_ok=True)
-    OUT_HA.write_text(content, encoding="utf-8")
-    print(f"wrote {OUT_HA.relative_to(ROOT)} ({len(content)} bytes)")
+    for out, want in outputs:
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(want, encoding="utf-8")
+        print(f"wrote {out.relative_to(ROOT)} ({len(want)} bytes)")
     return 0
 
 

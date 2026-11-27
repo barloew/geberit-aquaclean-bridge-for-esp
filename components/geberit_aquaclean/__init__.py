@@ -1509,6 +1509,17 @@ async def to_code(config):
     if "api" in CORE.config:
         cg.add_define("USE_API_HOMEASSISTANT_STATES")
         cg.add_define("USE_API_HOMEASSISTANT_SERVICES")  # IRK shown as a Home Assistant notification
+    # custom_icons: the aquaclean: icon strings set below render in Home Assistant (icon-set module) and
+    # on the bridge's own web_server v3 page only once that page knows the prefix. With local:true the page
+    # is a compressed blob baked into ESPHome's server_index_v3.h, so we inject the icon collection into it
+    # here, at build time — it travels with the component over github:// and reapplies on every build, with
+    # no manual patch step. Guarded to web_server builds; apply() never fails the build over a cosmetic icon.
+    if "web_server" in CORE.config:
+        from . import web_icons
+
+        _changed = web_icons.apply(enable=bool(config[CONF_CUSTOM_ICONS]))
+        if config[CONF_CUSTOM_ICONS] and _changed:
+            _LOGGER.info("custom_icons: injected aquaclean icons into the web page (%d array(s))", _changed)
     if config[CONF_LOG_OBFUSCATE]:
         cg.add(hub.set_log_obfuscate(True))
     if config.get(CONF_MAINT_CODE):

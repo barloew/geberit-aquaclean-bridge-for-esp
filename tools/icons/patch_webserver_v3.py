@@ -1,141 +1,64 @@
 #!/usr/bin/env python3
-"""Patch ESPHome's embedded web_server v3 page so it ships the aquaclean icons — keeping local: true.
+"""Optional/CI helper: patch (or check) ESPHome's embedded web_server v3 page with the aquaclean icons.
 
-The ESP's own web page (web_server version 3, `local: true`) is the compressed byte blob in ESPHome's
-``server_index_v3.h``. It draws icons with Iconify, which reads ``window.IconifyPreload`` on start-up
-but doesn't know the ``aquaclean:`` prefix. This build-time step decodes that blob, injects a small
-``<script>`` that sets ``window.IconifyPreload`` with the aquaclean collection, re-compresses, and
-writes the header back. ``local: true`` keeps working; the device renders the icons offline.
+You normally do **not** need this. The component applies the same injection itself during codegen (see
+``components/geberit_aquaclean/web_icons.py``, called from ``to_code``), so a normal ESPHome build —
+including the ESPHome dashboard pulling the component over ``github://`` — already ships the icons on the
+device's own page while keeping ``web_server: local: true``. No manual step, no ``docker exec``.
 
-Robust on purpose (ESPHome may change things between versions):
-  * it patches *every* PROGMEM page array it finds, by name-agnostic regex (not just ``INDEX_GZ``);
-  * it sniffs gzip vs brotli from the bytes and re-compresses with the same codec;
-  * it is idempotent — a previous injection (marked ``data-aquaclean``) is stripped before re-adding,
-    so re-running after an icon change or an ESPHome upgrade just refreshes it.
+This script is a thin wrapper over that same code, for two cases:
 
-It edits the *installed* ESPHome package in place, so run it with the ESPHome you build with, before
-compiling (and again after an ESPHome upgrade / icon change). CI should run it in the build step.
+    python3 tools/icons/patch_webserver_v3.py            # patch the installed ESPHome now (manual override)
+    python3 tools/icons/patch_webserver_v3.py --check     # CI: fail if the installed page isn't current
 
-    python3 tools/icons/patch_webserver_v3.py            # patch the installed header
-    python3 tools/icons/patch_webserver_v3.py --check     # fail if it isn't patched / is stale
-
-Needs picosvg (pip); brotli (pip) only if ESPHome ships a brotli page array.
+Both reuse the component's implementation and the committed ``web_icons.json``, so there is one source of
+truth. (The icon geometry itself is regenerated from ``images/ui/*.svg`` by ``tools/icons/generate.py``,
+which also refreshes ``web_icons.json``; that step needs picosvg, this one does not.)
 """
 import argparse
-import gzip
-import json
-import re
+import importlib.util
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import generate  # noqa: E402 — shared ICONS, normalise(), PREFIX, UI
-
-MARKER = "data-aquaclean"
-_ARRAY = re.compile(r"\b([A-Za-z_]\w*)\s*\[\s*\d*\s*\]\s*PROGMEM\s*=\s*\{([^}]*)\}", re.S)
-_SIZE = "constexpr size_t {name}_SIZE = {size}"
-_SCRIPT_MODULE = re.compile(r"<script\b[^>]*\btype\s*=\s*[\"']?module", re.I)
-_PRIOR = re.compile(r"<script\b[^>]*" + MARKER + r"[^>]*>.*?</script>", re.S | re.I)
+ROOT = Path(__file__).resolve().parents[2]
+_WEB_ICONS = ROOT / "components" / "geberit_aquaclean" / "web_icons.py"
 
 
-def _preload_tag() -> str:
-    collection = generate.iconify_collection(generate.entries())
-    return f"<script {MARKER}>window.IconifyPreload=(window.IconifyPreload||[]);window.IconifyPreload.push({json.dumps(collection)});</script>"
-
-
-def _inflate(data: bytes) -> tuple[bytes, str] | None:
-    """Return (decompressed, codec) or None. codec is 'gzip' or 'brotli'."""
-    if data[:2] == b"\x1f\x8b":
-        try:
-            return gzip.decompress(data), "gzip"
-        except OSError:
-            return None
-    try:
-        import brotli
-
-        return brotli.decompress(data), "brotli"
-    except Exception:
-        return None
-
-
-def _deflate(data: bytes, codec: str) -> bytes:
-    if codec == "gzip":
-        return gzip.compress(data, 9, mtime=0)
-    import brotli
-
-    return brotli.compress(data, quality=11)
-
-
-def _inject(html: str) -> str:
-    html = _PRIOR.sub("", html)  # idempotent: drop any earlier injection
-    m = _SCRIPT_MODULE.search(html)
-    if not m:
-        raise SystemExit("v3 page: no <script type=module> to inject before")
-    return html[: m.start()] + _preload_tag() + html[m.start() :]
-
-
-def _as_c_array(data: bytes) -> str:
-    return ", ".join(f"0x{b:02x}" for b in data)
-
-
-def _patched_header(text: str) -> tuple[str, int]:
-    """Return (new header text, number of page arrays patched)."""
-    count = 0
-
-    def repl(m: "re.Match[str]") -> str:
-        nonlocal count
-        body = m.group(2)
-        nums = re.findall(r"0x[0-9a-fA-F]+", body)
-        if len(nums) < 64:
-            return m.group(0)
-        raw = bytes(int(x, 16) for x in nums)
-        got = _inflate(raw)
-        if not got:
-            return m.group(0)
-        html_bytes, codec = got
-        if b"<esp-app" not in html_bytes:
-            return m.group(0)
-        new = _deflate(_inject(html_bytes.decode("utf-8", "replace")).encode("utf-8"), codec)
-        count += 1
-        return m.group(0).replace(body, "\n    " + _as_c_array(new) + "\n")
-
-    new_text = _ARRAY.sub(repl, text)
-    # fix the *_SIZE constants to the new lengths
-    for m in _ARRAY.finditer(new_text):
-        name, body = m.group(1), m.group(2)
-        n = len(re.findall(r"0x[0-9a-fA-F]+", body))
-        new_text = re.sub(
-            rf"constexpr\s+size_t\s+{re.escape(name)}_SIZE\s*=\s*\d+",
-            f"constexpr size_t {name}_SIZE = {n}",
-            new_text,
-        )
-    return new_text, count
-
-
-def _header_path() -> Path:
-    import esphome
-
-    return Path(esphome.__file__).resolve().parent / "components" / "web_server" / "server_index_v3.h"
+def _load_web_icons():
+    spec = importlib.util.spec_from_file_location("geberit_web_icons", _WEB_ICONS)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--check", action="store_true", help="fail if the installed header isn't current")
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--check", action="store_true", help="fail if the installed page isn't current")
     args = ap.parse_args()
-    header = _header_path()
+    web_icons = _load_web_icons()
+
+    header = web_icons._header_path()
     text = header.read_text(encoding="utf-8", errors="replace")
-    new_text, count = _patched_header(text)
-    if count == 0:
+    new_text, changed, skipped, found = web_icons._patched_header(text, enable=True)
+    if found == 0:
+        # no decodable esp-app page array at all → surface it rather than silently passing
         raise SystemExit(f"{header.name}: found no decodable v3 page array to patch")
+
     if args.check:
         if new_text != text:
-            print(f"STALE: {header} is not patched with the current icons — run patch_webserver_v3.py",
+            print(f"STALE: {header} is not patched with the current icons — "
+                  "the component patches this at build time; run this only for a manual/CI check",
                   file=sys.stderr)
             return 1
-        print(f"server_index_v3.h patched and current ({count} page array(s))")
+        print("server_index_v3.h is patched and current")
+        if skipped:
+            print(f"note: {', '.join(sorted(skipped))} array(s) left unpatched (codec unavailable)")
         return 0
-    header.write_text(new_text, encoding="utf-8")
-    print(f"patched {header} ({count} page array(s), local: true preserved)")
+
+    n = web_icons.apply(enable=True)
+    print(f"patched {header} ({n} page array(s) changed, local: true preserved)")
+    if skipped:
+        print(f"note: {', '.join(sorted(skipped))} array(s) left unpatched (codec unavailable)")
     return 0
 
 
