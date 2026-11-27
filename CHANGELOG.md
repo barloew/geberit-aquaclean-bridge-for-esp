@@ -22,10 +22,19 @@ functions. Web-installer images only (both routes); a self-build YAML keeps usin
 `maintenance_disclaimer_accepted`. Like `/setup` and `/homekit`, the page is English. Hardware-validated on a
 Sela.
 - **Entity icons corrected and extended.** `seated` now carries its own icon (`mdi:seat`), the
-dryer-temperature settings use `mdi:heat-wave`, and the seat-heating settings use `mdi:car-seat-heater`. These
-reach Home Assistant, Homey, openHAB, Node-RED, Domoticz, ioBroker and Apple Home over the native API or MQTT.
-A set of 36 function/profile line icons was added to `images/ui/` for the web page and the controller-app UIs
-(derived from Geberit's app icons; see `THIRD_PARTY_NOTICES.md`).
+dryer-temperature settings use `mdi:heat-wave`, the seat-heating settings use `mdi:car-seat-heater`, the flush
+command uses `mdi:ubisoft`, the lid toggle `mdi:arrange-bring-forward`, the connection sensor
+`mdi:transit-connection`, and the connection-uptime and date sensors `mdi:calendar-check`. These reach Home
+Assistant, Homey, openHAB, Node-RED, Domoticz, ioBroker and Apple Home over the native API or MQTT. A set of 36
+function/profile line icons was added to `images/ui/` for the web page and the controller-app UIs (derived from
+Geberit's app icons; see `THIRD_PARTY_NOTICES.md`).
+- **Optional custom icons (`custom_icons`).** A new opt-in `custom_icons: true` (default off) swaps the `mdi:`
+default of a few shower, spray and seat-heating entities for bespoke `aquaclean:` line icons. In Home Assistant
+they come from an installable icon-set module (`frontend/ha-custom-icons.js`, added under
+`frontend.extra_module_url`); on the bridge's own web page the component bakes them into the embedded
+`web_server` page at build time, so they render offline with `local: true` and nothing to install — it
+reapplies on every build, the ESPHome dashboard included. A YAML-set icon is never overridden, and the other
+routes keep their own icons. See `docs/custom-icons.md`.
 
 ### Known issues
 
