@@ -1,7 +1,14 @@
 name: PR labeler
 
+# Auto-labels PRs by their changed paths (config in .github/labeler.yml).
+#
+# Uses pull_request (not pull_request_target) so it sidesteps GitHub's 2026-12-02 default
+# restriction on pull_request_target for public repositories, with no Actions policy to configure.
+# The job is guarded to PRs from this repo's own branches: GitHub gives fork PRs only a read-only
+# token, which actions/labeler cannot use to add labels, so those are left to be labelled by hand.
+
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened]
 
 permissions:
@@ -11,6 +18,7 @@ permissions:
 jobs:
   label:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - uses: actions/labeler@v5
         with:
