@@ -47,7 +47,7 @@ to make it render, differs per platform:
 | Platform | Route | How to show the SVGs |
 |---|---|---|
 | Home Assistant | native API or MQTT | Install the `aquaclean` icon-set module (`frontend/ha-custom-icons.js`), then add it under `frontend.extra_module_url` (below). |
-| ESPHome web page | — | Bake the device bundle (`frontend/esphome-www.js`) into `web_server` via `js_include` (below). Without it the web page shows a blank icon for these entities when `custom_icons` is on. |
+| ESPHome web page | — | Patch ESPHome's embedded page before building (`tools/icons/patch_webserver_v3.py`), keeping `local: true` (below). Without it the web page shows a blank icon for these entities when `custom_icons` is on. |
 | Homey | native API or MQTT | Own Homey app (SDK v3) that carries the SVG assets. |
 | openHAB | MQTT | SVG files in `conf/icons/classic/` plus an item icon mapping. |
 | Node-RED | MQTT | A custom SVG / `ui-template` in Dashboard 2.0 (`@flowfuse/node-red-dashboard`). |
@@ -57,7 +57,7 @@ to make it render, differs per platform:
 None of the non-Home-Assistant systems read the `aquaclean:` string as a rich icon — they each have
 their own icon mechanism — so enabling `custom_icons` does not take anything away there: they keep
 whatever icon you configure in that system. The visible effect of `custom_icons` is in Home Assistant
-(with the module installed) and on the bridge's own web page (with the device bundle baked in).
+(with the module installed) and on the bridge's own web page (with the embedded page patched).
 
 ### Home Assistant — installing the icon-set
 
@@ -83,31 +83,27 @@ SVG. Home Assistant draws it in the current theme colour (a monochrome icon).
 Without the module, Home Assistant shows a blank icon for those entities — which is why the firmware
 side is opt-in.
 
-### ESPHome web page — the device bundle
+### ESPHome web page — patch the embedded page (keeps `local: true`)
 
 The ESP's own web page (`web_server` version 3) draws entity icons with [Iconify](https://iconify.design):
 the icon string goes straight into an `<iconify-icon>`, which resolves `mdi:` from the Iconify API
-(so stock `mdi:` icons there need internet) but doesn't know `aquaclean:`. `tools/icons/generate.py`
-produces `frontend/esphome-www.js`: ESPHome's own v3 frontend plus a `window.IconifyPreload` that
-registers the aquaclean icons. Baked into the firmware, the device page renders them **offline**.
+(so stock `mdi:` icons there need internet) but doesn't know `aquaclean:`. With `local: true` the ESP
+serves ESPHome's own embedded page, so the fix is to patch that page.
 
-Because `web_server: local: true` serves ESPHome's embedded page as-is (it never references a
-`js_include`), enabling this means serving the page through our bundle instead. In your `web_server`
-block:
+`tools/icons/patch_webserver_v3.py` does exactly that: it decodes ESPHome's `server_index_v3.h`,
+injects a `window.IconifyPreload` that registers the aquaclean icons, and re-compresses it in place.
+`local: true` stays as it is; the device page renders the icons **offline** (they are baked in, no
+internet — unlike stock `mdi:` there).
 
-```yaml
-web_server:
-  # ... your existing version/port/sorting_groups ...
-  local: false            # our js_include replaces the embedded local page
-  js_url: ""              # no external frontend fetch
-  js_include: frontend/esphome-www.js   # path relative to your YAML; adjust if needed
+Run it before building, with the ESPHome you build with importable (it edits that ESPHome's embedded
+page):
+
+```bash
+python3 tools/icons/patch_webserver_v3.py          # patch before compiling
+python3 tools/icons/patch_webserver_v3.py --check   # CI: fail if not patched / stale
 ```
 
-Flash cost is roughly neutral: `local: false` drops ESPHome's embedded page, and the bundle it
-replaces it with is about the same size (~34 KB compressed).
-
-`frontend/esphome-www.js` embeds ESPHome's own frontend, read from its `server_index_v3.h`, so it is
-tied to the ESPHome version. Regenerate it with the ESPHome you build with
-(`python3 tools/icons/generate.py`, run with that ESPHome importable); `--check` fails if it is stale.
-This is opt-in — leave `web_server` as it is (and the icons stay `mdi:`-only on the device page) if
-you don't need it.
+It is robust and idempotent: it patches every embedded page array by a name-agnostic regex, sniffs
+gzip vs brotli and re-compresses with the same codec, and strips any earlier injection before
+re-adding — so re-run it after an icon change or an ESPHome upgrade. Leave your `web_server` block
+unchanged (`local: true`); skip the patch and the icons simply stay `mdi:`-only on the device page.

@@ -3,16 +3,14 @@
 
 The bridge's entities can carry an ``aquaclean:<name>`` icon instead of an ``mdi:`` one (opt-in,
 see the component's ``custom_icons`` option). That string is only a label; each frontend that shows
-it must know how to draw it. This script bakes the SVGs into the two frontends that need them:
+it must know how to draw it. This script writes the Home Assistant frontend:
 
   frontend/ha-custom-icons.js   Home Assistant custom icon-set (window.customIcons['aquaclean']).
                                 Installed by the user via HACS + frontend.extra_module_url.
-  frontend/esphome-www.js       The ESP's own web page (web_server v3). It embeds ESPHome's own v3
-                                frontend plus a window.IconifyPreload that registers the aquaclean
-                                icons, so the device page renders them offline. Baked via the
-                                web_server `js_include` option (with `local` off and `js_url` empty);
-                                see docs/custom-icons.md. Needs ESPHome importable (same version you
-                                build with) so its frontend can be read from server_index_v3.h.
+
+(The ESP's own web page is handled separately by tools/icons/patch_webserver_v3.py, which injects the
+same icons — via iconify_collection() below — into ESPHome's embedded page, keeping web_server
+`local: true`.)
 
 Home Assistant's custom-iconset API returns a single filled ``path`` per icon, drawn with
 ``currentColor``. Our source SVGs use per-path transforms, a fixed slate fill and, for some, a
@@ -20,15 +18,12 @@ stroke-only sub-path — none of which that API supports. picosvg normalises eac
 transform-free, fill-only geometry; we then concatenate the resulting path data into one ``d`` and
 drop the colour so the frontends theme it.
 
-    python3 tools/icons/generate.py            # write the outputs
-    python3 tools/icons/generate.py --check     # fail if the outputs are stale (CI)
+    python3 tools/icons/generate.py            # write the output
+    python3 tools/icons/generate.py --check     # fail if the output is stale (CI)
 
-Needs picosvg (pip); the esphome-www.js step also needs esphome importable and brotli (pip) only as
-a fallback if ESPHome ever ships its embedded frontend brotli-only.
+Needs picosvg (pip).
 """
 import argparse
-import gzip
-import re
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -37,7 +32,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 UI = ROOT / "images" / "ui"
 OUT_HA = ROOT / "frontend" / "ha-custom-icons.js"
-OUT_WWW = ROOT / "frontend" / "esphome-www.js"
 
 PREFIX = "aquaclean"
 
@@ -106,105 +100,35 @@ def build_ha(paths: dict[str, str]) -> str:
     return "\n".join(lines)
 
 
-# --- ESP web_server v3 bundle ------------------------------------------------------------------
-# ESPHome embeds its own v3 frontend as a compressed PROGMEM byte array in server_index_v3.h. We
-# decode it, prepend a window.IconifyPreload that registers the aquaclean icons, and ship the pair
-# as the web_server js_include module. Robust to ESPHome renaming the array or switching gzip<->brotli:
-# we try every PROGMEM byte array and sniff the compression.
-_BYTE_ARRAY = re.compile(r"\b([A-Za-z_]\w*)\s*\[\s*\d*\s*\]\s*PROGMEM\s*=\s*\{([^}]*)\}", re.S)
-_SCRIPT = re.compile(r"<script\b[^>]*>(.*?)</script>", re.S)
+def iconify_collection(paths: dict[str, str]) -> dict:
+    """The aquaclean icons as an Iconify collection (for window.IconifyPreload).
 
-
-def _esphome_web_server_dir() -> Path:
-    import esphome  # noqa: PLC0415 — optional; only the esphome-www.js step needs it
-
-    return Path(esphome.__file__).resolve().parent / "components" / "web_server"
-
-
-def _decompress(data: bytes) -> bytes | None:
-    if data[:2] == b"\x1f\x8b":  # gzip magic
-        try:
-            return gzip.decompress(data)
-        except OSError:
-            return None
-    try:
-        import brotli  # noqa: PLC0415
-
-        return brotli.decompress(data)
-    except Exception:
-        return None
-
-
-def _v3_frontend_module() -> str:
-    """The inline ES-module JS of ESPHome's embedded web_server v3 frontend."""
-    header = _esphome_web_server_dir() / "server_index_v3.h"
-    text = header.read_text(encoding="utf-8", errors="replace")
-    html = None
-    for _name, body in _BYTE_ARRAY.findall(text):
-        nums = re.findall(r"0x[0-9a-fA-F]+", body)
-        if len(nums) < 64:  # skip the small size/marker arrays
-            continue
-        raw = bytes(int(x, 16) for x in nums)
-        out = _decompress(raw)
-        if out and b"<esp-app" in out and b"<script" in out:
-            html = out.decode("utf-8", "replace")
-            break
-    if html is None:
-        raise SystemExit(
-            f"{header.name}: could not decode the embedded v3 frontend "
-            "(no decompressible PROGMEM page array found — did ESPHome change its format?)"
-        )
-    m = _SCRIPT.search(html)
-    if not m or not m.group(1).strip():
-        raise SystemExit(f"{header.name}: no <script type=module> body in the decoded page")
-    return m.group(1).strip()
-
-
-def build_www(paths: dict[str, str]) -> str:
-    import json
-
-    collection = {
+    Shared with tools/icons/patch_webserver_v3.py, which injects this into ESPHome's embedded v3
+    web page so the device's own page renders the icons while keeping web_server `local: true`.
+    """
+    return {
         "prefix": PREFIX,
         "width": 24,
         "height": 24,
         "icons": {name: {"body": f'<path d="{d}" fill="currentColor"/>'} for name, d in paths.items()},
     }
-    preload = (
-        "// GENERATED by tools/icons/generate.py — do not edit by hand.\n"
-        "// ESP web_server v3 bundle: ESPHome's own frontend (read from server_index_v3.h) plus an\n"
-        "// IconifyPreload that registers the aquaclean icons, so the device page renders them offline.\n"
-        "// Bake via web_server js_include (local off, js_url empty); see docs/custom-icons.md.\n"
-        f"(function(){{(window.IconifyPreload=window.IconifyPreload||[]).push({json.dumps(collection)});}})();\n"
-    )
-    return preload + _v3_frontend_module() + "\n"
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--check", action="store_true", help="fail if outputs are stale")
+    ap.add_argument("--check", action="store_true", help="fail if the output is stale")
     args = ap.parse_args()
-    paths = entries()
-    outputs = {OUT_HA: build_ha(paths)}
-    try:
-        outputs[OUT_WWW] = build_www(paths)
-    except ModuleNotFoundError:
-        print(
-            "note: esphome not importable — skipping esphome-www.js. Run with your ESPHome venv "
-            "python to (re)generate the device-page bundle.",
-            file=sys.stderr,
-        )
+    content = build_ha(entries())
     if args.check:
-        stale = [p for p, c in outputs.items() if (p.read_text(encoding="utf-8") if p.exists() else "") != c]
-        for p in stale:
-            print(f"STALE: {p.relative_to(ROOT)} — run tools/icons/generate.py", file=sys.stderr)
-        if stale:
+        current = OUT_HA.read_text(encoding="utf-8") if OUT_HA.exists() else ""
+        if current != content:
+            print(f"STALE: {OUT_HA.relative_to(ROOT)} — run tools/icons/generate.py", file=sys.stderr)
             return 1
-        print(f"icon frontends up to date ({len(outputs)} file(s) checked)")
+        print("ha-custom-icons.js up to date")
         return 0
-    for p, content in outputs.items():
-        p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(content, encoding="utf-8")
-        print(f"wrote {p.relative_to(ROOT)} ({len(content)} bytes)")
+    OUT_HA.parent.mkdir(parents=True, exist_ok=True)
+    OUT_HA.write_text(content, encoding="utf-8")
+    print(f"wrote {OUT_HA.relative_to(ROOT)} ({len(content)} bytes)")
     return 0
 
 

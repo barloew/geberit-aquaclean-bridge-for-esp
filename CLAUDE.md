@@ -218,17 +218,18 @@ runs in this environment and is the right way to validate any component change b
   `aquaclean:<name>` icon instead of their `mdi:` default. The entity→icon map is `CUSTOM_ICON_MAP`
   in `__init__.py`; it replaces only the stock mdi default, never a YAML-set icon. ESPHome stores an
   entity's icon at compile time, so this is a build-time choice, not runtime. See `docs/custom-icons.md`.
-- The `aquaclean:` SVGs come from `images/ui/` and are baked into frontend modules by
-  **`tools/icons/generate.py`** (generated output in `frontend/`): `ha-custom-icons.js` (Home Assistant)
-  and `esphome-www.js` (the ESP web page). Change the SVG or the generator, never hand-edit the output.
-  The icon names in `CUSTOM_ICON_MAP` and in the generator's `ICONS` map must stay in sync. Needs picosvg
-  (pip). `esphome-www.js` embeds ESPHome's own v3 frontend (read from `server_index_v3.h`), so it is tied
-  to the ESPHome version: regenerate it with the ESPHome you build with (run the generator with ESPHome
-  importable), and `--check` fails if it is stale. On the device page the bundle is baked via `web_server`
-  `js_include` with `local` off and `js_url` empty (see `docs/custom-icons.md`).
+- The `aquaclean:` SVGs come from `images/ui/`. Two tools consume them; change the SVG or the tool,
+  never hand-edit output. **`tools/icons/generate.py`** writes `frontend/ha-custom-icons.js` (the Home
+  Assistant icon-set); **`tools/icons/patch_webserver_v3.py`** patches ESPHome's embedded web_server v3
+  page (`server_index_v3.h`) in place with a `window.IconifyPreload`, so the ESP's own page shows the
+  icons while keeping `web_server: local: true`. Both share `iconify_collection()`/`ICONS` in
+  `generate.py`, and those names plus `CUSTOM_ICON_MAP` in `__init__.py` must stay in sync. Needs picosvg
+  (pip). The patch edits the *installed* ESPHome (so run it with the ESPHome you build with, before
+  compiling, and again after an ESPHome upgrade / icon change); it is robust (name-agnostic regex, gzip
+  or brotli) and idempotent, and `--check` fails if stale. See `docs/custom-icons.md`.
 - Default off is deliberate: a bare `aquaclean:` string renders only in Home Assistant with the
-  icon-set module and (once shipped) on the bridge's own web page; other routes keep their own icons.
-  Don't make it the default, or write docs that assume Home Assistant, without the matching frontends.
+  icon-set module, and on the bridge's own web page with the patch applied; other routes keep their own
+  icons. Don't make it the default, or write docs that assume Home Assistant, without the matching frontends.
 
 ### Language requirements (non-negotiable)
 
